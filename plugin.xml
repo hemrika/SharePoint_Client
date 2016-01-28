@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+ Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+ Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+-->
+<plugin id="cordova-plugin-blaud-sharepoint" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>SharePoint for Cordova</name>
+    <description>SharePoint Cordova plugin.</description>
+
+    <license>Apache 2.0</license>
+    <keywords>microsoft, office365, sharepoint</keywords>
+    <repo>https://github.com/BLAUD/cordova-plugin-blaud-sharepoint</repo>
+    <issue>https://github.com/BLAUD/cordova-plugin-blaud-sharepoint/issues</issue>
+
+    <js-module name="SharePoint" src="www/sharepoint.js">
+        <clobbers target="Microsoft.Office.SharePoint" />
+    </js-module>
+    
+    <platform name="ios">
+    </platform>
+
+    <platform name="windows">
+    </platform>
+    
+    <platform name="android">
+    </platform>
+</plugin>

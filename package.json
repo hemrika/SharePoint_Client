@@ -1,0 +1,32 @@
+{
+  "name": "cordova-plugin-blaud-sharepoint",
+  "version": "0.1.0",
+  "description": "SharePoint Cordova plugin.",
+  "cordova": {
+    "id": "cordova-plugin-blaud-sharepoint",
+    "platforms": [
+      "android",
+      "ios",
+      "windows"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bLAUD/cordova-plugin-blaud-sharepoint.git"
+  },
+  "keywords": [
+    "microsoft",
+    "office365",
+    "sharepoint",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova-windows"
+  ],
+  "author": "BLAUD",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/OfficeDev/cordova-plugin-blaud-sharepoint/issues"
+  },
+  "homepage": "https://github.com/OfficeDev/cordova-plugin-blaud-sharepoint#readme"
+}
