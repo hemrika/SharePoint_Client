@@ -4,7 +4,7 @@
     // Form data for the login modal
     $scope.loginData = {};
 
-    $scope.loginData = { domain: 'duwboot.sharepoint.com', username: 'rutger.hemrika@blaud.com', password: 'rjm557308453!' }
+    $scope.loginData = { domain: 'duwboot.sharepoint.com', username: 'rutger.hemrika@blaud.com', password: '' }
     // Create the login modal that we will use later
     $ionicModal.fromTemplateUrl('templates/login.html', {
         scope: $scope
