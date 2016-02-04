@@ -9,19 +9,19 @@
 
     <license>Apache 2.0</license>
     <keywords>microsoft, office365, sharepoint</keywords>
-    <repo>https://github.com/BLAUD/cordova-plugin-blaud-sharepoint</repo>
-    <issue>https://github.com/BLAUD/cordova-plugin-blaud-sharepoint/issues</issue>
+    <repo>https://bitbucket.org/e-office/blaud_sharepoint_client</repo>
+    <issue>https://bitbucket.org/e-office/blaud_sharepoint_client/issues</issue>
 
-    <js-module name="SharePoint" src="www/sharepoint.js">
+    <js-module name="SharePoint" src=“dist/ngSharePoint.js">
         <clobbers target="Microsoft.Office.SharePoint" />
     </js-module>
-    
+
     <platform name="ios">
     </platform>
 
     <platform name="windows">
     </platform>
-    
+
     <platform name="android">
     </platform>
 </plugin>

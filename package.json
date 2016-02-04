@@ -28,5 +28,12 @@
   "bugs": {
     "url": "https://github.com/OfficeDev/cordova-plugin-blaud-sharepoint/issues"
   },
-  "homepage": "https://github.com/OfficeDev/cordova-plugin-blaud-sharepoint#readme"
+  "homepage": "https://github.com/OfficeDev/cordova-plugin-blaud-sharepoint#readme",
+  "cordovaPlugins": [],
+  "cordovaPlatforms": [
+    {
+      "platform": "android",
+      "locator": "windows"
+    }
+  ]
 }

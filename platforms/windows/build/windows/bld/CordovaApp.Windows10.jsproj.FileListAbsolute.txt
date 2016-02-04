@@ -1,0 +1,16 @@
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\Debug\AnyCPU\ReverseMap\resources.pri
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\Debug\AnyCPU\AppxManifest.xml
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\Debug\AnyCPU\CordovaApp.Windows10.build.appxrecipe
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\ResourceHandlingTask.state
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\priconfig.xml
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\priconfig.xml.intermediate
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\layout.resfiles
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\layout.resfiles.intermediate
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\resources.resfiles
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\resources.resfiles.intermediate
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\pri.resfiles
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\pri.resfiles.intermediate
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\qualifiers.txt
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\qualifiers.txt.intermediate
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\MultipleQualifiersPerDimensionFound.txt
+M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\ProjectArchitectures.txt

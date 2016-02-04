@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>BLAUD-HEMRIKA-W</Machine>
+    <WindowsUser>rutger.hemrika</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>9adc41f0-cb26-11e5-9861-7d7eb2448363</PackageIdentityName>
+    <IntermediateOutputPath>M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\bld\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\Debug\AnyCPU\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\SplashScreen.scale-100.png">
+      <PackagePath>images\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Square150x150Logo.scale-100.png">
+      <PackagePath>images\Square150x150Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Square30x30Logo.scale-100.png">
+      <PackagePath>images\Square30x30Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Square310x310Logo.scale-100.png">
+      <PackagePath>images\Square310x310Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Square44x44Logo.scale-100.png">
+      <PackagePath>images\Square44x44Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Square70x70Logo.scale-100.png">
+      <PackagePath>images\Square70x70Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Square71x71Logo.scale-100.png">
+      <PackagePath>images\Square71x71Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\StoreLogo.scale-100.png">
+      <PackagePath>images\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\images\Wide310x150Logo.scale-100.png">
+      <PackagePath>images\Wide310x150Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\img\ionic.png">
+      <PackagePath>www\img\ionic.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\css\style.css">
+      <PackagePath>www\css\style.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\css\ionic.css">
+      <PackagePath>www\lib\ionic\css\ionic.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\css\ionic.min.css">
+      <PackagePath>www\lib\ionic\css\ionic.min.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\index.html">
+      <PackagePath>www\index.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\item.html">
+      <PackagePath>www\templates\item.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\items.html">
+      <PackagePath>www\templates\items.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\list.html">
+      <PackagePath>www\templates\list.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\lists.html">
+      <PackagePath>www\templates\lists.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\login.html">
+      <PackagePath>www\templates\login.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\menu.html">
+      <PackagePath>www\templates\menu.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\user.html">
+      <PackagePath>www\templates\user.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\templates\welcome.html">
+      <PackagePath>www\templates\welcome.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\js\app.js">
+      <PackagePath>www\js\app.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\js\controllers.js">
+      <PackagePath>www\js\controllers.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.js">
+      <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.min.js">
+      <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular-animate.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-animate.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular-animate.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-animate.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular-resource.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-resource.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular-resource.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-resource.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-sanitize.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-sanitize.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular.js">
+      <PackagePath>www\lib\ionic\js\angular\angular.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\angular\angular.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\ionic-angular.js">
+      <PackagePath>www\lib\ionic\js\ionic-angular.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\ionic-angular.min.js">
+      <PackagePath>www\lib\ionic\js\ionic-angular.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\ionic.bundle.js">
+      <PackagePath>www\lib\ionic\js\ionic.bundle.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\ionic.bundle.min.js">
+      <PackagePath>www\lib\ionic\js\ionic.bundle.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\ionic.js">
+      <PackagePath>www\lib\ionic\js\ionic.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\js\ionic.min.js">
+      <PackagePath>www\lib\ionic\js\ionic.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\jQuery\jquery-2.1.4.intellisense.js">
+      <PackagePath>www\lib\jQuery\jquery-2.1.4.intellisense.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\jQuery\jquery-2.1.4.js">
+      <PackagePath>www\lib\jQuery\jquery-2.1.4.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\jQuery\jquery-2.1.4.min.js">
+      <PackagePath>www\lib\jQuery\jquery-2.1.4.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.File.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.File.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Folder.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Folder.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Group.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Group.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Item.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Item.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.List.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.List.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Security.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Security.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Site.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Site.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Types.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Types.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Users.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Users.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\SharePoint\ngSharePoint.Web.js">
+      <PackagePath>www\lib\SharePoint\ngSharePoint.Web.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\fonts\ionicons.eot">
+      <PackagePath>www\lib\ionic\fonts\ionicons.eot</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\fonts\ionicons.svg">
+      <PackagePath>www\lib\ionic\fonts\ionicons.svg</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\fonts\ionicons.ttf">
+      <PackagePath>www\lib\ionic\fonts\ionicons.ttf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\fonts\ionicons.woff">
+      <PackagePath>www\lib\ionic\fonts\ionicons.woff</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\ionic.scss">
+      <PackagePath>www\lib\ionic\scss\ionic.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\ionicons\ionicons.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\ionicons.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-animation.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-animation.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-font.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-font.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-icons.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-icons.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-variables.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-variables.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_action-sheet.scss">
+      <PackagePath>www\lib\ionic\scss\_action-sheet.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_animations.scss">
+      <PackagePath>www\lib\ionic\scss\_animations.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_backdrop.scss">
+      <PackagePath>www\lib\ionic\scss\_backdrop.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_badge.scss">
+      <PackagePath>www\lib\ionic\scss\_badge.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_bar.scss">
+      <PackagePath>www\lib\ionic\scss\_bar.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_button-bar.scss">
+      <PackagePath>www\lib\ionic\scss\_button-bar.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_button.scss">
+      <PackagePath>www\lib\ionic\scss\_button.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_checkbox.scss">
+      <PackagePath>www\lib\ionic\scss\_checkbox.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_form.scss">
+      <PackagePath>www\lib\ionic\scss\_form.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_grid.scss">
+      <PackagePath>www\lib\ionic\scss\_grid.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_items.scss">
+      <PackagePath>www\lib\ionic\scss\_items.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_list.scss">
+      <PackagePath>www\lib\ionic\scss\_list.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_loading.scss">
+      <PackagePath>www\lib\ionic\scss\_loading.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_menu.scss">
+      <PackagePath>www\lib\ionic\scss\_menu.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_mixins.scss">
+      <PackagePath>www\lib\ionic\scss\_mixins.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_modal.scss">
+      <PackagePath>www\lib\ionic\scss\_modal.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_platform.scss">
+      <PackagePath>www\lib\ionic\scss\_platform.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_popover.scss">
+      <PackagePath>www\lib\ionic\scss\_popover.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_popup.scss">
+      <PackagePath>www\lib\ionic\scss\_popup.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_progress.scss">
+      <PackagePath>www\lib\ionic\scss\_progress.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_radio.scss">
+      <PackagePath>www\lib\ionic\scss\_radio.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_range.scss">
+      <PackagePath>www\lib\ionic\scss\_range.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_reset.scss">
+      <PackagePath>www\lib\ionic\scss\_reset.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_scaffolding.scss">
+      <PackagePath>www\lib\ionic\scss\_scaffolding.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_select.scss">
+      <PackagePath>www\lib\ionic\scss\_select.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_slide-box.scss">
+      <PackagePath>www\lib\ionic\scss\_slide-box.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_tabs.scss">
+      <PackagePath>www\lib\ionic\scss\_tabs.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_toggle.scss">
+      <PackagePath>www\lib\ionic\scss\_toggle.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_transitions.scss">
+      <PackagePath>www\lib\ionic\scss\_transitions.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_type.scss">
+      <PackagePath>www\lib\ionic\scss\_type.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_util.scss">
+      <PackagePath>www\lib\ionic\scss\_util.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\scss\_variables.scss">
+      <PackagePath>www\lib\ionic\scss\_variables.scss</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\ionic\version.json">
+      <PackagePath>www\lib\ionic\version.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\www\lib\jQuery\jquery-2.1.4.min.map">
+      <PackagePath>www\lib\jQuery\jquery-2.1.4.min.map</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\config.xml">
+      <PackagePath>config.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="M:\Projects\cordova-plugin-blaud-sharepoint\platforms\windows\build\windows\Debug\AnyCPU\ReverseMap\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
