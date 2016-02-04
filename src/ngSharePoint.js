@@ -1,31 +1,27 @@
-(function () {
+﻿(function () {
   'use strict';
 
         angular.module('ngSharePoint', ['ngResource'])
 
         .factory('SharePoint', ['ngSecurity', 'ngSite', 'ngWeb', function (ngSecurity, ngSite, ngWeb) {
 
+            var CurrentWeb = null;
+            var CurrentList = null;
+            var CurrentItem = null;
+
             var ngSharePoint = {
                 Security: ngSecurity,
                 Site: ngSite,
-                Web: ngWeb//,
-                /*
-              Configure : function(username, password, endpoint) {
-                //ngSecurity.SetConfiguration(null,null,username, password, endpoint);
-              }
-              *//*,
-              OpenWeb : function(value) {
-                return angular.isDefined(value) ? (ngWeb(value)) : ngWeb();
-              },
-                Web : function(value){
-                return angular.isDefined(value) ? (ngWeb.Open(value)) : ngWeb;
-                }
-                */
+                Web: ngWeb,
+                CurrentWeb: CurrentWeb,
+                CurrentList : CurrentList,
+                CurrentItem : CurrentItem
             };
 
             return ngSharePoint;
 
         }])
+        /*
         .factory('SharePointInterceptor', ['$q', function ($q) {
             return {
                 response: function (response) {
@@ -41,11 +37,11 @@
                 }
             };
         }])
-
+        */
         .config(['$httpProvider', function ($httpProvider) {
-            $httpProvider.defaults.useXDomain = true;
-            delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            $httpProvider.interceptors.push('SharePointInterceptor');
+            //$httpProvider.defaults.useXDomain = true;
+            //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            //$httpProvider.interceptors.push('SharePointInterceptor');
         }]);
 })();
 /*

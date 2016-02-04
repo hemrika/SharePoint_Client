@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
 
   var SharePoint = angular.module('ngSharePoint');
@@ -66,7 +66,6 @@
                     }
                 },
                 deferred: {
-                    
                     method: 'GET',
                     params: {   EndPoint: '', List: '', Deferred: ''},
                     headers: {
@@ -85,75 +84,87 @@
             }
         );
 
-        var ngList = function (value) {
+        var CurrentList = null;
 
-            this.prototype.AllowContentTypes = function (value) {
+        var ngList = function (value, web) {
+
+            this.Item = ngItem;
+
+            var deferred = $q.defer();
+
+            if( angular.isDefined(web)) { SharePoint.CurrentWeb = web; };
+
+            this.AllowContentTypes = function (value) {
                 return angular.isDefined(value) ? (_ngList.AllowContentTypes = value) : _ngList.AllowContentTypes;
             };
-            this.prototype.BaseTemplate = function (value) {
+            this.BaseTemplate = function (value) {
                 return angular.isDefined(value) ? (_ngList.BaseTemplate = value) : _ngList.BaseTemplate;
             };
-            this.prototype.BaseType = function (value) {
+            this.BaseType = function (value) {
                 return angular.isDefined(value) ? (_ngList.BaseType = value) : _ngList.BaseType;
             };
-            this.prototype.Created = function (value) {
+            this.Created = function (value) {
                 return angular.isDefined(value) ? (_ngList.Created = value) : _ngList.Created;
             };
-            this.prototype.Description = function (value) {
+            this.Description = function (value) {
                 return angular.isDefined(value) ? (_ngList.Description = value) : _ngList.Description;
             };
-            this.prototype.EnableAttachments = function (value) {
+            this.EnableAttachments = function (value) {
                 return angular.isDefined(value) ? (_ngList.EnableAttachments = value) : _ngList.EnableAttachments;
             };
-            this.prototype.EnableFolderCreation = function (value) {
+            this.EnableFolderCreation = function (value) {
                 return angular.isDefined(value) ? (_ngList.EnableFolderCreation = value) : _ngList.EnableFolderCreation;
             };
-            this.prototype.Id = function (value) {
+            this.Id = function (value) {
                 return angular.isDefined(value) ? (_ngList.Id = value) : _ngList.Id;
             };
-            this.prototype.ImageUrl = function (value) {
+            this.ImageUrl = function (value) {
                 return angular.isDefined(value) ? (_ngList.ImageUrl = value) : _ngList.ImageUrl;
             };
-            this.prototype.ItemCount = function (value) {
+            this.ItemCount = function (value) {
                 return angular.isDefined(value) ? (_ngList.ItemCount = value) : _ngList.ItemCount;
             };
-            this.prototype.Title = function (value) {
+            this.Title = function (value) {
                 return angular.isDefined(value) ? (_ngList.Title = value) : _ngList.Title;
             };
-            this.prototype.DefaultView = function(){
+            this.DefaultView = function(){
                 return  _ngList.DefaultView.__deferred.uri.valueOf();
             };
-            this.prototype.Fields = function(){
+            this.Fields = function(){
                 return  _ngList.Fields.__deferred.uri.valueOf();
             };
-            this.prototype.Forms = function(){
+            this.Forms = function(){
                 return  _ngList.Forms.__deferred.uri.valueOf();
             };
-            this.prototype.Items = function(){
+            this.Items = function(){
               return  _ngList.Items.__deferred.uri.valueOf();
             };
-            this.prototype.ParentWeb = function(){
-                return  _ngList.ParentWeb.__deferred.uri.valueOf();
+            this.ParentWeb = function(value){
+                return angular.isDefined(value) ? (_ngList.ParentWeb = value) : _ngList.ParentWeb;
+                //_ngList.ParentWeb = value;
+                //return  _ngList.ParentWeb.__deferred.uri.valueOf();
             };
-            this.prototype.RootFolder = function(){
+            this.RootFolder = function(){
                 return  _ngList.RootFolder.__deferred.uri.valueOf();
             };
-            this.prototype.Views = function(){
+            this.Views = function(){
                 API.deferred();
                 return  _ngList.Views.__deferred.uri.valueOf();
             };
-         };
 
-        //ngList.prototype = Object.create(ngList);
-        
-        //var OpenList = function(value){
-        //    //return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
-        //    var list = API.deferred({EndPoint: '', List: '', Item: '', Deferred: ''});
-        //    //var item = API.defered( ).then(function(result){ return result;});
-        //    return list;
-        //};
-        
-        //ngList.prototype.constructor = OpenList;
+            var url = SharePoint.CurrentWeb.Url();
+            ngSecurity.GetSecurityInformation().then(function () {
+                API.get({ EndPoint: url, List : "guid'"+value+"'" }).$promise.then(
+                    function (data) {
+                        _ngList = data.d;
+                    });
+            });
+
+            SharePoint.CurrentList = this;
+            deferred.resolve(this);
+            return deferred.promise;
+        };
+
 
         return ngList;
   }]);
