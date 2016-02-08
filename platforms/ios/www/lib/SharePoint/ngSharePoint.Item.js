@@ -57,7 +57,7 @@
             "GUID": ""
         };
 
-        var API = $resource("https://:EndPoint/_api/Web/Lists(:List)/Items(:Item)/:Deferred",
+        var API = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items(:Item)/:Deferred",
             {},//{ EndPoint: '', List: '', Item: '', Deferred: ''},
             {
                 get: {
@@ -79,68 +79,73 @@
             }
             );
 
-        var ngItem = function (value) {
+        var ngItem = function (Id) {
 
-            this.prototype.FileSystemObjectType = function (value) {
+            var deferred = $q.defer();
+
+            this.FileSystemObjectType = function (value) {
                 return angular.isDefined(value) ? (_ngItem.FileSystemObjectType = value) : _ngItem.FileSystemObjectType;
             };
-            this.prototype.Id = function (value) {
+            this.Id = function (value) {
                 return angular.isDefined(value) ? (_ngItem.Id = value) : _ngItem.Id;
             };
-            this.prototype.ContentTypeId = function (value) {
+            this.ContentTypeId = function (value) {
                 return angular.isDefined(value) ? (_ngItem.ContentTypeId = value) : _ngItem.ContentTypeId;
             };
-            this.prototype.Title = function (value) {
+            this.Title = function (value) {
                 return angular.isDefined(value) ? (_ngItem.Title = value) : _ngItem.Title;
             };
-            this.prototype.Modified = function (value) {
+            this.Modified = function (value) {
                 return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
             };
-            this.prototype.Created = function (value) {
+            this.Created = function (value) {
                 return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
             };
-            this.prototype.Attachments = function() {
+            this.Attachments = function() {
                 return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
             };
-            this.prototype.GUID = function() {
+            this.GUID = function() {
                 return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
             };
-            this.prototype.AttachmentFiles = function() {
+            this.AttachmentFiles = function() {
                 return  _ngList.AttachmentFiles.__deferred.uri.valueOf();
             };
-            this.prototype.ContentType = function() {
+            this.ContentType = function() {
                 return  _ngList.ContentType.__deferred.uri.valueOf();
             };
-            this.prototype.FieldValuesAsHtml = function() {
+            this.FieldValuesAsHtml = function() {
                 return  _ngList.FieldValuesAsHtml.__deferred.uri.valueOf();
             };
-            this.prototype.FieldValuesAsText = function() {
+            this.FieldValuesAsText = function() {
                 return  _ngList.FieldValuesAsText.__deferred.uri.valueOf();
             };
-            this.prototype.FieldValuesForEdit = function() {
+            this.FieldValuesForEdit = function() {
                 return  _ngList.FieldValuesForEdit.__deferred.uri.valueOf();
             };
-            this.prototype.File = function() {
+            this.File = function() {
                 return  _ngList.File.__deferred.uri.valueOf();
             };
-            this.prototype.Folder = function() {
+            this.Folder = function() {
                 return  _ngList.Folder.__deferred.uri.valueOf();
             };
-            this.prototype.ParentList = function() {
+            this.ParentList = function() {
                 return  _ngList.ParentList.__deferred.uri.valueOf();
             };
-         };
 
-        //ngItem.prototype = Object.create(ngItem);
-        
-        //var OpenItem = function(value){
-        //    //return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
-        //    var item = API.deferred({EndPoint: '', List: '', Item: '', Deferred: ''});
-        //    //var item = API.defered( ).then(function(result){ return result;});
-        //    return item;
-        //};
-        
-        //ngItem.prototype.constructor = OpenItem
+            var self = this;
+
+            if(ngSecurity.CurrentUser !== null) {
+                API.get({ EndPoint: ngSecurity.Endpoint, List : ngSecurity.CurrentList.Id, Item : Id }).$promise.then(
+                    function (data) {
+                        _ngItem = data;
+                        ngSecurity.CurrentItem = _ngItem;
+                        self.Properties = _ngItem;
+                        deferred.resolve(self);
+                    });
+            }
+
+            return deferred.promise;
+         };
 
         return ngItem;
   }]);

@@ -66,13 +66,12 @@
                     }
                 },
                 deferred: {
-                    
                     method: 'GET',
                     params: {   EndPoint: '', List: '', Deferred: ''},
                     headers: {
                         'accept': 'application/json;odata=verbose',
                         'content-type': 'application/json;odata=verbose'
-                    }                    
+                    }
                 },
                 save: {
                     method: 'POST',
@@ -85,81 +84,101 @@
             }
         );
 
-        var ngList = function (value) {
+        var ngList = function (GUID) {
 
-            Item: ngItem;
+            var deferred = $q.defer();
 
-            angular.isDefined(value) ? (CurrentList = value) : CurrentList = SharePoint.CurrentList;
-
-            this.prototype.AllowContentTypes = function (value) {
+            var AllowContentTypes = function (value) {
                 return angular.isDefined(value) ? (_ngList.AllowContentTypes = value) : _ngList.AllowContentTypes;
             };
-            this.prototype.BaseTemplate = function (value) {
+            var BaseTemplate = function (value) {
                 return angular.isDefined(value) ? (_ngList.BaseTemplate = value) : _ngList.BaseTemplate;
             };
-            this.prototype.BaseType = function (value) {
+            var BaseType = function (value) {
                 return angular.isDefined(value) ? (_ngList.BaseType = value) : _ngList.BaseType;
             };
-            this.prototype.Created = function (value) {
+            var Created = function (value) {
                 return angular.isDefined(value) ? (_ngList.Created = value) : _ngList.Created;
             };
-            this.prototype.Description = function (value) {
+            var Description = function (value) {
                 return angular.isDefined(value) ? (_ngList.Description = value) : _ngList.Description;
             };
-            this.prototype.EnableAttachments = function (value) {
+            var EnableAttachments = function (value) {
                 return angular.isDefined(value) ? (_ngList.EnableAttachments = value) : _ngList.EnableAttachments;
             };
-            this.prototype.EnableFolderCreation = function (value) {
+            var EnableFolderCreation = function (value) {
                 return angular.isDefined(value) ? (_ngList.EnableFolderCreation = value) : _ngList.EnableFolderCreation;
             };
-            this.prototype.Id = function (value) {
+            var Id = function (value) {
                 return angular.isDefined(value) ? (_ngList.Id = value) : _ngList.Id;
             };
-            this.prototype.ImageUrl = function (value) {
+            var ImageUrl = function (value) {
                 return angular.isDefined(value) ? (_ngList.ImageUrl = value) : _ngList.ImageUrl;
             };
-            this.prototype.ItemCount = function (value) {
+            var ItemCount = function (value) {
                 return angular.isDefined(value) ? (_ngList.ItemCount = value) : _ngList.ItemCount;
             };
-            this.prototype.Title = function (value) {
+            var Title = function (value) {
                 return angular.isDefined(value) ? (_ngList.Title = value) : _ngList.Title;
             };
-            this.prototype.DefaultView = function(){
+            var DefaultView = function(){
                 return  _ngList.DefaultView.__deferred.uri.valueOf();
             };
-            this.prototype.Fields = function(){
+            var Fields = function(){
                 return  _ngList.Fields.__deferred.uri.valueOf();
             };
-            this.prototype.Forms = function(){
+            var Forms = function(){
                 return  _ngList.Forms.__deferred.uri.valueOf();
             };
-            this.prototype.Items = function(){
-              return  _ngList.Items.__deferred.uri.valueOf();
+            this.Items = function(value){
+
+                if (angular.isDefined(value)) {
+                    return new ngItem(value);
+                }
+                else {
+
+                    var deferred = $q.defer();
+
+                    var Operator = _ngList.Items.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        API.deferred({EndPoint: ngSecurity.Endpoint, List: _ngList.Id, Deferred: Operator}).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                }
             };
-            this.prototype.ParentWeb = function(){
-                return  _ngList.ParentWeb.__deferred.uri.valueOf();
+            var ParentWeb = function(value){
+                return angular.isDefined(value) ? (_ngList.ParentWeb = value) : _ngList.ParentWeb;
+                //_ngList.ParentWeb = value;
+                //return  _ngList.ParentWeb.__deferred.uri.valueOf();
             };
-            this.prototype.RootFolder = function(){
+            var RootFolder = function(){
                 return  _ngList.RootFolder.__deferred.uri.valueOf();
             };
-            this.prototype.Views = function(){
-                API.deferred();
+            var Views = function(){
                 return  _ngList.Views.__deferred.uri.valueOf();
             };
 
-            var url = SharePoint.CurrentWeb.Url;
-            ngSecurity.GetSecurityInformation().then(function () {
-                API.get({ EndPoint: SharePoint.CurrentWeb.Url, List : "guid'"+value+"'" }).$promise.then(
+            var self = this;
+
+            if(ngSecurity.CurrentUser !== null) {
+                API.get({ EndPoint: ngSecurity.Endpoint, List : GUID }).$promise.then(
                     function (data) {
-                        _ngWeb = data.d;
+                        _ngList = data;
+                        ngSecurity.CurrentList = _ngList;
+                        self.Properties = _ngList;
+                        deferred.resolve(self);
+                    });
+            }
 
-                    })
-            });
-
-            deferred.resolve(this);
             return deferred.promise;
-            SharePoint.CurrentWeb = this;
-            return this;
         };
 
 

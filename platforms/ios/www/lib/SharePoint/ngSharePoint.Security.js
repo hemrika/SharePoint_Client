@@ -17,71 +17,95 @@
 
   SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', function ($timeout, $http, $resource, $q) {
 
-      var Username = null;
-      var Password = null;
-      var Endpoint = null;
-      var SignInUrl = null;
-      var contextinfoUrl = null;
 
-      var _contextinfo = {
-          "FormDigestTimeoutSeconds": "",
-          "FormDigestValue": null,
-          "LibraryVersion": "",
-          "SiteFullUrl": "",
-          "SupportedSchemaVersions": "",
-          "WebFullUrl": ""
-      };
+    var Username = null;
+    var Password = null;
+    var Endpoint = null;
+    var SignInUrl = null;
+    var ContextInfoUrl = null;
+    var CurrentUserUrl = null;
 
-      var Configure = function(username, password, endpoint) {
+    var _ContextInfo = {
+      "FormDigestTimeoutSeconds": "",
+      "FormDigestValue": null,
+      "LibraryVersion": "",
+      "SiteFullUrl": "",
+      "SupportedSchemaVersions": "",
+      "WebFullUrl": ""
+    };
 
-          var deferred = $q.defer();
+    var _CurrentUser = null;
+    var _CurrentWeb = null;
+    var _CurrentList = null;
+    var _CurrentItem = null;
 
-          Username = username;
-          Password = password;
-          Endpoint = endpoint;
-          SignInUrl = 'https://' + Endpoint + '/_forms/default.aspx?wa=wsignin1.0';
-          contextinfoUrl = 'https://' + Endpoint + '/_api/contextinfo';
+    var Configure = function(username, password, endpoint) {
 
-          deferred.resolve();
+      var deferred = $q.defer();
 
-          return deferred.promise;
-      }
+      Username = username;
+      Password = password;
+      Endpoint = endpoint;
+      SignInUrl = 'https://' + Endpoint + '/_forms/default.aspx?wa=wsignin1.0';
+      ContextInfoUrl = 'https://' + Endpoint + '/_api/contextinfo';
+      CurrentUserUrl = 'https://' + Endpoint + '/_api/web/CurrentUser';
 
-      var Authenticate = function () {
+      deferred.resolve();
 
-          var deferred = $q.defer();
-          var message = SecurityInformationToken();
+      return deferred.promise;
+    }
 
-          $http({
-              method: 'POST',
-              url: 'https://login.microsoftonline.com/extSTS.srf',
-              data: message,
-              headers: {
-                  'content-type': 'application/soap+xml; charset=utf-8'
-                  //'Content-Type': "text/xml; charset=\"utf-8\""
-              }
-          }).success(function (data) {
-              getBearerToken(data, SignInUrl).then(function (data) {
-                  deferred.resolve(data);
-              }, function (data) {
-                  deferred.reject(data)
-              })
+    var Authenticate = function () {
+
+      var deferred = $q.defer();
+      var message = SecurityInformationToken();
+
+      $http({
+          method: 'POST',
+          url: 'https://login.microsoftonline.com/extSTS.srf',
+          data: message,
+          headers: {
+              'content-type': 'application/soap+xml; charset=utf-8'
+              //'Content-Type': "text/xml; charset=\"utf-8\""
+          }
+      }).success(function (data) {
+
+          Signin(data, SignInUrl).then(function (data) {
+              GetCurrentUser(CurrentUserUrl).then( function (currentuser){
+                  Security.Endpoint = Endpoint;
+                  Security.CurrentUser = currentuser;
+                  //_CurrentUser = currentuser;
+                  //GetContextInfo(ContextInfoUrl).then( function (contextinfo){
+                  //    _ContextInfo = contextinfo;
+                  //    deferred.resolve();
+                  //});
+                  deferred.resolve();
+              });
+          }, function (data) {
+              deferred.reject(data);
           });
+      });
 
-          return deferred.promise;
-      };
+      return deferred.promise;
+    };
 
-      var Digest = function () {
+    var Digest = function () {
 
-      }
+    };
 
-        var Security = {};
+    var Security = {};
+
         Security.SetConfiguration = Configure; //function (onSucces, onError, username, password, endpoint) { $q.all([Configure(username, password, endpoint)]).then(onSucces, onError); };
         Security.GetContextWebInformation =  Digest;//function (onSucces, onError) { $q.all([Digest()]).then(onSucces, onError); };
         Security.GetSecurityInformation = Authenticate; //function (onSucces, onError) { $q.all([Authenticate()]).then(onSucces, onError); };
         Security.Endpoint = Endpoint;
+        Security.ContextInfo = _ContextInfo;
+        Security.CurrentUser = _CurrentUser;
+        Security.CurrentWeb = _CurrentWeb;
+        Security.CurrentList = _CurrentList;
+        Security.CurrentItem = _CurrentItem;
 
-        return Security;
+    return Security;
 
         function SecurityInformationToken() {
 
@@ -120,8 +144,7 @@
             //};
         }
 
-        function getBearerToken(result, url) {
-
+        function Signin(result, url) {
             var deferred = $q.defer();
 
             var securityToken = angular.element(angular.element.parseXML(result)).find("BinarySecurityToken").text();
@@ -146,18 +169,42 @@
 
             return deferred.promise;
         }
-        //function Configuration(username, password, endpoint) {
 
-        //    var deferred = $q.defer();
+        function GetCurrentUser(url) {
+            var deferred = $q.defer();
 
-        //    //angular.element.support.cors = true;
-        //    Username = username;
-        //    Password = password;
-        //    Endpoint = endpoint;
-        //    //RequestSecurityToken(Username, Password, Endpoint);
+            $http({
+                method: 'GET',
+                url: url,
+                headers: {
+                    Accept: "application/json;odata=verbose"
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
 
-        //    return deferred.promise;
-        //}
+            return deferred.promise;
+        }
+
+        function GetContextInfo(url) {
+          var deferred = $q.defer();
+
+          $http({
+              method: 'POST',
+              url: url,
+              headers: {
+                  Accept: "application/json;odata=verbose"
+              }
+          }).success(function (data) {
+              deferred.resolve(data);
+          }).error(function () {
+              deferred.reject();
+          });
+
+          return deferred.promise;
+        }
 
         //function ContextWebInformation() {
 

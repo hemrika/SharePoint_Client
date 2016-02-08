@@ -5,30 +5,46 @@
 
         .factory('SharePoint', ['ngSecurity', 'ngSite', 'ngWeb', function (ngSecurity, ngSite, ngWeb) {
 
-            var CurrentWeb = null;
-            var CurrentList = null;
-            var CurrentItem = null;
-
-            var ngSharePoint = {
-                Security: ngSecurity,
-                Site: ngSite,
-                Web: ngWeb,
-                CurrentWeb: CurrentWeb,
-                CurrentList : CurrentList,
-                CurrentItem : CurrentItem
+            var EndPoint = function () {
+                return ngSecurity.EndPoint;
             };
 
-            return ngSharePoint;
+            var CurrentUser = function () {
+                return ngSecurity.CurrentUser;
+            };
+
+            var CurrentWeb = function () {
+                return ngSecurity.CurrentWeb;
+            };
+
+            var CurrentList = function () {
+                return ngSecurity.CurrentList;
+            };
+
+            var CurrentItem = function () {
+                return ngSecurity.CurrentItem;
+            };
+
+            var SharePoint = {};
+
+            //var ngSharePoint = {
+            SharePoint.Security = ngSecurity;
+            SharePoint.Site = ngSite;
+            SharePoint.Web = ngWeb;
+            SharePoint.EndPoint = EndPoint;
+            SharePoint.CurrentUser = CurrentUser;
+            SharePoint.CurrentWeb = CurrentWeb;
+            SharePoint.CurrentList = CurrentList;
+            SharePoint.CurrentItem = CurrentItem;
+
+            return SharePoint;
 
         }])
-        /*
+
         .factory('SharePointInterceptor', ['$q', function ($q) {
             return {
                 response: function (response) {
                     var deferred = $q.defer();
-                    //response.headers["Access-Control-Allow-Origin"] = "*";
-                    //response.headers["Access-Control-Allow-Headers"] = "X-Requested-With";
-                    //response.headers["Access-Control-Allow-Methods"] = '"GET, POST", "PUT", "DELETE"';
                     if (response.headers()['content-type'] === "application/json;odata=verbose;charset=utf-8" && response.data) {
                       response.data = response.data.d ? response.data.d : response.data;
                     }
@@ -37,11 +53,11 @@
                 }
             };
         }])
-        */
+
         .config(['$httpProvider', function ($httpProvider) {
             //$httpProvider.defaults.useXDomain = true;
             //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            //$httpProvider.interceptors.push('SharePointInterceptor');
+            $httpProvider.interceptors.push('SharePointInterceptor');
         }]);
 })();
 /*

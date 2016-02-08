@@ -1,8 +1,8 @@
-﻿<ion-view view-title="{{ web.Title()}}">
+﻿<ion-view view-title="{{ Web.List.Title}}">
     <ion-content>
         <ion-list>
-            <ion-item ng-repeat="list in web.Lists" href="#/app/playlists/{{list.Id}}">
-                {{list.Title}}
+            <ion-item ng-repeat="Item in Web.List.Items" href="#/app/lists/{{Web.List.Id}}/items/{{Item.Id}}">
+                {{Item.Title}}
             </ion-item>
         </ion-list>
     </ion-content>
