@@ -116,9 +116,14 @@
         if (SharePoint.CurrentWeb() !== null) {
             SharePoint.Web().then(function (web) {
                 web.Lists('Cordova').then(function (List) {
-                    List.Items.Add(1).then(function (Item) {
-                        console.log(Item.Id());
-                    });
+                    //var new_item = List.NewItem();
+                    //new_item.Title = "Newly created REST Item";
+                    var new_item = { '__metadata': { 'type': 'SP.Data.CordovaListItem' }, 'Title': 'Newly created REST Item'};
+                    List.AddItem(new_item);
+
+                    //List.Items.Add(1).then(function (Item) {
+                        //console.log(Item.Id());
+                    //});
                     /*
                     List.Items().then(function (Items) {
                         console.log(Items.length);
