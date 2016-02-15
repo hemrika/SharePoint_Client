@@ -79,11 +79,11 @@
                     method: 'POST',
                     params: {EndPoint: '', List: '', Deferred: ''},
                     headers: {
-                        "X-RequestDigest": FormDigestValue,
-                        "If-Match": "*",
-                        "X-HTTP-Method": "PUT",
-                        "Content-Type": "application/json;odata=verbose",
-                        "Accept": "application/json;odata=verbose"
+                        'Authorization' : 'BPOSIDCRL '+ ngSecurity.SecurityToken,
+                        'X-RequestDigest': ngSecurity.ContextInfo.FormDigestValue,
+                        'Content-Type': 'application/json;odata=verbose',
+                        'Accept': 'application/json;odata=verbose',
+                        'X-FORMS_BASED_AUTH_ACCEPTED': 'f'
 
                     }
                 }
@@ -207,26 +207,26 @@
                 //});
 
                 //var digest = ngSecurity.ContextInfo.FormDigestValue;
-                ngSecurity.GetContextWebInformation(function (digestValue) {
-                    FormDigestValue = digestValue;
+                //ngSecurity.GetContextWebInformation().then(function (digestValue) {
+                //    FormDigestValue = digestValue;
 
                     var item = angular.extend({
                         "__metadata": {
-                            "type": this.getListItemType(listname)
-                        }
-                    }, value);
+                            "type": "SP.CordovaListItem"
+                        }, "Title" : "IDentity Client Runtime Library service" });
+                    //}, value);
 
                     _list.save({
                         EndPoint: ngSecurity.Endpoint,
                         List: _ngList.Id, Deferred: 'Items'
-                    }, JSON.stringify(item)).$promise.
+                    }, item).$promise.
                     then(function(result){
                         //deferred.resolve();
                         return result;
                         console.log(result);
                     });
 
-                });
+                //});
 
                 /*
                  {

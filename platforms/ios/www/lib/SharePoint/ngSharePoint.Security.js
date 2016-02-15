@@ -5,17 +5,71 @@
 
     SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', function ($timeout, $http, $resource, $q) {
 
+        //region Properties
 
-        var Username = null;
-        var Password = null;
-        var Endpoint = null;
-        var Hostname = null;
-        var SignInUrl = null;
-        var ContextInfoUrl = null;
-        var CurrentUserUrl = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _Username = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _Password = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _Endpoint = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _Hostname = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _SignInUrl = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _ContextInfoUrl = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _CurrentUserUrl = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _IdCrlUrl = null;
+        //var realm = 'fbb85d4b-b9cc-445f-8b90-a2ea555b2841';
+        //var SharePointPrincipal = '00000003-0000-0ff1-ce00-000000000000';
 
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _SecurityToken = null;
 
+        /**
+         *
+         * @type {{FormDigestTimeoutSeconds: string, FormDigestValue: null, LibraryVersion: string, SiteFullUrl: string, SupportedSchemaVersions: string, WebFullUrl: string}}
+         * @private
+         */
         var _ContextInfo = {
             "FormDigestTimeoutSeconds": "",
             "FormDigestValue": null,
@@ -24,55 +78,139 @@
             "SupportedSchemaVersions": "",
             "WebFullUrl": ""
         };
-
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _CurrentUser = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _CurrentWeb = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _CurrentList = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _CurrentItem = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _CurrentFile = null;
 
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _PostQueryUrl = null;
+
+        //endregion
+
+        /**
+         *
+         * @param username
+         * @param password
+         * @param endpoint
+         * @returns {*}
+         * @constructor
+         */
         var Configure = function (username, password, endpoint) {
 
             var deferred = $q.defer();
 
-            Username = username;
-            Password = password;
-            Endpoint = endpoint;
+            _Username = username;
+            _Password = password;
+            _Endpoint = endpoint;
+
+            Security.Endpoint = endpoint;
+
             var location = document.createElement("a");
             location.href = "https://" + endpoint;
-            Hostname = location.hostname;
+            _Hostname = location.hostname;
 
-            SignInUrl = 'https://' + Hostname + '/_forms/default.aspx?wa=wsignin1.0';
-            ContextInfoUrl = 'https://' + Hostname + '/_api/contextinfo';
-            CurrentUserUrl = 'https://' + endpoint + '/_api/web/CurrentUser';
+            _SignInUrl = 'https://' + _Hostname + '/_forms/default.aspx?wa=wsignin1.0';
+            _ContextInfoUrl = 'https://' + _Hostname + '/_api/contextinfo';
+            _CurrentUserUrl = 'https://' + _Hostname + '/_api/web/CurrentUser';
+            _IdCrlUrl = 'https://' + _Hostname + '/_vti_bin/idcrl.svc/';
+            _PostQueryUrl = 'https://' + _Hostname + '/_api/search/postquery';
 
             deferred.resolve();
 
             return deferred.promise;
         }
 
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
         var Authenticate = function () {
 
             var deferred = $q.defer();
-            var message = SecurityInformationToken();
 
-            GetBearerRealm().then(function (data) {
-               var d = data;
-
-            GetUserRealm().then(function (data) {
-                var d  = data;
+            GetUserRealm().then(function (realm) {
+                console.log(realm);
+                GetSecurityTokenService().then(function (token) {
+                    //GetRemoteSecurityToken().then(function (token) {
+                    //console.log(token);
+                    _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
+                    Security.SecurityToken = _SecurityToken;
+                    console.log(_SecurityToken);
+                    GetSecurityCookie().then(function (cookie) {
+                        console.log(cookie);
+                        //GetHttpCookies().then(function (page) {
+                            //console.log(page);
+                            //GetContextInfo().then(function (page) {
+                            //    var doc = document.implementation.createHTMLDocument("homepage");
+                            //    doc.documentElement.innerHTML = page;
+                            //Security.ContextInfo.FormDigestValue = doc.getElementById("__REQUESTDIGEST").value;
+                            //GetPostQuery().then(function () {
+                            GetCurrentUser().then(function (user) {
+                                console.log(user);
+                                _CurrentUser = user;
+                                Security.CurrentUser = _CurrentUser;
+                                GetContextInfo().then(function(data){
+                                    console.log(data);
+                                    deferred.resolve(user);
+                                });
+                            });
+                            //});
+                        //});
+                    });
+                });
+            });
+            /*
+                var d  = realm;
                 $http({
                     method: 'POST',
-                    url: 'https://login.microsoftonline.com/extSTS.srf',
+                    //url: 'https://login.microsoftonline.com/extSTS.srf',
+                    url: 'https://login.microsoftonline.com/rst2.srf',
                     data: message,
                     headers: {
                         'content-type': 'application/soap+xml; charset=utf-8'
                         //'Content-Type': "text/xml; charset=\"utf-8\""
                     }
-                }).success(function (data) {
+                }).success(function (rst) {
 
+                    _SecurityToken = angular.element(angular.element.parseXML(rst)).find("BinarySecurityToken").text();
+                    console.log(_SecurityToken);
+
+                    //$http.defaults.headers.common['Authorization'] = "BPOSIDCRL" + _SecurityToken;
                     Signin(data, SignInUrl).then(function (data) {
                         Security.Endpoint = Endpoint;
+
                         var doc = document.implementation.createHTMLDocument("homepage");
                         doc.documentElement.innerHTML = data;
                         Security.ContextInfo.FormDigestValue = doc.getElementById("__REQUESTDIGEST").value;
@@ -89,14 +227,16 @@
                         deferred.reject(data);
                     });
                 });
+            //});
             });
-            });
+            */
             return deferred.promise;
         };
 
         var Validate = function () {
 
             var deferred = $q.defer();
+
 
             GetContextInfo(ContextInfoUrl).then( function(contextinfo){
                 Security.ContextInfo = contextinfo;
@@ -131,23 +271,33 @@
               return deferred.promise;
         };
 
+        /**
+         *
+         * @type {{}}
+         */
         var Security = {};
 
         Security.SetConfiguration = Configure; //function (onSucces, onError, username, password, endpoint) { $q.all([Configure(username, password, endpoint)]).then(onSucces, onError); };
-        Security.GetContextWebInformation = Validate;//function (onSucces, onError) { $q.all([Digest()]).then(onSucces, onError); };
+        Security.GetContextWebInformation = GetContextInfo;//function (onSucces, onError) { $q.all([Digest()]).then(onSucces, onError); };
         Security.GetSecurityInformation = Authenticate; //function (onSucces, onError) { $q.all([Authenticate()]).then(onSucces, onError); };
         Security.SetRealm = GetBearerRealm;
-        Security.Endpoint = Endpoint;
+        Security.Endpoint = _Endpoint;
         Security.ContextInfo = _ContextInfo;
         Security.CurrentUser = _CurrentUser;
         Security.CurrentWeb = _CurrentWeb;
         Security.CurrentList = _CurrentList;
         Security.CurrentItem = _CurrentItem;
         Security.CurrentFile = _CurrentFile;
+        Security.SecurityToken = _SecurityToken;
 
         return Security;
 
-        function SecurityInformationToken() {
+        //region SOAP Tokens
+
+        /**
+         * @return {string}
+         */
+        function SecurityTokenService() {
 
             var rst = new Array("");
             rst.push('<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">');
@@ -160,8 +310,8 @@
             rst.push('<a:To s:mustUnderstand="1">https://login.microsoftonline.com/extSTS.srf</a:To>');
             rst.push('<o:Security s:mustUnderstand="1" xmlns:o="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">');
             rst.push('<o:UsernameToken>');
-            rst.push('<o:Username>' + Username + '</o:Username>');
-            rst.push('<o:Password>' + Password + '</o:Password>');
+            rst.push('<o:Username>' + _Username + '</o:Username>');
+            rst.push('<o:Password>' + _Password + '</o:Password>');
             rst.push('</o:UsernameToken>');
             rst.push('</o:Security>');
             rst.push('</s:Header>');
@@ -170,8 +320,8 @@
             rst.push('<t:RequestSecurityToken xmlns:t="http://schemas.xmlsoap.org/ws/2005/02/trust">');
             rst.push('<wsp:AppliesTo xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">');
             rst.push('<a:EndpointReference>');
-            //rst.push('<a:Address>' + Hostname + '</a:Address>');
-            rst.push('<a:Address>urn:federation:MicrosoftOnline</a:Address>');
+            rst.push('<a:Address>' + _Hostname + '</a:Address>');
+            //rst.push('<a:Address>urn:federation:MicrosoftOnline</a:Address>');
             rst.push('</a:EndpointReference>');
             rst.push('</wsp:AppliesTo>');
             rst.push('<t:KeyType>http://schemas.xmlsoap.org/ws/2005/05/identity/NoProofKey</t:KeyType>');
@@ -181,10 +331,57 @@
             rst.push('</t:RequestSecurityToken>');
             rst.push('</s:Body>');
             rst.push('</s:Envelope>');
-            return rst.join("");
+            return rst.join("").toString();
             //};
         }
 
+        /**
+         * @return {string}
+         */
+        function RemoteSecurityToken () {
+            var rst = new Array("");
+            rst.push('<?xml version="1.0" encoding="UTF-8"?>');
+            rst.push('<S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://schemas.xmlsoap.org/ws/2005/02/trust">');
+            //Header
+            rst.push('<S:Header>');
+            rst.push('<wsa:Action S:mustUnderstand="1">http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue</wsa:Action>');
+            rst.push('<wsa:To S:mustUnderstand="1">https://login.microsoftonline.com/rst2.srf</wsa:To>');
+            rst.push('<ps:AuthInfo xmlns:ps="http://schemas.microsoft.com/LiveID/SoapServices/v1" Id="PPAuthInfo">');
+            rst.push('<ps:BinaryVersion>5</ps:BinaryVersion>');
+            rst.push('<ps:HostingApp>Managed IDCRL</ps:HostingApp>');
+            rst.push('</ps:AuthInfo>');
+            rst.push('<wsse:Security>');
+            rst.push('<wsse:UsernameToken wsu:Id="user">');
+            rst.push('<wsse:Username>' + _Username + '</wsse:Username>');
+            rst.push('<wsse:Password>' + _Password + '</wsse:Password>');
+            rst.push('</wsse:UsernameToken>');
+            /*
+             rst.push('<wsu:Timestamp Id="Timestamp">');
+             rst.push('<wsu:Created>$(([DateTime]::UtcNow.ToString("o")))</wsu:Created>');
+             rst.push('<wsu:Expires>$(([DateTime]::UtcNow.AddDays(1).ToString("o")))</wsu:Expires>');
+             rst.push('</wsu:Timestamp>');
+             */
+            rst.push('</wsse:Security>');
+            rst.push('</S:Header>');
+            //Body
+            rst.push('<S:Body>');
+            rst.push('<wst:RequestSecurityToken xmlns:wst="http://schemas.xmlsoap.org/ws/2005/02/trust" Id="RST0">');
+            rst.push('<wst:RequestType>http://schemas.xmlsoap.org/ws/2005/02/trust/Issue</wst:RequestType>');
+            rst.push('<wsp:AppliesTo>');
+            rst.push('<wsa:EndpointReference>');
+            rst.push('<wsa:Address>sharepoint.com</wsa:Address>');
+            rst.push('</wsa:EndpointReference>');
+            rst.push('</wsp:AppliesTo>');
+            rst.push('<wsp:PolicyReference URI="MBI"></wsp:PolicyReference>');
+            rst.push('</wst:RequestSecurityToken>');
+            rst.push('</S:Body>');
+            rst.push('</S:Envelope>');
+            return rst.join("").toString();
+        }
+
+        /**
+         * @return {string}
+         */
         function FormDigestInformationToken() {
             var fdit = new Array("");
             fdit.push('<?xml version="1.0" encoding="utf-8"?>');
@@ -193,18 +390,25 @@
             fdit.push('<GetUpdatedFormDigestInformation xmlns="http://schemas.microsoft.com/sharepoint/soap/&quot; />');
             fdit.push('</soap:Body>');
             fdit.push('</soap:Envelope>');
-            return fdit.join("");
+            return fdit.join("").toString();
         }
 
+        //endregion
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
         function GetBearerRealm() {
 
             var deferred = $q.defer();
 
             $http({
                 method: 'GET',
-                async: true,
-                url: "https://"+Hostname+"/_vti_bin/client.svc/",
-                withCredentials: true,
+                //async: true,
+                url: "https://"+_Hostname+"/_vti_bin/client.svc/",
+                withCredentials: false,
                 headers: {
                     "Authorization": "Bearer",
                     "Accept": "application/json;odata=verbose"
@@ -221,13 +425,19 @@
 
             return deferred.promise;
         }
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
         function GetUserRealm() {
 
             var deferred = $q.defer();
 
             $http({
                 method: 'GET',
-                url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + Username,
+                url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
                 headers: {
                     "Accept": "application/json;odata=verbose"
                 }
@@ -237,26 +447,104 @@
                 deferred.reject();
             });
 
-            //https://login.microsoftonline.com/GetUserRealm.srf?xml=1&login=" + emailAddress
+            return deferred.promise;
+        }
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetSecurityTokenService() {
+            var deferred = $q.defer();
+            var message = SecurityTokenService();
+
+            $http({
+                method: 'POST',
+                url: 'https://login.microsoftonline.com/extSTS.srf',
+                data: message,
+                headers: {
+                    //'Content-Type': "text/xml; charset=\"utf-8\""
+                    'Content-Type': 'application/soap+xml; charset=utf-8'
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
 
             return deferred.promise;
         }
 
-        function Signin(result, url) {
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetRemoteSecurityToken() {
+            var deferred = $q.defer();
+            var message = RemoteSecurityToken();
+
+            $http({
+                method: 'POST',
+                url: 'https://login.microsoftonline.com/rst2.srf',
+                data: message,
+                headers: {
+                    //'Content-Type': "text/xml; charset=\"utf-8\""
+                    'Content-Type': 'application/soap+xml; charset=utf-8'
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        }
+
+        //IDentity Client Runtime Library service
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function  GetSecurityCookie() {
             var deferred = $q.defer();
 
+            $http({
+                method: 'GET',
+                url: _IdCrlUrl,
+                headers: {
+                    'Authorization' : 'BPOSIDCRL '+ _SecurityToken,
+                    'content-type': 'application/soap+xml; charset=utf-8'
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
 
-            _SecurityToken = angular.element(angular.element.parseXML(result)).find("BinarySecurityToken").text();
+            return deferred.promise;
+        }
 
-            if (_SecurityToken.length == 0) {
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetHttpCookies() {
+            var deferred = $q.defer();
+
+            if (_SecurityToken.length === 0) {
                 deferred.reject();
             }
             else {
                 $http({
                     method: 'POST',
-                    url: url,
+                    url: _SignInUrl,
                     data: _SecurityToken,
                     headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
                         Accept: "application/json;odata=verbose"
                     }
                 }).success(function (data) {
@@ -265,16 +553,20 @@
                     deferred.reject();
                 });
             }
-
             return deferred.promise;
         }
 
-        function GetCurrentUser(url) {
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetCurrentUser() {
             var deferred = $q.defer();
 
             $http({
                 method: 'GET',
-                url: url,
+                url: _CurrentUserUrl,
                 headers: {
                     Accept: "application/json;odata=verbose"
                 }
@@ -287,78 +579,132 @@
             return deferred.promise;
         }
 
-        function GetContextInfo(validated) {
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetContextInfo() {
 
-            $http({
-                url: ContextInfoUrl,//url + "/_api/contextinfo",
-                async: true,
-                method: "POST",
-                headers: {
-                    "accept": "application/json;odata=verbose",
-                    "contentType": "text/xml"
-                }
-            }).then(function (response) {
-                //Security.ContextInfo = response.data;
-                validated(Security.ContextInfo.FormDigestValue);
-            }, function (response) {
-                alert("Cannot get digestValue.");
-            });
-            /*
             var deferred = $q.defer();
 
-            $http.post(ContextInfoUrl, {
-                data: FormDigestInformationToken(),
-                headers: {
-                    //"Accept": "application/json;odata=verbose",
-                    "Content-Type": 'text/xml; charset="utf-8'
-                },
-            }).success(function (data) {
-                //Resolve the FormDigestValue from the success callback.
-                deferred.resolve(data);//.d.GetContextWebInformation.FormDigestValue);
-            }).error(function () {
-                deferred.reject("error finding form digest");
-            });
-            */
-            /*
-            angular.element.support.cors = true;
-            angular.element.ajax({
-                type: 'POST',
-                data: FormDigestInformationToken(),
-                crossDomain: true, // had no effect, see support.cors above
-                contentType: 'text/xml; charset="utf-8"',
-                url: url,//siteFullUrl + '/_api/contextinfo',
-                dataType: 'xml',
-                success: function (data, textStatus, result) {
-                    var digest = angular.element(result.responseText).find("d\\:FormDigestValue").text();
-                    //sendRESTReq();
-                },
-                error: function (result, textStatus, errorThrown) {
-                    var response = JSON.parse(result.responseText);
-                    if ((response.error !== undefined) && (response.error.message !== undefined)) {
-                        alert(response.error.message.value);
-                    }
-                }
-            });
-            */
-            /*
-            $http({
-                method: 'POST',
-                //data: FormDigestInformationToken(),
-                url: url,
-                headers: {
-                    'Content-Type' : 'text/xml; charset="utf-8"',
-                    'Connection' : 'keep-alive'
-                    //'Accept' : 'application/json;odata=verbose'//,
-                    //'Content-Length' : 0
-                }
-            }).success(function (data) {
-                deferred.resolve(data);
-            }).error(function () {
+            if (_SecurityToken.length == 0) {
                 deferred.reject();
+            }
+
+            $http({
+                url: '/_api/contextinfo', //_ContextInfoUrl,
+                //async: true,
+                method: "POST",
+                //withCredentials: false,
+                data: null,
+                headers: {
+                    //'X-FORMS_BASED_AUTH_ACCEPTED' : 'f',
+                    //'Accept': 'application/json;odata=verbose',
+                    //'Content-Type': 'application/json;odata=verbose'
+                }
+            }).success(function (response) {
+                //Security.ContextInfo = response.data;
+                deferred.resolve(response);
+                //validated(Security.ContextInfo.FormDigestValue);
+            }, function (response) {
+                console.log("Cannot get digestValue.");
             });
-            */
-            //return deferred.promise;
+            return deferred.promise;
+
+
+        }
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetPostQuery() {
+
+            var deferred = $q.defer();
+
+            $http({
+
+                url: _PostQueryUrl,
+                method: "POST",
+                //withCredentials: false,
+                data: null,
+                headers: {
+                    //'X-FORMS_BASED_AUTH_ACCEPTED' : 'f',
+                    //'Accept': 'application/json;odata=verbose',
+                    'Content-Type': 'application/json;odata=verbose'
+                }
+            }).success(function (response) {
+                //Security.ContextInfo = response.data;
+                deferred.resolve(response);
+                //validated(Security.ContextInfo.FormDigestValue);
+            }, function (response) {
+                console.log("Cannot get digestValue.");
+            });
+            return deferred.promise;
+
+
         }
     }]);
 
 })();
+
+//region Old Code / Tests
+
+/*
+ var deferred = $q.defer();
+
+ $http.post(ContextInfoUrl, {
+ data: FormDigestInformationToken(),
+ headers: {
+ //"Accept": "application/json;odata=verbose",
+ "Content-Type": 'text/xml; charset="utf-8'
+ },
+ }).success(function (data) {
+ //Resolve the FormDigestValue from the success callback.
+ deferred.resolve(data);//.d.GetContextWebInformation.FormDigestValue);
+ }).error(function () {
+ deferred.reject("error finding form digest");
+ });
+ */
+/*
+ angular.element.support.cors = true;
+ angular.element.ajax({
+ type: 'POST',
+ data: FormDigestInformationToken(),
+ crossDomain: true, // had no effect, see support.cors above
+ contentType: 'text/xml; charset="utf-8"',
+ url: url,//siteFullUrl + '/_api/contextinfo',
+ dataType: 'xml',
+ success: function (data, textStatus, result) {
+ var digest = angular.element(result.responseText).find("d\\:FormDigestValue").text();
+ //sendRESTReq();
+ },
+ error: function (result, textStatus, errorThrown) {
+ var response = JSON.parse(result.responseText);
+ if ((response.error !== undefined) && (response.error.message !== undefined)) {
+ alert(response.error.message.value);
+ }
+ }
+ });
+ */
+/*
+ $http({
+ method: 'POST',
+ //data: FormDigestInformationToken(),
+ url: url,
+ headers: {
+ 'Content-Type' : 'text/xml; charset="utf-8"',
+ 'Connection' : 'keep-alive'
+ //'Accept' : 'application/json;odata=verbose'//,
+ //'Content-Length' : 0
+ }
+ }).success(function (data) {
+ deferred.resolve(data);
+ }).error(function () {
+ deferred.reject();
+ });
+ */
+//return deferred.promise;
+//endregion

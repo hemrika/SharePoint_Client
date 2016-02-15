@@ -33,7 +33,7 @@
   "cordovaPlatforms": [
     {
       "platform": "android",
-      "locator": "windows"
+      "locator": "browser"
     }
   ]
 }

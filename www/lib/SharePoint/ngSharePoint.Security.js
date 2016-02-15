@@ -5,6 +5,8 @@
 
     SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', function ($timeout, $http, $resource, $q) {
 
+        //region Properties
+
         /**
          *
          * @type {null}
@@ -114,6 +116,8 @@
          */
         var _PostQueryUrl = null;
 
+        //endregion
+
         /**
          *
          * @param username
@@ -158,8 +162,8 @@
 
             GetUserRealm().then(function (realm) {
                 console.log(realm);
-                GetSecurityTokenService().then(function (token) {
-                    //GetRemoteSecurityToken().then(function (token) {
+                //GetSecurityTokenService().then(function (token) {
+                    GetRemoteSecurityToken().then(function (token) {
                     //console.log(token);
                     _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
                     Security.SecurityToken = _SecurityToken;
@@ -404,7 +408,7 @@
                 method: 'GET',
                 //async: true,
                 url: "https://"+_Hostname+"/_vti_bin/client.svc/",
-                withCredentials: false,
+                //withCredentials: false,
                 headers: {
                     "Authorization": "Bearer",
                     "Accept": "application/json;odata=verbose"
@@ -433,6 +437,7 @@
 
             $http({
                 method: 'GET',
+                //withCredentials: false,
                 url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -457,6 +462,7 @@
 
             $http({
                 method: 'POST',
+                //withCredentials: false,
                 url: 'https://login.microsoftonline.com/extSTS.srf',
                 data: message,
                 headers: {
@@ -483,6 +489,7 @@
 
             $http({
                 method: 'POST',
+                //withCredentials: false,
                 url: 'https://login.microsoftonline.com/rst2.srf',
                 data: message,
                 headers: {
@@ -508,7 +515,8 @@
             var deferred = $q.defer();
 
             $http({
-                method: 'GET',
+                method: 'POST',
+                //withCredentials: false,
                 url: _IdCrlUrl,
                 headers: {
                     'Authorization' : 'BPOSIDCRL '+ _SecurityToken,
@@ -535,32 +543,14 @@
                 deferred.reject();
             }
             else {
-                //angular.support.cors = true;
-            //}
-                //angular.element.ajax()
-
-                //$.ajax({
-                //    type: 'POST',
-                //    data: token,
-                //    crossDomain: true, // had no effect, see support.cors above
-                //    contentType: 'application/x-www-form-urlencoded',
-                //    url: loginUrl,
-                //    // dataType: 'html', // default is OK: Intelligent Guess (xml, json, script, or html)
-                //    success: function (data, textStatus, result) {
-                //        // we should update the digest
-                //        //refreshDigestViaWS(); // or alternatively:
-                //        refreshDigestViaREST();
-                //    },
-                //$http.defaults.useXDomain = true;
                 $http({
                     method: 'POST',
+                    //withCredentials: false,
                     url: _SignInUrl,
                     data: _SecurityToken,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         Accept: "application/json;odata=verbose"
-                        //'Content-Type': 'application/x-www-form-urlencoded',
-                        //'Accept': "application/json;odata=verbose"
                     }
                 }).success(function (data) {
                     deferred.resolve(data);
@@ -581,6 +571,7 @@
 
             $http({
                 method: 'GET',
+                withCredentials: false,
                 url: _CurrentUserUrl,
                 headers: {
                     Accept: "application/json;odata=verbose"
@@ -611,12 +602,12 @@
                 url: _ContextInfoUrl,
                 //async: true,
                 method: "POST",
-                //withCredentials: false,
+                withCredentials: false,
                 data: null,
                 headers: {
                     //'X-FORMS_BASED_AUTH_ACCEPTED' : 'f',
                     //'Accept': 'application/json;odata=verbose',
-                    'Content-Type': 'application/json;odata=verbose'
+                    //'Content-Type': 'application/json;odata=verbose'
                 }
             }).success(function (response) {
                 //Security.ContextInfo = response.data;
