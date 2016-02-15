@@ -7,7 +7,8 @@
         $scope.loginData = {
             domain: 'duwboot.sharepoint.com/sites/BLAUD',
             username: 'rutger.hemrika@blaud.com',
-            password: 'rjm557308453!'
+            password: 'rjm557308453!',
+            bearer: ""
         }
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -30,10 +31,14 @@
         $scope.doLogin = function () {
             //console.log('Doing login', $scope.loginData);
             SharePoint.Security.SetConfiguration($scope.loginData.username, $scope.loginData.password, $scope.loginData.domain).then(function () {
-                SharePoint.Security.GetSecurityInformation().then(function () {
-                    $scope.closeLogin();
-                    $state.go($state.current, {}, {reload: true});
-                });
+                SharePoint.Security.SetRealm().then(function(realm){
+                    $scope.loginData.bearer = realm;
+                    console.log(r);
+                })
+                //SharePoint.Security.GetSecurityInformation().then(function () {
+                //    $scope.closeLogin();
+                //    $state.go($state.current, {}, {reload: true});
+                //});
             });
         };
     })

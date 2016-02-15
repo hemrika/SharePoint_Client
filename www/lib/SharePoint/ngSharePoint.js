@@ -53,6 +53,7 @@
                     if (response.headers()['content-type'] === "application/json;odata=verbose;charset=utf-8" && response.data) {
                         response.data = response.data.d ? response.data.d : response.data;
                     }
+
                     deferred.resolve(response);
                     return deferred.promise;
                 },
@@ -61,7 +62,6 @@
                     //request.headers.Authorization = "Bearer " + SharePoint.Security._SecurityToken;
                     if (request.headers.Accept === "application/json;odata=verbose") {
                         request.url = decodeURIComponent(request.url);
-
                     }
                     return request;
 
@@ -71,7 +71,10 @@
 
         .config(['$httpProvider', function ($httpProvider) {
             //$httpProvider.defaults.useXDomain = true;
-            //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            //$httpProvider.defaults.withCredentials = true;
+            //delete $httpProvider.defaults.headers.common["X-Requested-With"];
+            //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+            //$httpProvider.defaults.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PUT';
             $httpProvider.interceptors.push('SharePointInterceptor');
         }]);
 })();

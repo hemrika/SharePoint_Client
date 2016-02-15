@@ -54,6 +54,8 @@
             "Title": ""
         };
 
+        var FormDigestValue = "";
+
         var _list = $resource("https://:EndPoint/_api/Web/Lists(':List')/:Deferred",
             {},//{   EndPoint: '', List: '', Deferred: ''},
             {
@@ -77,8 +79,12 @@
                     method: 'POST',
                     params: {EndPoint: '', List: '', Deferred: ''},
                     headers: {
-                        'Accept': 'application/json;odata=verbose',
-                        'content-type': 'application/json;odata=verbose'
+                        "X-RequestDigest": FormDigestValue,
+                        "If-Match": "*",
+                        "X-HTTP-Method": "PUT",
+                        "Content-Type": "application/json;odata=verbose",
+                        "Accept": "application/json;odata=verbose"
+
                     }
                 }
             }
@@ -194,28 +200,41 @@
             };
             this.AddItem = function (value) {
 
-                var deferred = $q.defer();
+                //var deferred = $q.defer();
 
                 //ngSecurity.GetContextWebInformation().then(function(){
                 //    var digest = ngSecurity.ContextInfo.FormDigestValue;
                 //});
 
-                var digest = ngSecurity.ContextInfo.FormDigestValue;
+                //var digest = ngSecurity.ContextInfo.FormDigestValue;
+                ngSecurity.GetContextWebInformation(function (digestValue) {
+                    FormDigestValue = digestValue;
 
-                _list.save({
-                    EndPoint: ngSecurity.Endpoint,
-                    List: _ngList.Id, Deferred: 'Items'
-                }, JSON.stringify(value)).$promise.then(function(result){
-                    deferred.resolve();
-                    console.log(result);
+                    var item = angular.extend({
+                        "__metadata": {
+                            "type": this.getListItemType(listname)
+                        }
+                    }, value);
+
+                    _list.save({
+                        EndPoint: ngSecurity.Endpoint,
+                        List: _ngList.Id, Deferred: 'Items'
+                    }, JSON.stringify(item)).$promise.
+                    then(function(result){
+                        //deferred.resolve();
+                        return result;
+                        console.log(result);
+                    });
+
                 });
+
                 /*
                  {
                  '_metadata':{'type':SP.listnameListItem},
                  'Title': 'MyItem'
                  }
                  */
-                return deferred.promise;
+                //return deferred.promise;
             };
             /*
              this.Item = function (value) {

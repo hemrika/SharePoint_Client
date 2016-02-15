@@ -7,7 +7,8 @@
         $scope.loginData = {
             domain: 'duwboot.sharepoint.com/sites/BLAUD',
             username: 'rutger.hemrika@blaud.com',
-            password: 'rjm557308453!'
+            password: 'rjm557308453!',
+            bearer: ""
         }
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -28,8 +29,33 @@
 
         // Perform the login action when the user submits the login form
         $scope.doLogin = function () {
+
+            /*
+            var data = null;
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                }
+            });
+
+            xhr.open("GET", "https://duwboot.sharepoint.com/_vti_bin/client.svc/");
+            xhr.setRequestHeader("authorization", "Bearer");
+            xhr.setRequestHeader("accept", "application/json;odata=verbose");
+            xhr.setRequestHeader("cache-control", "no-cache");
+            //xhr.setRequestHeader("postman-token", "3535ec7c-7ff0-8e2a-d875-d0305e9118c6");
+
+            xhr.send(data);
+            */
             //console.log('Doing login', $scope.loginData);
             SharePoint.Security.SetConfiguration($scope.loginData.username, $scope.loginData.password, $scope.loginData.domain).then(function () {
+                //SharePoint.Security.SetRealm().then(function(realm){
+                //    $scope.loginData.bearer = realm;
+                //    //console.log(r);
+                //})
                 SharePoint.Security.GetSecurityInformation().then(function () {
                     $scope.closeLogin();
                     $state.go($state.current, {}, {reload: true});
