@@ -1,0 +1,9 @@
+﻿<ion-view view-title="{{ Web.Title }}">
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="List in Web.Lists" href="#/app/lists/{{List.Id}}">
+                {{List.Title}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

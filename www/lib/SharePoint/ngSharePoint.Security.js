@@ -177,16 +177,16 @@
             var deferred = $q.defer();
 
             GetUserRealm().then(function (realm) {
-                console.log(realm);
+                //console.log(realm);
                 _Realm = realm;
                 Security.Realm = _Realm;
                 GetBranding().then( function (branding) {
-                    console.log(branding);
+                    //console.log(branding);
                     _Branding = branding;
                     Security.Branding = _Branding;
 
                     // region SharePoint Forms Login
-
+                    /*
                     GetSecurityTokenService().then(function (token) {
                         //console.log(token);
                         _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
@@ -207,117 +207,39 @@
                             }); //GetCurrentUser
                         }); //GetHttpCookies
                     }); //GetSecurityTokenService
-
+                    */
                     //endregion
 
                     //region IDentity Client Runtime Library service
-                    /*
+                    
                     GetRemoteSecurityToken().then(function (token) {
                         //console.log(token);
                         _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
                         Security.SecurityToken = _SecurityToken;
-                        console.log(_SecurityToken);
+                        //console.log(_SecurityToken);
                         GetSecurityCookie().then(function (cookie) {
                             //console.log(cookie);
-                            //$http.defaults.headers.common.Authorization = undefined;
-                            //var doc = document.implementation.createHTMLDocument("homepage");
-                            //doc.documentElement.innerHTML = page;
-                            //Security.ContextInfo.FormDigestValue = doc.getElementById("__REQUESTDIGEST").value;
                             GetCurrentUser().then(function (user) {
-                                console.log(user);
+                                //console.log(user);
                                 _CurrentUser = user;
                                 Security.CurrentUser = _CurrentUser;
-                                GetContextInfo().then(function(data){
-                                    console.log(data);
-                                    deferred.resolve(user);
+                                GetContextInfo().then(function(contextinfo){
+                                    //console.log(contextinfo);
+                                    _ContextInfo = contextinfo;
+                                    Security.ContextInfo = _ContextInfo;
+                                    //UpdateContextInfo().then(function () {
+                                    //    deferred.resolve();
+                                    //}); //UpdateContextInfo
                                 }); //GetContextInfo
                             }); //GetCurrentUser
                         }); //GetSecurityCookie
                     }); //GetRemoteSecurityToken
-                    */
+                    
                     //endregion
                 });
             });
 
-            /*
-                var d  = realm;
-                $http({
-                    method: 'POST',
-                    //url: 'https://login.microsoftonline.com/extSTS.srf',
-                    url: 'https://login.microsoftonline.com/rst2.srf',
-                    data: message,
-                    headers: {
-                        'content-type': 'application/soap+xml; charset=utf-8'
-                        //'Content-Type': "text/xml; charset=\"utf-8\""
-                    }
-                }).success(function (rst) {
-
-                    _SecurityToken = angular.element(angular.element.parseXML(rst)).find("BinarySecurityToken").text();
-                    console.log(_SecurityToken);
-
-                    //$http.defaults.headers.common['Authorization'] = "BPOSIDCRL" + _SecurityToken;
-                    Signin(data, SignInUrl).then(function (data) {
-                        Security.Endpoint = Endpoint;
-
-                        var doc = document.implementation.createHTMLDocument("homepage");
-                        doc.documentElement.innerHTML = data;
-                        Security.ContextInfo.FormDigestValue = doc.getElementById("__REQUESTDIGEST").value;
-                        //$http.defaults.headers.common['X-RequestDigest'] = Security.ContextInfo.FormDigestValue;
-                        GetCurrentUser(CurrentUserUrl).then(function (currentuser) {
-                            Security.CurrentUser = currentuser;
-                            //GetContextInfo(ContextInfoUrl).then(function(data){
-                            //    var d = data;
-                            //    deferred.resolve(this);
-                            //});
-                            deferred.resolve(currentuser);
-                        });
-                    }, function (data) {
-                        deferred.reject(data);
-                    });
-                });
-            //});
-            });
-            */
-
             return deferred.promise;
-        };
-
-        var Validate = function () {
-
-            var deferred = $q.defer();
-
-
-            GetContextInfo(ContextInfoUrl).then( function(contextinfo){
-                Security.ContextInfo = contextinfo;
-                deferred.resolve(this);
-            });
-            /*
-              var contextinfo = $resource(ContextInfoUrl, {},
-                {
-                  update: {
-                    method: 'POST',
-                    headers: {
-                      'accept': 'application/json;odata=verbose'//,
-                      //'content-type': 'application/json;odata=verbose'
-                    }
-                  }
-                });
-
-              contextinfo.update().$promise
-                .then(function (ctx) {
-                    _ContextInfo = ctx;
-                  deferred.resolve(ctx);
-                  console.log('Success: ' + ctx);
-                }, function (reason) {
-                  if (reason.status == 403) {
-                    deferred.reject();
-                  }
-                  console.log('Failed: ' + reason);
-                }, function (update) {
-                  console.log('Got notification: ' + update);
-                });
-               */
-              return deferred.promise;
         };
 
         /**
@@ -326,9 +248,9 @@
          */
         var Security = {};
 
-        Security.SetConfiguration = Configure; //function (onSucces, onError, username, password, endpoint) { $q.all([Configure(username, password, endpoint)]).then(onSucces, onError); };
-        Security.GetContextWebInformation = GetContextInfo;//function (onSucces, onError) { $q.all([Digest()]).then(onSucces, onError); };
-        Security.GetSecurityInformation = Authenticate; //function (onSucces, onError) { $q.all([Authenticate()]).then(onSucces, onError); };
+        Security.SetConfiguration = Configure;
+        Security.UpdateContextInfo = UpdateContextInfo;
+        Security.Authenticate = Authenticate;
         Security.SetRealm = GetBearerRealm;
         Security.Endpoint = _Endpoint;
         Security.ContextInfo = _ContextInfo;
@@ -510,7 +432,7 @@
                 method: 'GET',
                 url: _Realm.TenantBrandingURL.valueOf(),
                 headers: {
-                    //"Accept": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
                     //"Content-Type": "application/json;odata=verbose"
                 }
             }).success(function (data) {
@@ -535,7 +457,6 @@
 
             $http({
                 method: 'POST',
-                //withCredentials: false,
                 url: 'https://login.microsoftonline.com/extSTS.srf',
                 data: message,
                 headers: {
@@ -562,7 +483,6 @@
 
             $http({
                 method: 'POST',
-                //withCredentials: false,
                 url: 'https://login.microsoftonline.com/rst2.srf',
                 data: message,
                 headers: {
@@ -590,12 +510,12 @@
             $http({
                 method: 'GET',
                 url: _IdCrlUrl,
-                withCredentials: true,
+                //withCredentials: true,
                 cache: false,
                 headers: {
                     //Accept : 'text/plain',
-                    'Content-Type' : 'application/x-www-form-urlencoded'
-                    //'Authorization' : 'BPOSIDCRL '+ _SecurityToken
+                    'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
+                    'Authorization' : 'BPOSIDCRL '+ _SecurityToken
                 }
             }).success(function (data) {
                 //$http.defaults.headers.common.Authorization = undefined;
@@ -603,7 +523,7 @@
             }).error(function () {
                 deferred.reject();
             });
-            $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+            //$http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
             return deferred.promise;
         }
 
@@ -621,7 +541,7 @@
             else {
                 $http({
                     method: 'POST',
-                    //withCredentials: false,
+                    //withCredentials: true,
                     url: _SignInUrl,
                     data: _SecurityToken,
                     headers: {
@@ -647,7 +567,7 @@
 
             $http({
                 method: 'GET',
-                withCredentials: false,
+                //withCredentials: false,
                 url: _CurrentUserUrl,
                 headers: {
                     Accept: "application/json;odata=verbose"
@@ -678,11 +598,9 @@
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
-                withCredentials: false,
+                //withCredentials: false,
                 data: message,
                 headers: {
-                    //'X-FORMS_BASED_AUTH_ACCEPTED' : 'f',
-                    //'Accept': 'application/json;odata=verbose',
                     'Content-Type': 'text/xml; charset="utf-8"'
                 }
             }).success(function (response) {
@@ -690,11 +608,42 @@
                 deferred.resolve(response);
                 //validated(Security.ContextInfo.FormDigestValue);
             }, function (response) {
-                console.log("Cannot get digestValue.");
+                //console.log("Cannot get digestValue.");
+                deferred.reject();
             });
             return deferred.promise;
+        }
 
+        function UpdateContextInfo() {
 
+            var deferred = $q.defer();
+
+            if (_SecurityToken.length == 0) {
+                deferred.reject();
+            }
+            var message = FormDigestInformationToken();
+
+            $http({
+                url: _ContextInfoUrl,
+                method: "POST",
+                data: message,
+                headers: {
+                    'Content-Type': 'text/xml; charset="utf-8"'
+                }
+            }).success(function (ContextInfo) {
+                _ContextInfo = ContextInfo;
+                Security.ContextInfo = _ContextInfo;
+
+                //setTimeout(function () {
+                //   UpdateContextInfo();
+                //}
+                //, _ContextInfo.FormDigestTimeoutSeconds);
+
+                deferred.resolve();
+            }, function (response) {
+                deferred.reject();
+            });
+            return deferred.promise;
         }
 
         /**
@@ -722,7 +671,8 @@
                 deferred.resolve(response);
                 //validated(Security.ContextInfo.FormDigestValue);
             }, function (response) {
-                console.log("Cannot get digestValue.");
+                //console.log("Cannot get digestValue.");
+                deferred.reject();
             });
             return deferred.promise;
 

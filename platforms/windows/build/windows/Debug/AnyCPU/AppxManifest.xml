@@ -15,10 +15,13 @@
     <Logo>images\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
-    <TargetDeviceFamily MaxVersionTested="10.0.10240.0" MinVersion="10.0.10240.0" Name="Windows.Universal" />
+    <TargetDeviceFamily MaxVersionTested="10.0.10586.0" MinVersion="10.0.10240.0" Name="Windows.Universal" />
   </Dependencies>
   <Resources>
     <Resource Language="NL-NL" />
+    <Resource Language="NL" />
+    <Resource Language="EN-NL" />
+    <Resource Language="EN-US" />
   </Resources>
   <Applications>
     <Application Id="com.blaud.sharepoint" StartPage="ms-appx-web:///www/index.html">
@@ -33,6 +36,8 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <DeviceCapability Name="microphone" />
+    <DeviceCapability Name="webcam" />
   </Capabilities>
   <build:Metadata>
     <build:Item Name="SharedGUID" Value="9ebdb27f-d75b-4d8c-b53f-7be4a1fe89f9" />

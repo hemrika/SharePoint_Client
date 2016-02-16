@@ -9,27 +9,15 @@
                 "parents": {
                     "/*": [
                         {
+                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"io.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
                             "count": 1
                         },
                         {
@@ -41,7 +29,19 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"io.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -53,10 +53,6 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
                             "count": 5
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-                            "count": 1
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.RECORD_AUDIO\" />",
@@ -73,6 +69,10 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.RECORD_VIDEO\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -80,6 +80,9 @@
         }
     },
     "installed_plugins": {
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.blaud.sharepoint"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         },
@@ -89,25 +92,22 @@
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.blaud.sharepoint"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.blaud.sharepoint"
-        },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.blaud.sharepoint"
-        },
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.blaud.sharepoint"
-        },
         "cordova-plugin-media": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         },
         "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.blaud.sharepoint"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.blaud.sharepoint"
+        },
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.blaud.sharepoint"
+        },
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         }
     },

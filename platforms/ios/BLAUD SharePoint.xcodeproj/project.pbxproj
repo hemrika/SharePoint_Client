@@ -61,6 +61,7 @@
 		4016364A04C7435BA1C52BC1 /* CDVSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 5998CD6E9CF54A3B95457306 /* CDVSound.m */; };
 		F008C5B9E4A948129A7F703E /* CDVCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 192C17D6F979433BA8E09842 /* CDVCapture.m */; };
 		0CD6A20541344E99A7589EE4 /* CDVCapture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 94F6ED8183E64086BF6AFB81 /* CDVCapture.bundle */; };
+		15EEABB3FAF749D1878CEFBC /* CDVCapture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 514904F447E74340B39B018A /* CDVCapture.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +166,7 @@
 		192C17D6F979433BA8E09842 /* CDVCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVCapture.m"; path = "cordova-plugin-media-capture/CDVCapture.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		09243073715A437B9BBABB3A /* CDVCapture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVCapture.h"; path = "cordova-plugin-media-capture/CDVCapture.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		94F6ED8183E64086BF6AFB81 /* CDVCapture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "CDVCapture.bundle"; path = "CDVCapture.bundle"; sourceTree = "<group>"; };
+		514904F447E74340B39B018A /* CDVCapture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "CDVCapture.bundle"; path = "CDVCapture.bundle"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +245,7 @@
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* BLAUD SharePoint-Info.plist */,
 				94F6ED8183E64086BF6AFB81 /* CDVCapture.bundle */,
+				514904F447E74340B39B018A /* CDVCapture.bundle */,
 			);
 			name = Resources;
 			path = "BLAUD SharePoint/Resources";
@@ -461,6 +464,7 @@
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
 				0CD6A20541344E99A7589EE4 /* CDVCapture.bundle in Resources */,
+				15EEABB3FAF749D1878CEFBC /* CDVCapture.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,57 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "package.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": [
+                        {
+                            "xml": "<DeviceCapability Name=\"webcam\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<DeviceCapability Name=\"microphone\" />",
+                            "count": 2
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "BLAUD SharePoint"
+        }
+    },
+    "dependent_plugins": {}
+}

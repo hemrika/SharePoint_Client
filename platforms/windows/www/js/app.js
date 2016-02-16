@@ -125,6 +125,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
                 controller: 'ItemCtrl'
             }
         }
+    })
+    .state('app.corodova', {
+      url: "/Cordova",
+      views: {
+          'menuContent': {
+              templateUrl: "templates/cordova.html",
+              controller: 'CordovaCtrl'
+          }
+      }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/welcome');
