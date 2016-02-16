@@ -58,8 +58,7 @@
                     return deferred.promise;
                 },
                 request: function (request) {
-                    //console.log(request.headers.Cookie);
-                    //request.headers.Authorization = "Bearer " + SharePoint.Security._SecurityToken;
+                    //request.headers.Authorization = "Bearer " + ngSecurity.SecurityToken;
                     if (request.headers.Accept === "application/json;odata=verbose") {
                         request.url = decodeURIComponent(request.url);
                     }
@@ -68,11 +67,13 @@
                 }
             };
         }])
-
+        .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
+            $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
+        }])
         .config(['$httpProvider', function ($httpProvider) {
-            $httpProvider.defaults.useXDomain = true;
-            $httpProvider.defaults.withCredentials = false;
-            delete $httpProvider.defaults.headers.common["X-Requested-With"];
+            //$httpProvider.defaults.useXDomain = true;
+            //$httpProvider.defaults.withCredentials = false;
+            //delete $httpProvider.defaults.headers.common["X-Requested-With"];
             //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
             //$httpProvider.defaults.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, PUT';
             $httpProvider.interceptors.push('SharePointInterceptor');

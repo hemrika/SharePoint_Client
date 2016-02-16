@@ -58,7 +58,7 @@
                 //})
                 SharePoint.Security.GetSecurityInformation().then(function () {
                     $scope.loginData.bearer = SharePoint.Security.ContextInfo.FormDigestValue;
-                    $scope.$apply();
+                    //$scope.$apply();
                     if(SharePoint.CurrentUser !== null) {
                         $scope.closeLogin();
                         $state.go($state.current, {}, {reload: true});

@@ -162,8 +162,8 @@
 
             GetUserRealm().then(function (realm) {
                 console.log(realm);
-                GetSecurityTokenService().then(function (token) {
-                    //GetRemoteSecurityToken().then(function (token) {
+                //GetSecurityTokenService().then(function (token) {
+                    GetRemoteSecurityToken().then(function (token) {
                     //console.log(token);
                     _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
                     Security.SecurityToken = _SecurityToken;
@@ -408,7 +408,7 @@
                 method: 'GET',
                 //async: true,
                 url: "https://"+_Hostname+"/_vti_bin/client.svc/",
-                withCredentials: false,
+                //withCredentials: false,
                 headers: {
                     "Authorization": "Bearer",
                     "Accept": "application/json;odata=verbose"
@@ -437,6 +437,7 @@
 
             $http({
                 method: 'GET',
+                //withCredentials: false,
                 url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -461,6 +462,7 @@
 
             $http({
                 method: 'POST',
+                //withCredentials: false,
                 url: 'https://login.microsoftonline.com/extSTS.srf',
                 data: message,
                 headers: {
@@ -487,6 +489,7 @@
 
             $http({
                 method: 'POST',
+                //withCredentials: false,
                 url: 'https://login.microsoftonline.com/rst2.srf',
                 data: message,
                 headers: {
@@ -513,10 +516,11 @@
 
             $http({
                 method: 'GET',
+                withCredentials: false,
                 url: _IdCrlUrl,
                 headers: {
                     'Authorization' : 'BPOSIDCRL '+ _SecurityToken,
-                    'content-type': 'application/soap+xml; charset=utf-8'
+                    //s'content-type': 'application/soap+xml; charset=utf-8'
                 }
             }).success(function (data) {
                 deferred.resolve(data);
@@ -541,6 +545,7 @@
             else {
                 $http({
                     method: 'POST',
+                    //withCredentials: false,
                     url: _SignInUrl,
                     data: _SecurityToken,
                     headers: {
@@ -566,6 +571,7 @@
 
             $http({
                 method: 'GET',
+                withCredentials: false,
                 url: _CurrentUserUrl,
                 headers: {
                     Accept: "application/json;odata=verbose"
@@ -593,10 +599,10 @@
             }
 
             $http({
-                url: '/_api/contextinfo', //_ContextInfoUrl,
+                url: _ContextInfoUrl,
                 //async: true,
                 method: "POST",
-                //withCredentials: false,
+                withCredentials: false,
                 data: null,
                 headers: {
                     //'X-FORMS_BASED_AUTH_ACCEPTED' : 'f',

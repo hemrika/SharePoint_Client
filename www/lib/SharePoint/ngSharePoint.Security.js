@@ -466,7 +466,7 @@
                 url: 'https://login.microsoftonline.com/extSTS.srf',
                 data: message,
                 headers: {
-                    //'Content-Type': "text/xml; charset=\"utf-8\""
+                    "Accept": "application/json;odata=verbose",
                     'Content-Type': 'application/soap+xml; charset=utf-8'
                 }
             }).success(function (data) {
@@ -493,7 +493,7 @@
                 url: 'https://login.microsoftonline.com/rst2.srf',
                 data: message,
                 headers: {
-                    //'Content-Type': "text/xml; charset=\"utf-8\""
+                    "Accept": "application/json;odata=verbose",
                     'Content-Type': 'application/soap+xml; charset=utf-8'
                 }
             }).success(function (data) {
@@ -515,12 +515,13 @@
             var deferred = $q.defer();
 
             $http({
-                method: 'POST',
-                //withCredentials: false,
+                method: 'GET',
                 url: _IdCrlUrl,
                 headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization' : 'BPOSIDCRL '+ _SecurityToken,
-                    'content-type': 'application/soap+xml; charset=utf-8'
+                    //'Content-Type': 'application/soap+xml; charset=utf-8'
+                    'Accept' : undefined
                 }
             }).success(function (data) {
                 deferred.resolve(data);

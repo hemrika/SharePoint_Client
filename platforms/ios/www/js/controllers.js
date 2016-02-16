@@ -8,7 +8,7 @@
             domain: 'duwboot.sharepoint.com/sites/BLAUD',
             username: 'rutger.hemrika@blaud.com',
             password: 'rjm557308453!',
-            bearer: ""
+            bearer: SharePoint.Security.ContextInfo.FormDigestValue
         }
         // Create the login modal that we will use later
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -57,8 +57,12 @@
                 //    //console.log(r);
                 //})
                 SharePoint.Security.GetSecurityInformation().then(function () {
-                    $scope.closeLogin();
-                    $state.go($state.current, {}, {reload: true});
+                    $scope.loginData.bearer = SharePoint.Security.ContextInfo.FormDigestValue;
+                    $scope.$apply();
+                    if(SharePoint.CurrentUser !== null) {
+                        $scope.closeLogin();
+                        $state.go($state.current, {}, {reload: true});
+                    }
                 });
             });
         };
