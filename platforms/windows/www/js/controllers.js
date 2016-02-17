@@ -30,9 +30,10 @@
         // Perform the login action when the user submits the login form
         $scope.doLogin = function () {
             SharePoint.Security.SetConfiguration($scope.loginData.username, $scope.loginData.password, $scope.loginData.domain).then(function () {
+
                 SharePoint.Security.Authenticate().then(function () {
-                    $scope.loginData.FormDigest = SharePoint.Security.ContextInfo.FormDigestValue;
-                    if (SharePoint.CurrentUser !== null) {
+                    if(SharePoint.CurrentUser !== null) {
+                        $scope.loginData.FormDigest = SharePoint.Security.ContextInfo.FormDigestValue;
                         $scope.closeLogin();
                         $state.go($state.current, {}, {reload: true});
                     }

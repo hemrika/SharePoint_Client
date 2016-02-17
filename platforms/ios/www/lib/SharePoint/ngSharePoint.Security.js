@@ -428,6 +428,10 @@
         function GetBranding() {
             var deferred = $q.defer();
 
+            if (_Realm === null || _Realm.TenantBrandingURL === null) {
+                deferred.reject();
+            }
+
             $http({
                 method: 'GET',
                 url: _Realm.TenantBrandingURL.valueOf(),

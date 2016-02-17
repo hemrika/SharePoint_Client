@@ -1,4 +1,4 @@
-﻿cordova.define('cordova/plugin_list', function(require, exports, module) {
+cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
         "file": "plugins/cordova-plugin-console/www/logger.js",
@@ -394,17 +394,6 @@ module.exports = [
 ];
 module.exports.metadata = 
 // TOP OF METADATA
-{
-    "cordova-plugin-console": "1.0.2",
-    "cordova-plugin-file": "4.1.1",
-    "cordova-plugin-file-transfer": "1.5.0",
-    "cordova-plugin-splashscreen": "3.2.0",
-    "cordova-plugin-network-information": "1.2.0",
-    "ionic-plugin-keyboard": "1.0.8",
-    "cordova-plugin-camera": "2.1.0",
-    "cordova-plugin-media": "2.2.0",
-    "cordova-plugin-media-capture": "1.2.0",
-    "cordova-plugin-whitelist": "1.2.1"
-}
+{}
 // BOTTOM OF METADATA
 });

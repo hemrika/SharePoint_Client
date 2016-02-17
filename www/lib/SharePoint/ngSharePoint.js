@@ -71,6 +71,11 @@
         .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
             $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
         }])
+        .config(['$compileProvider', function ($compileProvider) {
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
+            // // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
+            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|x-wmapp0):|data:image\//);
+        }])
         .config(['$httpProvider', function ($httpProvider) {
             $httpProvider.defaults.useXDomain = true;
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
