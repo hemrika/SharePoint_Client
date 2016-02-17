@@ -228,7 +228,7 @@
                                     _ContextInfo = contextinfo;
                                     Security.ContextInfo = _ContextInfo;
                                     //UpdateContextInfo().then(function () {
-                                    //    deferred.resolve();
+                                        deferred.resolve();
                                     //}); //UpdateContextInfo
                                 }); //GetContextInfo
                             }); //GetCurrentUser

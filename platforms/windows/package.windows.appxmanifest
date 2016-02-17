@@ -3,7 +3,7 @@
     <Identity Name="com.blaud.sharepoint" Publisher="CN=$username$" Version="0.0.1.0" />
     <Properties>
         <DisplayName>BLAUD SharePoint</DisplayName>
-        <PublisherDisplayName>Your Name Here</PublisherDisplayName>
+        <PublisherDisplayName>Rutger Hemrika</PublisherDisplayName>
         <Logo>images\StoreLogo.png</Logo>
     </Properties>
     <Prerequisites>

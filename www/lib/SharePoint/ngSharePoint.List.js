@@ -54,7 +54,8 @@
             "Title": ""
         };
 
-        var FormDigestValue = "";
+        var FormDigestValue = undefined;
+        var SecurityToken = undefined;
 
         var _list = $resource("https://:EndPoint/_api/Web/Lists(':List')/:Deferred",
             {},//{   EndPoint: '', List: '', Deferred: ''},
@@ -79,12 +80,11 @@
                     method: 'POST',
                     params: {EndPoint: '', List: '', Deferred: ''},
                     headers: {
-                        'Authorization' : 'BPOSIDCRL '+ ngSecurity.SecurityToken,
-                        'X-RequestDigest': ngSecurity.ContextInfo.FormDigestValue,
-                        'Content-Type': 'application/json;odata=verbose',
-                        'Accept': 'application/json;odata=verbose',
-                        'X-FORMS_BASED_AUTH_ACCEPTED': 'f'
-
+                        'Authorization' : 'BPOSIDCRL ' + SecurityToken,
+                        'Accept' : 'application/json;odata=verbose',
+                        //'X-FORMS_BASED_AUTH_ACCEPTED': 'f',
+                        'X-RequestDigest': FormDigestValue,
+                        'Content-Type': 'application/json;odata=verbose'
                     }
                 }
             }
@@ -202,38 +202,27 @@
 
                 //var deferred = $q.defer();
 
-                //ngSecurity.GetContextWebInformation().then(function(){
-                //    var digest = ngSecurity.ContextInfo.FormDigestValue;
-                //});
+                var item = {
+                    '__metadata': {
+                        'type': 'SP.CordovaListItem'
+                    },
+                    'Title' : 'IDentity Client Runtime Library service'
+                };
 
-                //var digest = ngSecurity.ContextInfo.FormDigestValue;
-                //ngSecurity.GetContextWebInformation().then(function (digestValue) {
-                //    FormDigestValue = digestValue;
-
-                    var item = angular.extend({
-                        "__metadata": {
-                            "type": "SP.CordovaListItem"
-                        }, "Title" : "IDentity Client Runtime Library service" });
-                    //}, value);
+                ngSecurity.UpdateContextInfo().then(function () {
+                    FormDigestValue = ngSecurity.ContextInfo.FormDigestValue;
+                    SecurityToken = ngSecurity.SecurityToken;
+                    var message = JSON.stringify(item);
 
                     _list.save({
                         EndPoint: ngSecurity.Endpoint,
                         List: _ngList.Id, Deferred: 'Items'
-                    }, item).$promise.
-                    then(function(result){
+                    }, JSON.stringify(item)).$promise.then(function (result) {
                         //deferred.resolve();
                         return result;
-                        console.log(result);
+                        //console.log(result);
                     });
-
-                //});
-
-                /*
-                 {
-                 '_metadata':{'type':SP.listnameListItem},
-                 'Title': 'MyItem'
-                 }
-                 */
+                });
                 //return deferred.promise;
             };
             /*

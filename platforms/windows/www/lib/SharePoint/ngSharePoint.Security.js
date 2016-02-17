@@ -228,7 +228,7 @@
                                     _ContextInfo = contextinfo;
                                     Security.ContextInfo = _ContextInfo;
                                     //UpdateContextInfo().then(function () {
-                                    //    deferred.resolve();
+                                        deferred.resolve();
                                     //}); //UpdateContextInfo
                                 }); //GetContextInfo
                             }); //GetCurrentUser
@@ -571,7 +571,7 @@
 
             $http({
                 method: 'GET',
-                //withCredentials: false,
+                withCredentials: false,
                 url: _CurrentUserUrl,
                 headers: {
                     Accept: "application/json;odata=verbose"
@@ -602,7 +602,7 @@
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
-                //withCredentials: false,
+                withCredentials: false,
                 data: message,
                 headers: {
                     'Content-Type': 'text/xml; charset="utf-8"'
@@ -630,6 +630,7 @@
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
+                withCredentials: false,
                 data: message,
                 headers: {
                     'Content-Type': 'text/xml; charset="utf-8"'

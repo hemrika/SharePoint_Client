@@ -4,7 +4,7 @@
     <mp:PhoneIdentity PhoneProductId="9adc41f0-cb26-11e5-9861-7d7eb2448363" PhonePublisherId="db093ed5-53b1-45f7-af72-751e8f36ab80" />
     <Properties>
         <DisplayName>BLAUD SharePoint</DisplayName>
-        <PublisherDisplayName>Your Name Here</PublisherDisplayName>
+        <PublisherDisplayName>Rutger Hemrika</PublisherDisplayName>
         <Logo>images\StoreLogo.png</Logo>
     </Properties>
     <Prerequisites>

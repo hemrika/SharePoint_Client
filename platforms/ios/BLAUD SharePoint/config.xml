@@ -86,10 +86,10 @@
     <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
     <name>BLAUD SharePoint</name>
     <description>
-        An Ionic Framework and Cordova project.
+        BLAUD Framework for interacting with SharePoint enviroments.
     </description>
-    <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+    <author email="rutgr.hemrika@blaud.com" href="http://blaud.com/">
+      Rutger Hemrika
     </author>
     <content src="index.html" />
     <access origin="*" />

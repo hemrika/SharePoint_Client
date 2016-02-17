@@ -1,6 +1,6 @@
 ﻿angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $state, SharePoint) {
+    .controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $state, SharePoint) {
         // Form data for the login modal
         $scope.loginData = {};
 
@@ -35,7 +35,16 @@
                     if(SharePoint.CurrentUser !== null) {
                         $scope.loginData.FormDigest = SharePoint.Security.ContextInfo.FormDigestValue;
                         $scope.closeLogin();
-                        $state.go($state.current, {}, {reload: true});
+
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'FormDigest',
+                            template: SharePoint.Security.ContextInfo.FormDigestValue
+                        });
+
+                        alertPopup.then(function ( result) {
+                            $state.go($state.current, {}, {reload: true});
+                        });
+                        //$state.go($state.current, {}, {reload: true});
                     }
                 });
             });

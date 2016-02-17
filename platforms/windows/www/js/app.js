@@ -17,7 +17,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    //SharePoint.Security.SetConfiguration('rutger.hemrika@blaud.com','rjm557308453!','duwboot.sharepoint.com');
   });
 })
 .config(['$compileProvider',function ($compileProvider) {
@@ -26,7 +25,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
       $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|x-wmapp0):|data:image\//);
   }
 ])
-//.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', statesConfiguration])
 .config(['$httpProvider', function httpLoadingInterceptor($httpProvider) {
 
     $httpProvider.defaults.withCredentials = true;
@@ -49,6 +47,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
     }])
 }
 ])
+.config(['$compileProvider', function ($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|x-wmapp0|ms-appx-web|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
+    // // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|x-wmapp0):|data:image\//);
+}])
+.config(['$sceDelegateProvider', function ($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
+}])
 .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
     // force native scroll
