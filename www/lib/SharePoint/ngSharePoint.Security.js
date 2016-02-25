@@ -606,7 +606,6 @@
 
             $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
             //$http.defaults.headers.common.Origin = _ContextInfoUrl;
-
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
