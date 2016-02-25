@@ -3,7 +3,7 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', function ($timeout, $http, $resource, $q) {
+    SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', '$rootScope', function ($timeout, $http, $resource, $q, $rootScope) {
 
         //region Properties
 
@@ -157,10 +157,10 @@
             _Hostname = location.hostname;
 
             _SignInUrl = 'https://' + _Hostname + '/_forms/default.aspx?wa=wsignin1.0';
-            _ContextInfoUrl = 'https://' + _Hostname + '/_api/contextinfo';
-            _CurrentUserUrl = 'https://' + _Hostname + '/_api/web/CurrentUser';
-            _IdCrlUrl = 'https://' + _Hostname + '/_vti_bin/idcrl.svc/';
-            _PostQueryUrl = 'https://' + _Hostname + '/_api/search/postquery';
+            _ContextInfoUrl = 'https://' + endpoint + '/_api/contextinfo';
+            _CurrentUserUrl = 'https://' + endpoint + '/_api/web/CurrentUser';
+            _IdCrlUrl = 'https://' + endpoint + '/_vti_bin/idcrl.svc/';
+            _PostQueryUrl = 'https://' + endpoint + '/_api/search/postquery';
 
             deferred.resolve();
 
@@ -187,35 +187,36 @@
 
                     // region SharePoint Forms Login
                     /*
-                    GetSecurityTokenService().then(function (token) {
-                        //console.log(token);
-                        _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
-                        Security.SecurityToken = _SecurityToken;
-                        console.log(_SecurityToken);
+                     GetSecurityTokenService().then(function (token) {
+                     //console.log(token);
+                     _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
+                     Security.SecurityToken = _SecurityToken;
+                     console.log(_SecurityToken);
 
-                        GetHttpCookies().then(function (page) {
-                            console.log(page);
+                     GetHttpCookies().then(function (page) {
+                     console.log(page);
 
-                            GetCurrentUser().then(function (user) {
-                                console.log(user);
-                                _CurrentUser = user;
-                                Security.CurrentUser = _CurrentUser;
-                                GetContextInfo().then(function(data){
-                                    console.log(data);
-                                    deferred.resolve(data);
-                                }); //GetContextInfo
-                            }); //GetCurrentUser
-                        }); //GetHttpCookies
-                    }); //GetSecurityTokenService
-                    */
+                     GetCurrentUser().then(function (user) {
+                     console.log(user);
+                     _CurrentUser = user;
+                     Security.CurrentUser = _CurrentUser;
+                     GetContextInfo().then(function(data){
+                     console.log(data);
+                     deferred.resolve(data);
+                     }); //GetContextInfo
+                     }); //GetCurrentUser
+                     }); //GetHttpCookies
+                     }); //GetSecurityTokenService
+                     */
                     //endregion
 
                     //region IDentity Client Runtime Library service
-                    
+
                     GetRemoteSecurityToken().then(function (token) {
                         //console.log(token);
                         _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
                         Security.SecurityToken = _SecurityToken;
+                        $rootScope.SecurityToken = _SecurityToken;
                         //console.log(_SecurityToken);
                         GetSecurityCookie().then(function (cookie) {
                             //console.log(cookie);
@@ -228,13 +229,13 @@
                                     _ContextInfo = contextinfo;
                                     Security.ContextInfo = _ContextInfo;
                                     //UpdateContextInfo().then(function () {
-                                        deferred.resolve();
+                                    deferred.resolve();
                                     //}); //UpdateContextInfo
                                 }); //GetContextInfo
                             }); //GetCurrentUser
                         }); //GetSecurityCookie
                     }); //GetRemoteSecurityToken
-                    
+
                     //endregion
                 });
             });
@@ -434,6 +435,7 @@
 
             $http({
                 method: 'GET',
+                withCredentials: false,
                 url: _Realm.TenantBrandingURL.valueOf(),
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -511,23 +513,25 @@
         function  GetSecurityCookie() {
             var deferred = $q.defer();
 
+            $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + _SecurityToken;
             $http({
                 method: 'GET',
                 url: _IdCrlUrl,
-                //withCredentials: true,
-                cache: false,
+                //withCredentials: false,
+                //cache: false,
                 headers: {
-                    //Accept : 'text/plain',
-                    'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
-                    'Authorization' : 'BPOSIDCRL '+ _SecurityToken
+                    "Accept": "application/json;odata=verbose",
+                    //'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
+                    //'Authorization' : 'BPOSIDCRL '+ _SecurityToken
                 }
             }).success(function (data) {
-                //$http.defaults.headers.common.Authorization = undefined;
+                $http.defaults.headers.common.Authorization = undefined;
                 deferred.resolve(data);
             }).error(function () {
+                $http.defaults.headers.common.Authorization = undefined;
                 deferred.reject();
             });
-            //$http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+           
             return deferred.promise;
         }
 
@@ -605,11 +609,32 @@
                 withCredentials: false,
                 data: message,
                 headers: {
+                    'Accept': "application/json;odata=verbose",
                     'Content-Type': 'text/xml; charset="utf-8"'
                 }
             }).success(function (response) {
-                //Security.ContextInfo = response.data;
-                deferred.resolve(response);
+                var ContextInfo = _ContextInfo;
+                if (angular.isDefined(response.GetContextWebInformation)) {
+                    ContextInfo = response.GetContextWebInformation;
+                }
+                else {
+                    ContextInfo = response;
+                }
+                _ContextInfo = ContextInfo;
+                Security.ContextInfo = _ContextInfo;
+                $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
+
+                deferred.resolve(ContextInfo);
+                /*
+                 if (angular.isDefined(response.GetContextWebInformation)) {
+                 ContextInfo
+                 deferred.resolve(response.GetContextWebInformation);
+                 $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
+                 }
+                 else {
+                 deferred.resolve(response);
+                 }
+                 */
                 //validated(Security.ContextInfo.FormDigestValue);
             }, function (response) {
                 //console.log("Cannot get digestValue.");
@@ -633,12 +658,21 @@
                 withCredentials: false,
                 data: message,
                 headers: {
+                    'Accept': "application/json;odata=verbose",
                     'Content-Type': 'text/xml; charset="utf-8"'
                 }
-            }).success(function (ContextInfo) {
+            }).success(function (response) {
+
+                var ContextInfo = _ContextInfo;
+                if (angular.isDefined(response.GetContextWebInformation)) {
+                    ContextInfo = response.GetContextWebInformation;
+                }
+                else {
+                    ContextInfo = response;
+                }
                 _ContextInfo = ContextInfo;
                 Security.ContextInfo = _ContextInfo;
-
+                $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
                 //setTimeout(function () {
                 //   UpdateContextInfo();
                 //}

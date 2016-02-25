@@ -1,5 +1,7 @@
 ﻿<ion-view view-title="{{ Web.List.Item.Title }}">
     <ion-content>
-      <p ng-bind-html="Web.List.Item.Body "></p>
+        <div data-ng-repeat="Field in Web.List.Item.Fields">
+            <div data-ng-include="'partials/controls.htm'"></div>
+        </div>
     </ion-content>
 </ion-view>

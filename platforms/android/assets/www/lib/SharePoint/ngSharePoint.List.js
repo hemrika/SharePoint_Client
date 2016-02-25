@@ -3,7 +3,7 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngList', ['ngSecurity', 'ngItem', '$resource', '$q', function (ngSecurity, ngItem, $resource, $q) {
+    SharePoint.factory('ngList', ['ngSecurity', 'ngItem', '$resource', '$q', '$http', function (ngSecurity, ngItem, $resource, $q, $http) {
 
         var _ngList = {
             "DefaultView": {
@@ -54,7 +54,8 @@
             "Title": ""
         };
 
-        var FormDigestValue = "";
+        //var FormDigestValue = ngSecurity.ContextInfo.FormDigestValue;
+        //var SecurityToken = undefined;
 
         var _list = $resource("https://:EndPoint/_api/Web/Lists(':List')/:Deferred",
             {},//{   EndPoint: '', List: '', Deferred: ''},
@@ -79,12 +80,9 @@
                     method: 'POST',
                     params: {EndPoint: '', List: '', Deferred: ''},
                     headers: {
-                        'Authorization' : 'BPOSIDCRL '+ ngSecurity.SecurityToken,
-                        'X-RequestDigest': ngSecurity.ContextInfo.FormDigestValue,
-                        'Content-Type': 'application/json;odata=verbose',
-                        'Accept': 'application/json;odata=verbose',
-                        'X-FORMS_BASED_AUTH_ACCEPTED': 'f'
-
+                        'Accept' : 'application/json;odata=verbose',
+                        //'X-RequestDigest': FormDigestValue,
+                        'Content-Type': 'application/json;odata=verbose'
                     }
                 }
             }
@@ -200,41 +198,53 @@
             };
             this.AddItem = function (value) {
 
-                //var deferred = $q.defer();
+                var deferred = $q.defer();
+                
+                var item = { __metadata: { type : 'SP.Data.CordovaListItem' }, Title: 'IDentity Client Runtime Library service' };
+                /*
+                var item = {
+                    '__metadata': {
+                        'type': 'SP.CordovaListItem'
+                    },
+                    'Title' : 'IDentity Client Runtime Library service'
+                };
+                */
 
-                //ngSecurity.GetContextWebInformation().then(function(){
-                //    var digest = ngSecurity.ContextInfo.FormDigestValue;
-                //});
-
-                //var digest = ngSecurity.ContextInfo.FormDigestValue;
-                //ngSecurity.GetContextWebInformation().then(function (digestValue) {
-                //    FormDigestValue = digestValue;
-
-                    var item = angular.extend({
-                        "__metadata": {
-                            "type": "SP.CordovaListItem"
-                        }, "Title" : "IDentity Client Runtime Library service" });
-                    //}, value);
-
+                ngSecurity.UpdateContextInfo().then(function () {
+                    //FormDigestValue = ngSecurity.ContextInfo.FormDigestValue;
+                    //SecurityToken = ngSecurity.SecurityToken;
+                    //var message = JSON.stringify(item);
+                    /*
+                    var url = "https://" + ngSecurity.Endpoint + "/_api/Web/Lists('" + _ngList.Id + "')/Items";
+                    $http({
+                        method: 'POST',
+                        //withCredentials: false,
+                        url: url,
+                        data: item,
+                        headers: {
+                            'Accept' : 'application/json;odata=verbose',
+                            'X-RequestDigest': FormDigestValue,
+                            'Content-Type': 'application/json;odata=verbose'
+                        }
+                    }).success(function (data) {
+                        deferred.resolve(data);
+                    }).error(function () {
+                        deferred.reject();
+                    });
+                    */
+                    
                     _list.save({
                         EndPoint: ngSecurity.Endpoint,
                         List: _ngList.Id, Deferred: 'Items'
-                    }, item).$promise.
-                    then(function(result){
-                        //deferred.resolve();
-                        return result;
-                        console.log(result);
+                    }, item).$promise.then(function (result) {
+                        //console.log(result);
+                        deferred.resolve(result);
+                        //return result;
+                        //console.log(result);
                     });
-
-                //});
-
-                /*
-                 {
-                 '_metadata':{'type':SP.listnameListItem},
-                 'Title': 'MyItem'
-                 }
-                 */
-                //return deferred.promise;
+                    
+                });
+                return deferred.promise;
             };
             /*
              this.Item = function (value) {

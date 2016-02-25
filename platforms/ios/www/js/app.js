@@ -17,15 +17,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    //SharePoint.Security.SetConfiguration('rutger.hemrika@blaud.com','rjm557308453!','duwboot.sharepoint.com');
   });
 })
-.config(['$compileProvider',function ($compileProvider) {
-      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
-      // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
-      $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|x-wmapp0):|data:image\//);
-  }
-])
 //.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', statesConfiguration])
 .config(['$httpProvider', function httpLoadingInterceptor($httpProvider) {
 
@@ -139,14 +132,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
   $urlRouterProvider.otherwise('/app/welcome');
 });
 
-//WhiteList
-//function compilerConfiguration($compileProvider) {
-
-//    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
-//    // // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
-//    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|x-wmapp0):|data:image\//);
-
-//}
 
 //function httpLoadingInterceptor($httpProvider) {
 

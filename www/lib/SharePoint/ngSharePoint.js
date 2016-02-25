@@ -46,7 +46,7 @@
 
         }])
 
-        .factory('SharePointInterceptor', ['$q', function ($q) {
+        .factory('SharePointInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
             return {
                 response: function (response) {
                     var deferred = $q.defer();
@@ -58,9 +58,18 @@
                     return deferred.promise;
                 },
                 request: function (request) {
-                    //request.headers.Authorization = "Bearer " + ngSecurity.SecurityToken;
+
+                    if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
+                        request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
+                    }
                     if (request.headers.Accept === "application/json;odata=verbose") {
                         request.url = decodeURIComponent(request.url);
+                    }
+                    //if (request.method.toLowerCase() === "get" && request.url.toLocaleLowerCase().endsWith('_vti_bin/idcrl.svc/')) {
+                    //    request.headers['Authorization'] = $rootScope.SecurityToken;
+                    //}
+                    if(request.method.toLowerCase() === "options" && request.url.toLocaleLowerCase().endsWith('contextinfo')) {
+                            request.skip();
                     }
                     //console.log(SharePoint.Security.ContextInfo.FormDigestTimeoutSeconds);
                     return request;
@@ -72,10 +81,12 @@
             $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
         }])
         .config(['$compileProvider', function ($compileProvider) {
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
-            // // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
-            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|x-wmapp0):|data:image\//);
-        }])
+
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|ms-appx-web|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
+            // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
+            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|ms-appx-web|x-wmapp0):|data:image\//);
+        }
+        ])
         .config(['$httpProvider', function ($httpProvider) {
 
             $httpProvider.defaults.headers.common = {};
@@ -88,6 +99,7 @@
             $httpProvider.defaults.withCredentials = true;
 
             $httpProvider.defaults.headers.common = {Accept: "application/json, text/plain, */*"};
+            $httpProvider.defaults.headers.common = {Accept: "*/*"};
             $httpProvider.defaults.headers.post = {"Content-Type": "application/json;charset=utf-8"};
 
             $httpProvider.interceptors.push('SharePointInterceptor');

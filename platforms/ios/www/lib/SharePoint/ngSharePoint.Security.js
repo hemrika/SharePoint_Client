@@ -187,31 +187,31 @@
 
                     // region SharePoint Forms Login
                     /*
-                    GetSecurityTokenService().then(function (token) {
-                        //console.log(token);
-                        _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
-                        Security.SecurityToken = _SecurityToken;
-                        console.log(_SecurityToken);
+                     GetSecurityTokenService().then(function (token) {
+                     //console.log(token);
+                     _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
+                     Security.SecurityToken = _SecurityToken;
+                     console.log(_SecurityToken);
 
-                        GetHttpCookies().then(function (page) {
-                            console.log(page);
+                     GetHttpCookies().then(function (page) {
+                     console.log(page);
 
-                            GetCurrentUser().then(function (user) {
-                                console.log(user);
-                                _CurrentUser = user;
-                                Security.CurrentUser = _CurrentUser;
-                                GetContextInfo().then(function(data){
-                                    console.log(data);
-                                    deferred.resolve(data);
-                                }); //GetContextInfo
-                            }); //GetCurrentUser
-                        }); //GetHttpCookies
-                    }); //GetSecurityTokenService
-                    */
+                     GetCurrentUser().then(function (user) {
+                     console.log(user);
+                     _CurrentUser = user;
+                     Security.CurrentUser = _CurrentUser;
+                     GetContextInfo().then(function(data){
+                     console.log(data);
+                     deferred.resolve(data);
+                     }); //GetContextInfo
+                     }); //GetCurrentUser
+                     }); //GetHttpCookies
+                     }); //GetSecurityTokenService
+                     */
                     //endregion
 
                     //region IDentity Client Runtime Library service
-                    
+
                     GetRemoteSecurityToken().then(function (token) {
                         //console.log(token);
                         _SecurityToken = angular.element(angular.element.parseXML(token)).find("BinarySecurityToken").text();
@@ -228,13 +228,13 @@
                                     _ContextInfo = contextinfo;
                                     Security.ContextInfo = _ContextInfo;
                                     //UpdateContextInfo().then(function () {
-                                        deferred.resolve();
+                                    deferred.resolve();
                                     //}); //UpdateContextInfo
                                 }); //GetContextInfo
                             }); //GetCurrentUser
                         }); //GetSecurityCookie
                     }); //GetRemoteSecurityToken
-                    
+
                     //endregion
                 });
             });
@@ -411,7 +411,7 @@
 
             $http({
                 method: 'GET',
-                //withCredentials: false,
+                withCredentials: false,
                 url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -434,6 +434,7 @@
 
             $http({
                 method: 'GET',
+                withCredentials: false,
                 url: _Realm.TenantBrandingURL.valueOf(),
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -514,20 +515,21 @@
             $http({
                 method: 'GET',
                 url: _IdCrlUrl,
-                //withCredentials: true,
-                cache: false,
+                withCredentials: false,
+                //cache: false,
                 headers: {
-                    //Accept : 'text/plain',
-                    'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
-                    'Authorization' : 'BPOSIDCRL '+ _SecurityToken
+                    "Accept": "application/json;odata=verbose"
+                    //'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
+                    //'Authorization' : 'BPOSIDCRL '+ _SecurityToken
                 }
             }).success(function (data) {
-                //$http.defaults.headers.common.Authorization = undefined;
+                $http.defaults.headers.common.Authorization = undefined;
                 deferred.resolve(data);
             }).error(function () {
+                $http.defaults.headers.common.Authorization = undefined;
                 deferred.reject();
             });
-            //$http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+            $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
             return deferred.promise;
         }
 
@@ -571,7 +573,7 @@
 
             $http({
                 method: 'GET',
-                //withCredentials: false,
+                withCredentials: false,
                 url: _CurrentUserUrl,
                 headers: {
                     Accept: "application/json;odata=verbose"
@@ -602,7 +604,7 @@
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
-                //withCredentials: false,
+                withCredentials: false,
                 data: message,
                 headers: {
                     'Content-Type': 'text/xml; charset="utf-8"'
@@ -630,6 +632,7 @@
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
+                withCredentials: false,
                 data: message,
                 headers: {
                     'Content-Type': 'text/xml; charset="utf-8"'

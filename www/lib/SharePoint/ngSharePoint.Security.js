@@ -614,7 +614,7 @@
                     'Content-Type': 'text/xml;charset="utf-8"'
                 }
             }).success(function (response) {
-                
+
                 var ContextInfo = _ContextInfo;
                 if (angular.isDefined(response.GetContextWebInformation)) {
                     ContextInfo = response.GetContextWebInformation;
