@@ -46,7 +46,7 @@
 
         }])
 
-        .factory('SharePointInterceptor', ['$q', function ($q) {
+        .factory('SharePointInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
             return {
                 response: function (response) {
                     var deferred = $q.defer();
@@ -58,15 +58,18 @@
                     return deferred.promise;
                 },
                 request: function (request) {
-                    //request.headers.Authorization = "Bearer " + ngSecurity.SecurityToken;
+
+                    if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
+                        request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
+                    }
                     if (request.headers.Accept === "application/json;odata=verbose") {
                         request.url = decodeURIComponent(request.url);
                     }
-
-                    if(request.method.toLowerCase() === "options") {
-                        if(request.url.toLocaleLowerCase().endsWith('contextinfo')) {
+                    //if (request.method.toLowerCase() === "get" && request.url.toLocaleLowerCase().endsWith('_vti_bin/idcrl.svc/')) {
+                    //    request.headers['Authorization'] = $rootScope.SecurityToken;
+                    //}
+                    if(request.method.toLowerCase() === "options" && request.url.toLocaleLowerCase().endsWith('contextinfo')) {
                             request.skip();
-                        }
                     }
                     //console.log(SharePoint.Security.ContextInfo.FormDigestTimeoutSeconds);
                     return request;

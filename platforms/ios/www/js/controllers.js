@@ -135,16 +135,16 @@
                     List.AddItem(new_item);
 
                     //List.Items.Add(1).then(function (Item) {
-                        //console.log(Item.Id());
+                    //console.log(Item.Id());
                     //});
                     /*
-                    List.Items().then(function (Items) {
-                        console.log(Items.length);
-                        $scope.Web = web.Properties;
-                        $scope.Web.List = List.Properties;
-                        $scope.Web.List.Items = Items;
-                    });
-                    */
+                     List.Items().then(function (Items) {
+                     console.log(Items.length);
+                     $scope.Web = web.Properties;
+                     $scope.Web.List = List.Properties;
+                     $scope.Web.List.Items = Items;
+                     });
+                     */
                 });
                 //$scope.Web = web.Properties;
                 //$scope.Web = SharePoint.CurrentWeb();

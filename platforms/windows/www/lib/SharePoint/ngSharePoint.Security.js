@@ -518,7 +518,7 @@
                 method: 'GET',
                 url: _IdCrlUrl,
                 //withCredentials: false,
-                //cache: false,
+                cache: false,
                 headers: {
                     "Accept": "application/json;odata=verbose",
                     //'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
@@ -554,7 +554,7 @@
                     data: _SecurityToken,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'//,
-                        //Accept: "application/json;odata=verbose"
+                        //'Accept': 'application/json;odata=verbose'
                     }
                 }).success(function (data) {
                     deferred.resolve(data);

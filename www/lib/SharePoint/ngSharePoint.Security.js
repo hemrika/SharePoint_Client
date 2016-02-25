@@ -519,7 +519,7 @@
                 method: 'GET',
                 url: _IdCrlUrl,
                 //withCredentials: false,
-                //cache: false,
+                cache: false,
                 headers: {
                     "Accept": "application/json;odata=verbose",
                     //'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
@@ -604,14 +604,17 @@
             }
             var message = FormDigestInformationToken();
 
+            $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+            //$http.defaults.headers.common.Origin = _ContextInfoUrl;
+
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
-                //withCredentials: false,
-                //data: message,
+                withCredentials: true,
+                data: message,
                 headers: {
                     'Accept': "application/json;odata=verbose;charset=utf-8",
-                    'Content-Type': 'text/xml;charset="utf-8"'
+                    'Content-Type': 'text/plain'
                 }
             }).success(function (response) {
 
@@ -625,7 +628,7 @@
                 _ContextInfo = ContextInfo;
                 Security.ContextInfo = _ContextInfo;
                 $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
-
+                delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.resolve(ContextInfo);
                 /*
                 if (angular.isDefined(response.GetContextWebInformation)) {
@@ -640,6 +643,7 @@
                 //validated(Security.ContextInfo.FormDigestValue);
             }, function (response) {
                 //console.log("Cannot get digestValue.");
+                delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.reject();
             });
             return deferred.promise;

@@ -312,8 +312,8 @@ module.exports.metadata =
     "cordova-plugin-media-capture": "1.2.0",
     "cordova-plugin-network-information": "1.2.0",
     "cordova-plugin-splashscreen": "3.2.0",
-    "ionic-plugin-keyboard": "1.0.8",
-    "cordova-plugin-whitelist": "1.2.1"
+    "cordova-plugin-whitelist": "1.2.1",
+    "ionic-plugin-keyboard": "1.0.8"
 }
 // BOTTOM OF METADATA
 });

@@ -140,10 +140,10 @@
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         },
-        "ionic-plugin-keyboard": {
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         },
-        "cordova-plugin-whitelist": {
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.blaud.sharepoint"
         }
     },
