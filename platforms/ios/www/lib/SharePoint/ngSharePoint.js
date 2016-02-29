@@ -59,6 +59,8 @@
                 },
                 request: function (request) {
 
+                    //request.headers.Origin = '*';
+
                     if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
                         request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
                     }
@@ -96,10 +98,13 @@
 
             $httpProvider.defaults.useXDomain = true;
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            delete $httpProvider.defaults.headers.common['Accept-Encoding'];
+            delete $httpProvider.defaults.headers.common['Accept-Language'];
             $httpProvider.defaults.withCredentials = true;
 
             $httpProvider.defaults.headers.common = {Accept: "application/json, text/plain, */*"};
-            $httpProvider.defaults.headers.common = {Accept: "*/*"};
+            //$httpProvider.defaults.headers.common = {Accept: "*/*"};
+            //$httpProvider.defaults.headers.common = {Origin: "*"};
             $httpProvider.defaults.headers.post = {"Content-Type": "application/json;charset=utf-8"};
 
             $httpProvider.interceptors.push('SharePointInterceptor');

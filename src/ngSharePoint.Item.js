@@ -3,48 +3,51 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngItem', ['ngSecurity', '$resource', '$q', function (ngSecurity, $resource, $q) {
+    SharePoint.factory('ngItem', ['ngSecurity', 'ngFile', /*'ngFolder',*/ '$resource', '$q', function (ngSecurity, ngFile, /*ngFolder,*/ $resource, $q) {
 
         var _ngItem = {
+            "__metadata": {
+                "type": "type':SP.listnameListItem"
+            },
             "AttachmentFiles": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/AttachmentFiles"
-            }
+                "__deferred": {
+                    "uri": "/AttachmentFiles"
+                }
             },
             "ContentType": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/ContentType"
-            }
+                "__deferred": {
+                    "uri": "/ContentType"
+                }
             },
             "FieldValuesAsHtml": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/FieldValuesAsHtml"
-            }
+                "__deferred": {
+                    "uri": "/FieldValuesAsHtml"
+                }
             },
             "FieldValuesAsText": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/FieldValuesAsText"
-            }
+                "__deferred": {
+                    "uri": "/FieldValuesAsText"
+                }
             },
             "FieldValuesForEdit": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/FieldValuesForEdit"
-            }
+                "__deferred": {
+                    "uri": "/FieldValuesForEdit"
+                }
             },
             "File": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/File"
-            }
+                "__deferred": {
+                    "uri": "/File"
+                }
             },
             "Folder": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/Folder"
-            }
+                "__deferred": {
+                    "uri": "/Folder"
+                }
             },
             "ParentList": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Web/Lists(guid'556d5d20-d16f-42c0-9b8c-58559d490981')/Items(1)/ParentList"
-            }
+                "__deferred": {
+                    "uri": "/ParentList"
+                }
             },
             "FileSystemObjectType": 0,
             "Id": 1,
@@ -57,91 +60,285 @@
             "GUID": ""
         };
 
-        var API = $resource("https://:EndPoint/_api/Web/Lists(:List)/Items(:Item)/:Deferred",
-            {},//{ EndPoint: '', List: '', Item: '', Deferred: ''},
+        var _item = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items(:Item)/:Deferred",
+            {},
             {
                 get: {
                     method: 'GET',
-                    params: {   EndPoint: '', List: '', Item: '', Deferred: ''},
+                    params: {EndPoint: '', List: '', Item: '', Deferred: ''},
                     headers: {
-                        'accept': 'application/json;odata=verbose',
+                        'Accept': 'application/json;odata=verbose',
                         'content-type': 'application/json;odata=verbose'
                     }
                 },
                 deferred: {
                     method: 'GET',
-                    params: {   EndPoint: '', List: '', Item: '', Deferred: ''},
+                    params: {EndPoint: '', List: '', Item: '', Deferred: ''},
                     headers: {
-                        'accept': 'application/json;odata=verbose',
+                        'Accept': 'application/json;odata=verbose',
                         'content-type': 'application/json;odata=verbose'
                     }
                 }
             }
-            );
+        );
+
+        var _items = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items",
+            {},//{ EndPoint: '', List: '', Item: '', Deferred: ''},
+            {
+                get: {
+                    method: 'GET',
+                    params: {EndPoint: '', List: ''},
+                    headers: {
+                        'Accept': 'application/json;odata=verbose',
+                        'content-type': 'application/json;odata=verbose'
+                    }
+                }
+            }
+        );
 
         var ngItem = function (value) {
 
-            this.prototype.FileSystemObjectType = function (value) {
-                return angular.isDefined(value) ? (_ngItem.FileSystemObjectType = value) : _ngItem.FileSystemObjectType;
-            };
-            this.prototype.Id = function (value) {
-                return angular.isDefined(value) ? (_ngItem.Id = value) : _ngItem.Id;
-            };
-            this.prototype.ContentTypeId = function (value) {
-                return angular.isDefined(value) ? (_ngItem.ContentTypeId = value) : _ngItem.ContentTypeId;
-            };
-            this.prototype.Title = function (value) {
-                return angular.isDefined(value) ? (_ngItem.Title = value) : _ngItem.Title;
-            };
-            this.prototype.Modified = function (value) {
-                return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
-            };
-            this.prototype.Created = function (value) {
-                return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
-            };
-            this.prototype.Attachments = function() {
-                return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
-            };
-            this.prototype.GUID = function() {
-                return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
-            };
-            this.prototype.AttachmentFiles = function() {
-                return  _ngList.AttachmentFiles.__deferred.uri.valueOf();
-            };
-            this.prototype.ContentType = function() {
-                return  _ngList.ContentType.__deferred.uri.valueOf();
-            };
-            this.prototype.FieldValuesAsHtml = function() {
-                return  _ngList.FieldValuesAsHtml.__deferred.uri.valueOf();
-            };
-            this.prototype.FieldValuesAsText = function() {
-                return  _ngList.FieldValuesAsText.__deferred.uri.valueOf();
-            };
-            this.prototype.FieldValuesForEdit = function() {
-                return  _ngList.FieldValuesForEdit.__deferred.uri.valueOf();
-            };
-            this.prototype.File = function() {
-                return  _ngList.File.__deferred.uri.valueOf();
-            };
-            this.prototype.Folder = function() {
-                return  _ngList.Folder.__deferred.uri.valueOf();
-            };
-            this.prototype.ParentList = function() {
-                return  _ngList.ParentList.__deferred.uri.valueOf();
-            };
-         };
+            if (angular.isDefined(this)) {
 
-        //ngItem.prototype = Object.create(ngItem);
-        
-        //var OpenItem = function(value){
-        //    //return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
-        //    var item = API.deferred({EndPoint: '', List: '', Item: '', Deferred: ''});
-        //    //var item = API.defered( ).then(function(result){ return result;});
-        //    return item;
-        //};
-        
-        //ngItem.prototype.constructor = OpenItem
+                var deferred = $q.defer();
+
+                this.FileSystemObjectType = function (value) {
+                    return angular.isDefined(value) ? (_ngItem.FileSystemObjectType = value) : _ngItem.FileSystemObjectType;
+                };
+                this.Id = function (value) {
+                    return angular.isDefined(value) ? (_ngItem.Id = value) : _ngItem.Id;
+                };
+                this.ContentTypeId = function (value) {
+                    return angular.isDefined(value) ? (_ngItem.ContentTypeId = value) : _ngItem.ContentTypeId;
+                };
+                this.Title = function (value) {
+                    return angular.isDefined(value) ? (_ngItem.Title = value) : _ngItem.Title;
+                };
+                this.Modified = function (value) {
+                    return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
+                };
+                this.Created = function (value) {
+                    return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
+                };
+                this.Attachments = function () {
+                    return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
+                };
+                this.GUID = function () {
+                    return angular.isDefined(value) ? (_ngItem.Created = value) : _ngItem.Created;
+                };
+                this.AttachmentFiles = function (value) {
+
+                    if (angular.isDefined(value)) {
+                        return new ngFile(value);
+                    }
+                    else {
+
+                        var deferred = $q.defer();
+
+                        var Operator = _ngItem.AttachmentFiles.__deferred.uri.split('/').pop();
+                        if (ngSecurity.CurrentUser !== null) {
+                            _item.deferred({
+                                EndPoint: ngSecurity.Endpoint,
+                                List: ngSecurity.CurrentList.Id(),
+                                Item: _ngItem.Id,
+                                Deferred: Operator
+                            }).$promise.then(
+                                function (data) {
+                                    if (angular.isDefined(data.results)) {
+                                        deferred.resolve(data.results);
+                                    }
+                                    else {
+                                        deferred.resolve(data);
+                                    }
+                                });
+                        }
+                        return deferred.promise;
+                    }
+                };
+                this.ContentType = function () {
+                    var Operator = _ngItem.ContentType.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id(),
+                            Item: _ngItem.Id,
+                            Deferred: Operator
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                };
+                this.FieldValuesAsHtml = function () {
+                    var Operator = _ngItem.FieldValuesAsHtml.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: _ngList.Id,
+                            Item: _ngItem.Id,
+                            Deferred: Operator
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                };
+                this.FieldValuesAsText = function () {
+                    var Operator = _ngItem.FieldValuesAsText.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id(),
+                            Item: _ngItem.Id,
+                            Deferred: Operator
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                };
+                this.FieldValuesForEdit = function () {
+                    var Operator = _ngItem.FieldValuesForEdit.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id(),
+                            Item: _ngItem.Id,
+                            Deferred: Operator
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                };
+                this.File = function () {
+
+                    return new ngFile();
+                    /*
+                     var Operator = _ngList.File.__deferred.uri.split('/').pop();
+                     if (ngSecurity.CurrentUser !== null) {
+                     API.deferred({EndPoint: ngSecurity.Endpoint, List: _ngList.Id, Deferred: Operator}).$promise.then(
+                     function (data) {
+                     if (angular.isDefined(data.results)) {
+                     deferred.resolve(data.results);
+                     }
+                     else {
+                     deferred.resolve(data);
+                     }
+                     });
+                     }
+                     return deferred.promise;
+                     */
+                };
+                this.Folder = function () {
+
+                    var Operator = _ngItem.Folder.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id(),
+                            Item: _ngItem.Id,
+                            Deferred: Operator
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                };
+                this.ParentList = function () {
+                    var Operator = _ngItem.ParentList.__deferred.uri.split('/').pop();
+                    if (ngSecurity.CurrentUser !== null) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id(),
+                            Item: _ngItem.Id,
+                            Deferred: Operator
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                    return deferred.promise;
+                };
+
+                var self = this;
+
+                if (ngSecurity.CurrentUser !== null) {
+                    if (angular.isDefined(value)) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id(),
+                            Item: value
+                        }).$promise.then(
+                            function (data) {
+                                _ngItem = data;
+                                ngSecurity.CurrentItem = self;
+                                self.Properties = _ngItem;
+                                deferred.resolve(self);
+                            });
+                    }
+                    else {
+                        _items.get({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Id()
+                        }).$promise.then(
+                            function (data) {
+                                if (angular.isDefined(data.results)) {
+                                    deferred.resolve(data.results);
+                                }
+                                else {
+                                    deferred.resolve(data);
+                                }
+                            });
+                    }
+                }
+                return deferred.promise;
+            }
+            else {
+                var new_item = _ngItem;
+                var type = new_item.__metadata.type.valueOf();
+                type =  type.replace('listname', ngSecurity.CurrentList.Title());
+                new_item.__metadata.type = type;
+                return new_item;
+            }
+
+        };
 
         return ngItem;
-  }]);
+    }]);
 })();

@@ -1,172 +1,112 @@
 ﻿(function () {
-  'use strict';
-
-        angular.module('ngSharePoint', ['ngResource'])
-
-        .factory('SharePoint', ['ngSecurity', 'ngSite', 'ngWeb', function (ngSecurity, ngSite, ngWeb) {
-
-            var CurrentWeb = null;
-            var CurrentList = null;
-            var CurrentItem = null;
-
-            var ngSharePoint = {
-                Security: ngSecurity,
-                Site: ngSite,
-                Web: ngWeb,
-                CurrentWeb: CurrentWeb,
-                CurrentList : CurrentList,
-                CurrentItem : CurrentItem
-            };
-
-            return ngSharePoint;
-
-        }])
-        /*
-        .factory('SharePointInterceptor', ['$q', function ($q) {
-            return {
-                response: function (response) {
-                    var deferred = $q.defer();
-                    //response.headers["Access-Control-Allow-Origin"] = "*";
-                    //response.headers["Access-Control-Allow-Headers"] = "X-Requested-With";
-                    //response.headers["Access-Control-Allow-Methods"] = '"GET, POST", "PUT", "DELETE"';
-                    if (response.headers()['content-type'] === "application/json;odata=verbose;charset=utf-8" && response.data) {
-                      response.data = response.data.d ? response.data.d : response.data;
-                    }
-                    deferred.resolve(response);
-                    return deferred.promise;
-                }
-            };
-        }])
-        */
-        .config(['$httpProvider', function ($httpProvider) {
-            //$httpProvider.defaults.useXDomain = true;
-            //delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            //$httpProvider.interceptors.push('SharePointInterceptor');
-        }]);
-})();
-/*
-(function () {
     'use strict';
-    function SharePointInterceptor($q){
-        return {
-            response: function (response) {
-                var deferred = $q.defer();
-                response.headers["Access-Control-Allow-Origin"] = "*";
-                response.headers["Access-Control-Allow-Headers"] = "X-Requested-With";
-                response.headers["Access-Control-Allow-Methods"] = '"GET, POST", "PUT", "DELETE"';
-                if (response.headers()['content-type'] === "application/json;odata=verbose;charset=utf-8" && response.data) {
-                    response.data = response.data.d ? response.data.d : response.data;
-                }
-                deferred.resolve(response);
-                return deferred.promise;
-            }
-        };
-    }
 
-    SharePointInterceptor.$inject = ['$q'];
-
-    function SharePointConfigurator($httpProvider) {
-        $httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-        $httpProvider.interceptors.push('SharePointInterceptor');
-    }
-
-    SharePointConfigurator.$inject = ['$httpProvider'];
-
-    function SharePoint($http, ngSecurity, ngSite, ngWeb) {
-
-        function Configure(value) {
-            return $http.get('/api/maa')
-                .then(getAvengersComplete)
-                .catch(getAvengersFailed);
-
-            function getAvengersComplete(response) {
-                return response.data.results;
-            }
-
-            function getAvengersFailed(error) {
-                logger.error('XHR Failed for getAvengers.' + error.data);
-            }
-        }
-
-        function OpenWeb(value) {
-          var web = ngWeb(value);
-          return $http.get('/api/maa')
-            .then(getAvengersComplete)
-            .catch(getAvengersFailed);
-
-          function getAvengersComplete(response) {
-            return response.data.results;
-          }
-
-          function getAvengersFailed(error) {
-            logger.error('XHR Failed for getAvengers.' + error.data);
-          }
-        }
-
-        return {
-            Security: ngSecurity,
-            Site: ngSite,
-            Web: ngWeb,
-            Configure: Configure,
-            OpenWeb: OpenWeb
-        };
-
-    }
-
-    SharePoint.$inject = ['$http', 'ngSecurity', 'ngSite', 'ngWeb'];
-
-  angular.module('ngSharePoint', ['ngResource'])
-
-        .factory('SharePointInterceptor', SharePointInterceptor)
-        .config('SharePointConfigurator', SharePointConfigurator)
-        .factory('SharePoint', SharePoint);
-})();
-*/
-/*
-(function () {
-  'use strict';
-
-  angular.module('ngSharePoint', ['ngResource'])
+    angular.module('ngSharePoint', ['ngResource'])
 
         .factory('SharePoint', ['ngSecurity', 'ngSite', 'ngWeb', function (ngSecurity, ngSite, ngWeb) {
 
-            var ngSharePoint = {
-                Security: ngSecurity,
-                Site: ngSite,
-                Web: ngWeb,
-
-              Configure : function(username, password, endpoint) {
-                //ngSecurity.SetConfiguration(null,null,username, password, endpoint);
-              },
-              OpenWeb : function(value) {
-                //return angular.isDefined(value) ? (ngWeb.OpenWeb(value)) : ngWeb.OpenWeb();
-              }
+            var EndPoint = function () {
+                return ngSecurity.EndPoint;
             };
 
-            return ngSharePoint;
+            var CurrentUser = function () {
+                return ngSecurity.CurrentUser;
+            };
+
+            var CurrentWeb = function () {
+                return ngSecurity.CurrentWeb;
+            };
+
+            var CurrentList = function () {
+                return ngSecurity.CurrentList;
+            };
+
+            var CurrentItem = function () {
+                return ngSecurity.CurrentItem;
+            };
+
+            var CurrentFile = function () {
+                return ngSecurity.CurrentFile;
+            };
+
+            var SharePoint = {};
+
+            //var ngSharePoint = {
+            SharePoint.Security = ngSecurity;
+            SharePoint.Site = ngSite;
+            SharePoint.Web = ngWeb;
+            SharePoint.EndPoint = EndPoint;
+            SharePoint.CurrentUser = CurrentUser;
+            SharePoint.CurrentWeb = CurrentWeb;
+            SharePoint.CurrentList = CurrentList;
+            SharePoint.CurrentItem = CurrentItem;
+            SharePoint.CurrentFile = CurrentFile;
+
+            return SharePoint;
 
         }])
-        .factory('SharePointInterceptor', ['$q', function ($q) {
+
+        .factory('SharePointInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
             return {
                 response: function (response) {
                     var deferred = $q.defer();
-                    response.headers["Access-Control-Allow-Origin"] = "*";
-                    response.headers["Access-Control-Allow-Headers"] = "X-Requested-With";
-                    response.headers["Access-Control-Allow-Methods"] = '"GET, POST", "PUT", "DELETE"';
                     if (response.headers()['content-type'] === "application/json;odata=verbose;charset=utf-8" && response.data) {
-                      response.data = response.data.d ? response.data.d : response.data;
+                        response.data = response.data.d ? response.data.d : response.data;
                     }
+
                     deferred.resolve(response);
                     return deferred.promise;
+                },
+                request: function (request) {
+
+                    //request.headers.Origin = '*';
+
+                    if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
+                        request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
+                    }
+                    if (request.headers.Accept === "application/json;odata=verbose") {
+                        request.url = decodeURIComponent(request.url);
+                    }
+                    //if (request.method.toLowerCase() === "get" && request.url.toLocaleLowerCase().endsWith('_vti_bin/idcrl.svc/')) {
+                    //    request.headers['Authorization'] = $rootScope.SecurityToken;
+                    //}
+                    if(request.method.toLowerCase() === "options" && request.url.toLocaleLowerCase().endsWith('contextinfo')) {
+                            request.skip();
+                    }
+                    //console.log(SharePoint.Security.ContextInfo.FormDigestTimeoutSeconds);
+                    return request;
+
                 }
             };
         }])
+        .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
+            $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
+        }])
+        .config(['$compileProvider', function ($compileProvider) {
 
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|ms-appx-web|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
+            // Use $compileProvider.urlSanitizationWhitelist(...) for Angular 1.2
+            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|ms-appx-web|x-wmapp0):|data:image\//);
+        }
+        ])
         .config(['$httpProvider', function ($httpProvider) {
+
+            $httpProvider.defaults.headers.common = {};
+            $httpProvider.defaults.headers.post = {};
+            $httpProvider.defaults.headers.put = {};
+            $httpProvider.defaults.headers.patch = {};
+
             $httpProvider.defaults.useXDomain = true;
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            delete $httpProvider.defaults.headers.common['Accept-Encoding'];
+            delete $httpProvider.defaults.headers.common['Accept-Language'];
+            $httpProvider.defaults.withCredentials = true;
+
+            $httpProvider.defaults.headers.common = {Accept: "application/json, text/plain, */*"};
+            //$httpProvider.defaults.headers.common = {Accept: "*/*"};
+            //$httpProvider.defaults.headers.common = {Origin: "*"};
+            $httpProvider.defaults.headers.post = {"Content-Type": "application/json;charset=utf-8"};
+
             $httpProvider.interceptors.push('SharePointInterceptor');
         }]);
 })();
-*/

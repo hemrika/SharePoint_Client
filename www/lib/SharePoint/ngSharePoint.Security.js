@@ -157,7 +157,7 @@
             _Hostname = location.hostname;
 
             _SignInUrl = 'https://' + _Hostname + '/_forms/default.aspx?wa=wsignin1.0';
-            _ContextInfoUrl = 'https://' + endpoint + '/_api/contextinfo';
+            _ContextInfoUrl = 'https://' + endpoint + '/_api/ContextInfo';
             _CurrentUserUrl = 'https://' + endpoint + '/_api/web/CurrentUser';
             _IdCrlUrl = 'https://' + endpoint + '/_vti_bin/idcrl.svc/';
             _PostQueryUrl = 'https://' + endpoint + '/_api/search/postquery';
@@ -613,7 +613,8 @@
                 data: message,
                 headers: {
                     'Accept': "application/json;odata=verbose;charset=utf-8",
-                    'Content-Type': 'text/plain'
+                    //'Content-Type': 'text/plain'
+                    'Content-Type': '"application/json;odata=verbose;charset=utf-8"'//'text/xml; charset="utf-8"'
                 }
             }).success(function (response) {
 

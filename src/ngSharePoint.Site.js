@@ -4,90 +4,120 @@
   var SharePoint = angular.module('ngSharePoint');
 
   SharePoint.factory('ngSite', ['ngSecurity', 'ngWeb', '$resource', '$q', function (ngSecurity, ngWeb, $resource, $q) {
-        var _ngSite = {
-            "Features": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Site/Features"
-            }
-            },
-            "RootWeb": {
-            "__deferred": {
-                "uri": "https://duwboot.sharepoint.com/_api/Site/RootWeb"
-            }
-            },
-            "CompatibilityLevel": 15,
-            "Id": "",
-            "PrimaryUri": "",
-            "ReadOnly": false,
-            "ServerRelativeUrl": "",
-            "Url": ""
-        };
+      var _ngSite = {
+          "CompatibilityLevel": 15,
+          "Id": "",
+          "PrimaryUri": "",
+          "ReadOnly": false,
+          "RequiredDesignerVersion": "15.0.0.0",
+          "ServerRelativeUrl": "/",
+          "Url": "",
+          "Features": {
+              "__deferred": {
+                  "uri": "https://duwboot.sharepoint.com/_api/Site/Features"
+              }
+          },
+          "RootWeb": {
+              "__deferred": {
+                  "uri": "https://duwboot.sharepoint.com/_api/Site/RootWeb"
+              }
+          }
+      };
 
-        var API = $resource('https://:EndPoint/_api/Site/:Deferred',
-            {},//{   EndPoint: '', Deferred: ''},
-            {
-                get: {
-                    method: 'GET',
-                    params: {   EndPoint: '', Deferred: ''},
-                    headers: {
-                        'accept': 'application/json;odata=verbose',
-                        'content-type': 'application/json;odata=verbose'
-                    }
-                },
-                deferred: {
-                    method: 'GET',
-                    params: {   EndPoint: '', Deferred: ''},
-                    headers: {
-                        'accept': 'application/json;odata=verbose',
-                        'content-type': 'application/json;odata=verbose'
-                    }
-                }
-            }
-        );
+      var API = $resource('https://:EndPoint/_api/Site/:Deferred',
+          {},//{   EndPoint: '', Deferred: ''},
+          {
+              get: {
+                  method: 'GET',
+                  params: {   EndPoint: '', Deferred: ''},
+                  headers: {
+                      'Accept': 'application/json;odata=verbose',
+                      'content-type': 'application/json;odata=verbose'
+                  }
+              },
+              deferred: {
+                  method: 'GET',
+                  params: {   EndPoint: '', Deferred: ''},
+                  headers: {
+                      'Accept': 'application/json;odata=verbose',
+                      'content-type': 'application/json;odata=verbose'
+                  }
+              }
+          }
+      );
 
         var ngSite = function (value) {
 
-            this.prototype.CompatibilityLevel = function (value) {
+            var deferred = $q.defer();
+
+            this.CompatibilityLevel = function (value) {
                 return angular.isDefined(value) ? (_ngSite.CompatibilityLevel = value) : _ngSite.CompatibilityLevel;
             };
-            this.prototype.AlloIdwRssFeeds = function (value) {
-                return angular.isDefined(value) ? (_ngSite.Id = value) : _ngSite.Id;
-            };
-            this.prototype.PrimaryUri = function (value) {
+            this.PrimaryUri = function (value) {
                 return angular.isDefined(value) ? (_ngSite.PrimaryUri = value) : _ngSite.PrimaryUri;
             };
-            this.prototype.ReadOnly = function (value) {
+            this.ReadOnly = function (value) {
                 return angular.isDefined(value) ? (_ngSite.ReadOnly = value) : _ngSite.ReadOnly;
             };
-            this.prototype.ServerRelativeUrl = function (value) {
+            this.ServerRelativeUrl = function (value) {
                 return angular.isDefined(value) ? (_ngSite.ServerRelativeUrl = value) : _ngSite.ServerRelativeUrl;
             };
-            this.prototype.Url = function (value) {
+            this.Url = function (value) {
                 return angular.isDefined(value) ? (_ngSite.Url = value) : _ngSite.Url;
             };
-            this.prototype.Features = function(){
-                API.Deferred = _ngWeb.Features.__deferred.uri.valueOf();
-                API.EndPoint = _ngWeb.Features.__deferred.uri.valueOf();
-                API.deferred().prototype.then(function (result) {
-                    console.log(result);
-                })
-                return _ngWeb.Features.__deferred.uri.valueOf();
-            };
-            this.prototype.RootWeb = function(){
-                return _ngWeb.RootWeb.__deferred.uri.valueOf();
-            };
-         };
+            this.Features = function () {
+                var deferred = $q.defer();
 
-        //ngSite.prototype = Object.create(ngSite);
-        
-        //var OpenSite = function(value){
-        //    //return angular.isDefined(value) ? (_ngItem.Modified = value) : _ngItem.Modified;
-        //    var site = API.deferred({EndPoint: '', List: '', Item: '', Deferred: ''});
-        //    //var item = API.defered( ).then(function(result){ return result;});
-        //    return site;
-        //};
-        
-        //ngSite.prototype.constructor = OpenSite;
+                var Operator = _ngSite.Features.__deferred.uri.split('/').pop();
+                if (ngSecurity.CurrentUser !== null) {
+                    API.deferred({EndPoint: ngSecurity.Endpoint, Deferred: Operator}).$promise.then(
+                        function (data) {
+                            if (angular.isDefined(data.results)) {
+                                deferred.resolve(data.results);
+                            }
+                            else {
+                                deferred.resolve(data);
+                            }
+                        });
+                }
+                return deferred.promise;
+            };
+            this.RootWeb = function () {
+
+                return new ngWeb();
+                /*
+                var deferred = $q.defer();
+
+                var Operator = _ngSite.RootWeb.__deferred.uri.split('/').pop();
+                if (ngSecurity.CurrentUser !== null) {
+                    API.deferred({EndPoint: ngSecurity.Endpoint, Deferred: Operator}).$promise.then(
+                        function (data) {
+                            if (angular.isDefined(data.results)) {
+                                deferred.resolve(data.results);
+                            }
+                            else {
+                                deferred.resolve(data);
+                            }
+                        });
+                }
+                return deferred.promise;
+                */
+            };
+
+            var self = this;
+
+            if(ngSecurity.CurrentUser !== null) {
+                API.get({EndPoint: ngSecurity.Endpoint}).$promise.then(
+                    function (data) {
+                        _ngSite = data;
+                        ngSecurity.CurrentSite = self;
+                        self.Properties = _ngSite;
+                        deferred.resolve(self);
+                    });
+            }
+
+            return deferred.promise;
+         };
 
         return ngSite;
   }]);
