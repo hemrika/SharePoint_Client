@@ -63,6 +63,19 @@
          * @type {null}
          * @private
          */
+        var _SitesAsmx = null;
+
+        /**
+         *
+         * @type {boolean}
+         * @private
+         */
+        var _UseContextInfo = true;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _SecurityToken = null;
 
         /**
@@ -161,7 +174,7 @@
             _CurrentUserUrl = 'https://' + endpoint + '/_api/web/CurrentUser';
             _IdCrlUrl = 'https://' + endpoint + '/_vti_bin/idcrl.svc/';
             _PostQueryUrl = 'https://' + endpoint + '/_api/search/postquery';
-
+            _SitesAsmx = 'https://' + endpoint + '/_vti_bin/sites.asmx';
             deferred.resolve();
 
             return deferred.promise;
@@ -226,10 +239,22 @@
                                 Security.CurrentUser = _CurrentUser;
                                 GetContextInfo().then(function(contextinfo){
                                     //console.log(contextinfo);
+                                    if(contextinfo === ""){
+                                        _UseContextInfo = false;
+                                        Security.UseContextInfo = false;
+                                        GetContextInfoService().then(function(contextinfov2){
+                                            _ContextInfo = contextinfov2;
+                                            Security.ContextInfo = _ContextInfo;
+                                            deferred.resolve();
+                                        });
+                                    }
+                                    else {
                                     _ContextInfo = contextinfo;
                                     Security.ContextInfo = _ContextInfo;
+                                        deferred.resolve();
+                                    }
                                     //UpdateContextInfo().then(function () {
-                                    deferred.resolve();
+
                                     //}); //UpdateContextInfo
                                 }); //GetContextInfo
                             }); //GetCurrentUser
@@ -263,6 +288,7 @@
         Security.SecurityToken = _SecurityToken;
         Security.Realm = _Realm;
         Security.Branding = _Branding;
+        Security.UseContextInfo = _UseContextInfo;
 
         return Security;
 
@@ -360,9 +386,9 @@
         function FormDigestInformationToken() {
             var fdit = new Array("");
             fdit.push('<?xml version="1.0" encoding="utf-8"?>');
-            fdit.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd="http://www.w3.org/2001/XMLSchema&quot; xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
+            fdit.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
             fdit.push('<soap:Body>');
-            fdit.push('<GetUpdatedFormDigestInformation xmlns="http://schemas.microsoft.com/sharepoint/soap/&quot; />');
+            fdit.push('<GetUpdatedFormDigestInformation xmlns="http://schemas.microsoft.com/sharepoint/soap/" />');
             fdit.push('</soap:Body>');
             fdit.push('</soap:Envelope>');
             return fdit.join("").toString();
@@ -618,29 +644,24 @@
                 }
             }).success(function (response) {
 
-                var ContextInfo = _ContextInfo;
-                if (angular.isDefined(response.GetContextWebInformation)) {
-                    ContextInfo = response.GetContextWebInformation;
-                }
-                else {
-                    ContextInfo = response;
-                }
-                _ContextInfo = ContextInfo;
-                Security.ContextInfo = _ContextInfo;
-                $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
-                delete $http.defaults.headers.common.Authorization;// = undefined;
-                deferred.resolve(ContextInfo);
-                /*
-                if (angular.isDefined(response.GetContextWebInformation)) {
-                    ContextInfo
-                    deferred.resolve(response.GetContextWebInformation);
+                if(response !== "") {
+                    var ContextInfo = _ContextInfo;
+                    if (angular.isDefined(response.GetContextWebInformation)) {
+                        ContextInfo = response.GetContextWebInformation;
+                    }
+                    else {
+                        ContextInfo = response;
+                    }
+
+                    _ContextInfo = ContextInfo;
+                    Security.ContextInfo = _ContextInfo;
                     $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
+                    delete $http.defaults.headers.common.Authorization;// = undefined;
+                    deferred.resolve(ContextInfo);
                 }
                 else {
                     deferred.resolve(response);
                 }
-                */
-                //validated(Security.ContextInfo.FormDigestValue);
             }, function (response) {
                 //console.log("Cannot get digestValue.");
                 delete $http.defaults.headers.common.Authorization;// = undefined;
@@ -649,6 +670,50 @@
             return deferred.promise;
         }
 
+        function GetContextInfoService()
+        {
+            var deferred = $q.defer();
+
+            if (_SecurityToken.length == 0) {
+                deferred.reject();
+            }
+            var message = FormDigestInformationToken();
+
+            $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+            //$http.defaults.headers.common.Origin = _ContextInfoUrl;
+            $http({
+                url: _SitesAsmx,
+                method: "POST",
+                withCredentials: true,
+                data: message,
+                headers: {
+                    'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/GetUpdatedFormDigestInformation',
+                    'X-RequestForceAuthentication': 'true',
+                    'Content-Type': 'text/xml; charset="utf-8"'
+                }
+            }).success(function (response) {
+
+                var ContextInfo = _ContextInfo;
+
+                ContextInfo.FormDigestTimeoutSeconds = angular.element(angular.element.parseXML(response)).find("TimeoutSeconds").text();
+                ContextInfo.FormDigestValue = angular.element(angular.element.parseXML(response)).find("DigestValue").text();
+                ContextInfo.WebFullUrl = angular.element(angular.element.parseXML(response)).find("WebFullUrl").text();
+                ContextInfo.LibraryVersion = angular.element(angular.element.parseXML(response)).find("LibraryVersion").text();
+                //ContextInfo.SiteFullUrl = angular.element(angular.element.parseXML(response)).find("SiteFullUrl").text();
+                ContextInfo.SupportedSchemaVersions = angular.element(angular.element.parseXML(response)).find("SupportedSchemaVersions").text();
+
+                _ContextInfo = ContextInfo;
+                Security.ContextInfo = _ContextInfo;
+                $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
+                delete $http.defaults.headers.common.Authorization;// = undefined;
+                deferred.resolve(ContextInfo);
+            }, function (response) {
+                //console.log("Cannot get digestValue.");
+                delete $http.defaults.headers.common.Authorization;// = undefined;
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
         function UpdateContextInfo() {
 
             var deferred = $q.defer();
@@ -658,36 +723,71 @@
             }
             var message = FormDigestInformationToken();
 
-            $http({
-                url: _ContextInfoUrl,
-                method: "POST",
-                withCredentials: false,
-                data: message,
-                headers: {
-                    'Accept': "application/json;odata=verbose",
-                    'Content-Type': 'text/xml; charset="utf-8"'
-                }
-            }).success(function (response) {
+            if(_UseContextInfo) {
+                $http({
+                    url: _ContextInfoUrl,
+                    method: "POST",
+                    withCredentials: false,
+                    data: message,
+                    headers: {
+                        'Accept': "application/json;odata=verbose",
+                        'Content-Type': 'text/xml; charset="utf-8"'
+                    }
+                }).success(function (response) {
 
-                var ContextInfo = _ContextInfo;
-                if (angular.isDefined(response.GetContextWebInformation)) {
-                    ContextInfo = response.GetContextWebInformation;
-                }
-                else {
-                    ContextInfo = response;
-                }
-                _ContextInfo = ContextInfo;
-                Security.ContextInfo = _ContextInfo;
-                $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
-                //setTimeout(function () {
-                //   UpdateContextInfo();
-                //}
-                //, _ContextInfo.FormDigestTimeoutSeconds);
+                    var ContextInfo = _ContextInfo;
+                    if (angular.isDefined(response.GetContextWebInformation)) {
+                        ContextInfo = response.GetContextWebInformation;
+                    }
+                    else {
+                        ContextInfo = response;
+                    }
+                    _ContextInfo = ContextInfo;
+                    Security.ContextInfo = _ContextInfo;
+                    $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
+                    //setTimeout(function () {
+                    //   UpdateContextInfo();
+                    //}
+                    //, _ContextInfo.FormDigestTimeoutSeconds);
 
-                deferred.resolve();
-            }, function (response) {
-                deferred.reject();
-            });
+                    deferred.resolve(_ContextInfo);
+                }, function (response) {
+                    deferred.reject();
+                });
+            }
+            else {
+                $http({
+                    url: _SitesAsmx,
+                    method: "POST",
+                    withCredentials: true,
+                    data: message,
+                    headers: {
+                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/GetUpdatedFormDigestInformation',
+                        'X-RequestForceAuthentication': 'true',
+                        'Content-Type': 'text/xml; charset="utf-8"'
+                    }
+                }).success(function (response) {
+
+                    var ContextInfo = _ContextInfo;
+
+                    ContextInfo.FormDigestTimeoutSeconds = angular.element(angular.element.parseXML(response)).find("TimeoutSeconds").text();
+                    ContextInfo.FormDigestValue = angular.element(angular.element.parseXML(response)).find("DigestValue").text();
+                    ContextInfo.WebFullUrl = angular.element(angular.element.parseXML(response)).find("WebFullUrl").text();
+                    ContextInfo.LibraryVersion = angular.element(angular.element.parseXML(response)).find("LibraryVersion").text();
+                    //ContextInfo.SiteFullUrl = angular.element(angular.element.parseXML(response)).find("SiteFullUrl").text();
+                    ContextInfo.SupportedSchemaVersions = angular.element(angular.element.parseXML(response)).find("SupportedSchemaVersions").text();
+
+                    _ContextInfo = ContextInfo;
+                    Security.ContextInfo = _ContextInfo;
+                    $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
+
+                    deferred.resolve(ContextInfo);
+                }, function (response) {
+                    //console.log("Cannot get digestValue.");
+
+                    deferred.reject();
+                });
+            }
             return deferred.promise;
         }
 

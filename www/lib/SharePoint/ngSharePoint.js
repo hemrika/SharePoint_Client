@@ -70,10 +70,12 @@
                     //if (request.method.toLowerCase() === "get" && request.url.toLocaleLowerCase().endsWith('_vti_bin/idcrl.svc/')) {
                     //    request.headers['Authorization'] = $rootScope.SecurityToken;
                     //}
+                    /*
                     if(request.method.toLowerCase() === "options" && request.url.toLocaleLowerCase().endsWith('contextinfo')) {
                             request.skip();
                     }
                     //console.log(SharePoint.Security.ContextInfo.FormDigestTimeoutSeconds);
+                    */
                     return request;
 
                 }

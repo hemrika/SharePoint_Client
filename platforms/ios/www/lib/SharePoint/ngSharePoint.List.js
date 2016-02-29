@@ -232,7 +232,7 @@
                         deferred.reject();
                     });
                     */
-                    
+
                     _list.save({
                         EndPoint: ngSecurity.Endpoint,
                         List: _ngList.Id, Deferred: 'Items'
@@ -242,7 +242,7 @@
                         //return result;
                         //console.log(result);
                     });
-                    
+
                 });
                 return deferred.promise;
             };
