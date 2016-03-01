@@ -3,7 +3,7 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', '$rootScope', function ($timeout, $http, $resource, $q, $rootScope) {
+    SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', '$rootScope', '$cookies', function ($timeout, $http, $resource, $q, $rootScope, $cookies) {
 
         //region Properties
 
@@ -55,8 +55,14 @@
          * @private
          */
         var _IdCrlUrl = null;
-        //var realm = 'fbb85d4b-b9cc-445f-8b90-a2ea555b2841';
-        //var SharePointPrincipal = '00000003-0000-0ff1-ce00-000000000000';
+
+        /**
+         * WWW-Authenticate
+         * Bearer realm : fbb85d4b-b9cc-445f-8b90-a2ea555b2841
+         * client_id : 00000003-0000-0ff1-ce00-000000000000
+         * trusted_issuers : 00000003-0000-0ff1-ce00-000000000000 00000001-0000-0000-c000-000000000000
+         * authorization_uri : https://login.windows.net/common/oauth2/authorize
+         */
 
         /**
          *
@@ -65,6 +71,7 @@
          */
         var _SitesAsmx = null;
 
+        var _GetContextWebThemeData = null;
         /**
          *
          * @type {boolean}
@@ -175,6 +182,7 @@
             _IdCrlUrl = 'https://' + endpoint + '/_vti_bin/idcrl.svc/';
             _PostQueryUrl = 'https://' + endpoint + '/_api/search/postquery';
             _SitesAsmx = 'https://' + endpoint + '/_vti_bin/sites.asmx';
+            _GetContextWebThemeData = 'https://' + endpoint + '_api/SP.Web.GetContextWebThemeData';
             deferred.resolve();
 
             return deferred.promise;
@@ -292,7 +300,7 @@
 
         return Security;
 
-        //region SOAP Tokens
+        //region XML Tokens
 
         /**
          * @return {string}
@@ -381,6 +389,59 @@
         }
 
         /**
+         *
+         * @returns {string}
+         */
+        function oAuthToken(){
+
+            var rst = new Array("");
+            /*
+            xmlString.append("<s:Envelope xmlns:s=\"http://www.w3.org/2003/05/soap-envelope\" ");
+            xmlString.append("xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"  ");
+            xmlString.append("xmlns:saml=\"urn:oasis:names:tc:SAML:1.0:assertion\"  ");
+            xmlString.append("xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\"  ");
+            xmlString.append("xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\"  ");
+            xmlString.append("xmlns:wsa=\"http://www.w3.org/2005/08/addressing\"  ");
+            xmlString.append("xmlns:wssc=\"http://schemas.xmlsoap.org/ws/2005/02/sc\"  ");
+            xmlString.append("xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"> ");
+            xmlString.append("<s:Header> ");
+            xmlString.append("<wsa:Action s:mustUnderstand=\"1\">http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue</wsa:Action> ");
+            xmlString.append("<wsa:To s:mustUnderstand=\"1\">" + ourOAuthService + "</wsa:To> ");
+            xmlString.append("<wsa:MessageID>").append(UUID.randomUUID().toString()).append("</wsa:MessageID> ");
+            xmlString.append("<ps:AuthInfo xmlns:ps=\"http://schemas.microsoft.com/Passport/SoapServices/PPCRL\" Id=\"PPAuthInfo\"> ");
+            xmlString.append("<ps:HostingApp>Managed IDCRL</ps:HostingApp> ");
+            xmlString.append("<ps:BinaryVersion>6</ps:BinaryVersion> ");
+            xmlString.append("<ps:UIVersion>1</ps:UIVersion> ");
+            xmlString.append("<ps:Cookies></ps:Cookies> ");
+            xmlString.append("<ps:RequestParams>AQAAAAIAAABsYwQAAAAxMDMz</ps:RequestParams> ");
+            xmlString.append("</ps:AuthInfo> ");
+            xmlString.append("<wsse:Security> ");
+            xmlString.append("<wsse:UsernameToken wsu:Id=\"user\"> ");
+            xmlString.append("<wsse:Username>").append(USERNAME).append("</wsse:Username> ");
+            xmlString.append("<wsse:Password>").append(PASSWORD).append("</wsse:Password> ");
+            xmlString.append("</wsse:UsernameToken> ");
+            xmlString.append("<wsu:Timestamp Id=\"Timestamp\"> ");
+            xmlString.append("<wsu:Created>" + getTimeString(0) + "</wsu:Created> ");
+            xmlString.append("<wsu:Expires>" + getTimeString(10) + "</wsu:Expires> ");
+            xmlString.append("</wsu:Timestamp> ");
+            xmlString.append("</wsse:Security> ");
+            xmlString.append("</s:Header> ");
+            xmlString.append("<s:Body> ");
+            xmlString.append("<wst:RequestSecurityToken Id=\"RST0\"> ");
+            xmlString.append("<wst:RequestType>http://schemas.xmlsoap.org/ws/2005/02/trust/Issue</wst:RequestType> ");
+            xmlString.append("<wsp:AppliesTo> ");
+            xmlString.append("<wsa:EndpointReference> ");
+            xmlString.append("<wsa:Address>urn:federation:MicrosoftOnline</wsa:Address> ");
+            xmlString.append("</wsa:EndpointReference> ");
+            xmlString.append("</wsp:AppliesTo> ");
+            xmlString.append("<wst:KeyType>http://schemas.xmlsoap.org/ws/2005/05/identity/NoProofKey</wst:KeyType> ");
+            xmlString.append("</wst:RequestSecurityToken> ");
+            xmlString.append("</s:Body> ");
+            xmlString.append("</s:Envelope> ");
+            */
+            return rst.join("").toString();
+        }
+        /**
          * @return {string}
          */
         function FormDigestInformationToken() {
@@ -452,6 +513,11 @@
             return deferred.promise;
         }
 
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
         function GetBranding() {
             var deferred = $q.defer();
 
@@ -478,6 +544,25 @@
             return deferred.promise;
         }
 
+        function GetContextWebThemeData() {
+
+            var deferred = $q.defer();
+
+            $http({
+                method: 'GET',
+                //withCredentials: false,
+                url: _GetContextWebThemeData,
+                headers: {
+                    "Accept": "application/json;odata=verbose"
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        }
         /**
          *
          * @returns {*}
@@ -522,6 +607,9 @@
                     'Content-Type': 'application/soap+xml; charset=utf-8'
                 }
             }).success(function (data) {
+                var SPOIDCRL = $cookies.get('SPOIDCRL');
+                $cookies.put('FedAuth', SPOIDCRL);
+
                 deferred.resolve(data);
             }).error(function () {
                 deferred.reject();
@@ -530,6 +618,32 @@
             return deferred.promise;
         }
 
+        /*
+        //https://login.windows.net/common/oauth2/authorize
+        //https://login.live.com/oauth20_authorize.srf
+        function oAuthAuthorize(){
+            var deferred = $q.defer();
+
+            return deferred.promise;
+        }
+        //https://login.live.com/oauth20_token.srf
+        function oAuthToken() {
+            var deferred = $q.defer();
+
+            return deferred.promise;
+        }
+        function oAuthRefresh(){
+            var deferred = $q.defer();
+
+            return deferred.promise;
+        }
+        //https://login.live.com/oauth20_logout.srf
+        function oAuthLogout(){
+            var deferred = $q.defer();
+
+            return deferred.promise;
+        }
+        */
         //IDentity Client Runtime Library service
         /**
          *
@@ -552,6 +666,9 @@
                     //'Authorization' : 'BPOSIDCRL '+ _SecurityToken
                 }
             }).success(function (data) {
+
+                var SPOIDCRL = $cookies.get('SPOIDCRL');
+                $cookies.put('FedAuth', SPOIDCRL);
                 delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.resolve(data);
             }).error(function () {
@@ -631,16 +748,17 @@
             var message = FormDigestInformationToken();
 
             $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+            $http.defaults.headers.common['X-FORMS_BASED_AUTH_ACCEPTED'] = 'f';
             //$http.defaults.headers.common.Origin = _ContextInfoUrl;
             $http({
                 url: _ContextInfoUrl,
                 method: "POST",
-                withCredentials: true,
+                withCredentials: false,
                 data: message,
                 headers: {
-                    'Accept': "application/json;odata=verbose;charset=utf-8",
+                    'Accept': 'application/json;odata=verbose',//;charset=utf-8",
                     //'Content-Type': 'text/plain'
-                    'Content-Type': '"application/json;odata=verbose;charset=utf-8"'//'text/xml; charset="utf-8"'
+                    'Content-Type': 'application/json;odata=verbose'//;charset="utf-8"'//'text/xml; charset="utf-8"'
                 }
             }).success(function (response) {
 
@@ -680,11 +798,12 @@
             var message = FormDigestInformationToken();
 
             $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
+            $http.defaults.headers.common['X-FORMS_BASED_AUTH_ACCEPTED'] = 'f';
             //$http.defaults.headers.common.Origin = _ContextInfoUrl;
             $http({
                 url: _SitesAsmx,
                 method: "POST",
-                withCredentials: true,
+                withCredentials: false,
                 data: message,
                 headers: {
                     'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/GetUpdatedFormDigestInformation',
@@ -724,6 +843,7 @@
             var message = FormDigestInformationToken();
 
             if(_UseContextInfo) {
+                $http.defaults.headers.common['X-FORMS_BASED_AUTH_ACCEPTED'] = 'f';
                 $http({
                     url: _ContextInfoUrl,
                     method: "POST",
@@ -731,7 +851,7 @@
                     data: message,
                     headers: {
                         'Accept': "application/json;odata=verbose",
-                        'Content-Type': 'text/xml; charset="utf-8"'
+                        'Content-Type': 'application/json;odata=verbose'//'text/xml; charset="utf-8"'
                     }
                 }).success(function (response) {
 
@@ -756,6 +876,7 @@
                 });
             }
             else {
+                $http.defaults.headers.common['X-FORMS_BASED_AUTH_ACCEPTED'] = 'f';
                 $http({
                     url: _SitesAsmx,
                     method: "POST",
