@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('ngSharePoint', ['ngResource'])
+    angular.module('ngSharePoint', ['ngResource', 'ngCookies'])
 
         .factory('SharePoint', ['ngSecurity', 'ngSite', 'ngWeb', function (ngSecurity, ngSite, ngWeb) {
 
@@ -61,19 +61,25 @@
 
                     //request.headers.Origin = '*';
 
+                    request.headers['Access-Control-Allow-Origin'] = 'file://*';
+                    //request.headers['Origin'] = 'file://*';
                     if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
                         request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
+
                     }
                     if (request.headers.Accept === "application/json;odata=verbose") {
                         request.url = decodeURIComponent(request.url);
                     }
+
                     //if (request.method.toLowerCase() === "get" && request.url.toLocaleLowerCase().endsWith('_vti_bin/idcrl.svc/')) {
                     //    request.headers['Authorization'] = $rootScope.SecurityToken;
                     //}
+                    /*
                     if(request.method.toLowerCase() === "options" && request.url.toLocaleLowerCase().endsWith('contextinfo')) {
                             request.skip();
                     }
                     //console.log(SharePoint.Security.ContextInfo.FormDigestTimeoutSeconds);
+                    */
                     return request;
 
                 }
@@ -81,6 +87,7 @@
         }])
         .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
             $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
+            $sceDelegateProvider.resourceUrlWhitelist(['self'], 'file://*');
         }])
         .config(['$compileProvider', function ($compileProvider) {
 
@@ -89,8 +96,12 @@
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|ms-appx-web|x-wmapp0):|data:image\//);
         }
         ])
-        .config(['$httpProvider', function ($httpProvider) {
-
+/*       .config(function($templateRequestProvider){
+            $templateRequestProvider.httpOptions({
+                headers:{Origin:'*'}
+            });
+        })*/
+        .config(['$httpProvider', '$sceProvider', function ( $httpProvider, $sceProvider){
             $httpProvider.defaults.headers.common = {};
             $httpProvider.defaults.headers.post = {};
             $httpProvider.defaults.headers.put = {};
@@ -104,9 +115,15 @@
 
             $httpProvider.defaults.headers.common = {Accept: "application/json, text/plain, */*"};
             //$httpProvider.defaults.headers.common = {Accept: "*/*"};
-            //$httpProvider.defaults.headers.common = {Origin: "*"};
+            //$httpProvider.defaults.headers.common = {Origin: "file://*"};
             $httpProvider.defaults.headers.post = {"Content-Type": "application/json;charset=utf-8"};
 
+            //var transformResponse = angular.isArray($httpProvider.defaults.transformResponse) ? $httpProvider.defaults.transformResponse : [$httpProvider.defaults.transformResponse];
+            //$httpProvider.defaults.transformResponse = transformResponse.concat(transform);
+
             $httpProvider.interceptors.push('SharePointInterceptor');
+
+            //$sceProvider.enabled(false);
+
         }]);
 })();

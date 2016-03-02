@@ -607,8 +607,8 @@
                     'Content-Type': 'application/soap+xml; charset=utf-8'
                 }
             }).success(function (data) {
-                var SPOIDCRL = $cookies.get('SPOIDCRL');
-                $cookies.put('FedAuth', SPOIDCRL);
+                //var SPOIDCRL = $cookies.get('SPOIDCRL');
+                //$cookies.put('FedAuth', SPOIDCRL);
 
                 deferred.resolve(data);
             }).error(function () {
@@ -667,8 +667,8 @@
                 }
             }).success(function (data) {
 
-                var SPOIDCRL = $cookies.get('SPOIDCRL');
-                $cookies.put('FedAuth', SPOIDCRL);
+                //var SPOIDCRL = $cookies.get('SPOIDCRL');
+                //$cookies.put('FedAuth', SPOIDCRL);
                 delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.resolve(data);
             }).error(function () {

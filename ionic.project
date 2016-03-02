@@ -1,4 +1,5 @@
 {
   "name": "BLAUD SharePoint",
-  "app_id": "81684f3a"
+  "app_id": "81684f3a",
+  "proxies": [ { "path": "/_api/contextinfo", "proxyUrl": "http://duwboot.sharepoint.com/_api/contextinfo" } ]
 }

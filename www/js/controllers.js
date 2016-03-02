@@ -7,7 +7,7 @@
         $scope.loginData = {
             domain: 'duwboot.sharepoint.com/sites/BLAUD',
             username: 'rutger.hemrika@blaud.com',
-            password: 'rjm557308453!',
+            password: '',
             FormDigest: SharePoint.Security.ContextInfo.FormDigestValue
         }
         // Create the login modal that we will use later
