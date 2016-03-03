@@ -360,8 +360,8 @@
                     _list.get({EndPoint: ngSecurity.Endpoint, List: identifier}).$promise.then(
                         function (data) {
                             _ngList = data;
-                            ngSecurity.CurrentList = self;
                             self.Properties = _ngList;
+                            ngSecurity.CurrentList = self;
                             deferred.resolve(self);
                         });
                 }
@@ -372,8 +372,8 @@
                     }).$promise.then(
                         function (data) {
                             _ngList = data;
-                            ngSecurity.CurrentList = self;
                             self.Properties = _ngList;
+                            ngSecurity.CurrentList = self;
                             deferred.resolve(self);
                         });
                 }

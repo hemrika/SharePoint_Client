@@ -1,10 +1,8 @@
 ﻿<ion-view view-title="{{ Web.List.Title}}">
     <ion-content>
-        {{ Web.List.Description }}
-        <a href="#/app/lists/{{Web.List.Id}}/items">Items</a>
         <ion-list>
-            <ion-item ng-repeat="Item in Web.List.Items" href="#/app/lists/{{Web.List.Id}}/items/{{Item.Id}}">
-                {{Item.Title}}
+            <ion-item ng-repeat="Field in Web.List.Item.Fields">
+                <div data-ng-include="'lib/SharePoint/partials/controls_create.htm'"></div>
             </ion-item>
         </ion-list>
     </ion-content>
