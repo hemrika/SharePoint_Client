@@ -3,7 +3,7 @@
 
     angular.module('ngSharePoint', ['ngResource', 'ngCookies'])
 
-        .factory('SharePoint', ['ngSecurity', 'ngSite', 'ngWeb', function (ngSecurity, ngSite, ngWeb) {
+        .factory('SharePoint', ['ngSecurity', 'ngUserProfile', 'ngSite', 'ngWeb', function (ngSecurity, ngUserProfile, ngSite, ngWeb) {
 
             var EndPoint = function () {
                 return ngSecurity.EndPoint;
@@ -11,6 +11,10 @@
 
             var CurrentUser = function () {
                 return ngSecurity.CurrentUser;
+            };
+
+            var CurrentUserProfile = function () {
+                return ngSecurity.CurrentUserProfile;
             };
 
             var CurrentWeb = function () {
@@ -35,7 +39,9 @@
             SharePoint.Security = ngSecurity;
             SharePoint.Site = ngSite;
             SharePoint.Web = ngWeb;
+            SharePoint.UserProfile = ngUserProfile;
             SharePoint.EndPoint = EndPoint;
+            SharePoint.CurrentUserProfile = CurrentUserProfile;
             SharePoint.CurrentUser = CurrentUser;
             SharePoint.CurrentWeb = CurrentWeb;
             SharePoint.CurrentList = CurrentList;
@@ -61,11 +67,11 @@
 
                     //request.headers.Origin = '*';
 
-                    request.headers['Access-Control-Allow-Origin'] = 'file://*';
+                    //request.headers['Access-Control-Allow-Origin'] = 'file://*';
                     //request.headers['Origin'] = 'file://*';
                     if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
                         request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
-
+                        request.url = decodeURIComponent(request.url);
                     }
                     if (request.headers.Accept === "application/json;odata=verbose") {
                         request.url = decodeURIComponent(request.url);
@@ -109,8 +115,8 @@
 
             $httpProvider.defaults.useXDomain = true;
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
-            delete $httpProvider.defaults.headers.common['Accept-Encoding'];
-            delete $httpProvider.defaults.headers.common['Accept-Language'];
+            //delete $httpProvider.defaults.headers.common['Accept-Encoding'];
+            //delete $httpProvider.defaults.headers.common['Accept-Language'];
             $httpProvider.defaults.withCredentials = true;
 
             $httpProvider.defaults.headers.common = {Accept: "application/json, text/plain, */*"};

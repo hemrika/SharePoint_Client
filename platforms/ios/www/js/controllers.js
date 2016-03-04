@@ -7,7 +7,7 @@
         $scope.loginData = {
             domain: 'duwboot.sharepoint.com/sites/BLAUD',
             username: 'rutger.hemrika@blaud.com',
-            password: 'rjm557308453!',
+            password: '',
             FormDigest: SharePoint.Security.ContextInfo.FormDigestValue
         }
         // Create the login modal that we will use later
@@ -36,6 +36,7 @@
                         $scope.loginData.FormDigest = SharePoint.Security.ContextInfo.FormDigestValue;
                         $scope.closeLogin();
 
+                        /*
                         var alertPopup = $ionicPopup.alert({
                             title: 'FormDigest',
                             template: SharePoint.Security.ContextInfo.FormDigestValue
@@ -44,6 +45,8 @@
                         alertPopup.then(function ( result) {
                             $state.go($state.current, {}, {reload: true});
                         });
+                        */
+                        $state.go('app.user', {}, {reload:true} );
                         //$state.go($state.current, {}, {reload: true});
                     }
                 });
@@ -55,64 +58,56 @@
 
     })
     .controller('UserCtrl', function ($scope, $state, $stateParams, SharePoint) {
-        if (SharePoint.CurrentUser === null) {
-            $scope.login();
-        }
-        else {
-            $scope.CurrentUser = SharePoint.CurrentUser();
-        }
+
+        SharePoint.UserProfile().then(function (profile) {
+            $scope.Profile = profile.Properties;
+        });
     })
     .controller('ListsCtrl', function ($scope, $stateParams, SharePoint) {
 
-        if (SharePoint.CurrentWeb() !== null) {
-            SharePoint.Web().then(function (web) {
-                web.Lists().then(function (Lists) {
-                    $scope.Web = web.Properties;
-                    $scope.Web.Lists = Lists;
-                });
+        SharePoint.Web().then(function (web) {
+            web.Lists().then(function (Lists) {
+                $scope.Web = web.Properties;
+                $scope.Web.Lists = Lists;
             });
-        }
+        });
     })
     .controller('ListCtrl', function ($scope, $stateParams, SharePoint) {
 
-        if (SharePoint.CurrentWeb() !== null) {
-            SharePoint.Web().then(function (web) {
-                web.Lists($stateParams.listId).then(function (List) {
-                    $scope.Web = web.Properties;
-                    $scope.Web.List = List.Properties;
-                });
+        SharePoint.Web().then(function (web) {
+            web.Lists($stateParams.listId).then(function (List) {
+                $scope.Web = web.Properties;
+                $scope.Web.List = List.Properties;
             });
-        }
+        });
     })
     .controller('ItemsCtrl', function ($scope, $stateParams, SharePoint) {
 
-        if (SharePoint.CurrentWeb() !== null) {
-            SharePoint.Web().then(function (web) {
-                web.Lists($stateParams.listId).then(function (List) {
-                    List.Items().then(function (Items) {
-                        $scope.Web = web.Properties;
-                        $scope.Web.List = List.Properties;
-                        $scope.Web.List.Items = Items;
-                    });
+
+        SharePoint.Web().then(function (web) {
+            web.Lists($stateParams.listId).then(function (List) {
+                List.Items().then(function (Items) {
+                    $scope.Web = web.Properties;
+                    $scope.Web.List = List.Properties;
+                    $scope.Web.List.Items = Items;
                 });
             });
-        }
+        });
+
     })
     .controller('ItemCtrl', function ($scope, $stateParams, SharePoint) {
 
-        if (SharePoint.CurrentWeb() !== null) {
-            SharePoint.Web().then(function (web) {
-                web.Lists($stateParams.listId).then(function (List) {
-                    List.Items($stateParams.itemId).then(function (item) {
-                        $scope.Web = web.Properties;
-                        $scope.Web.List = List.Properties;
-                        $scope.Web.List.Item = item.Properties;
-                    });
+        SharePoint.Web().then(function (web) {
+            web.Lists($stateParams.listId).then(function (List) {
+                List.Items($stateParams.itemId).then(function (item) {
+                    $scope.Web = web.Properties;
+                    $scope.Web.List = List.Properties;
+                    $scope.Web.List.Item = item.Properties;
                 });
             });
-        }
+        });
     })
-    .controller('WebCtrl', function ($scope, $stateParams, SharePoint) {
+    .controller('WebCtrl', function ($scope, $stateParams, $state, SharePoint) {
 
         if (SharePoint.CurrentWeb() === null) {
             SharePoint.Web().then(function (web) {
@@ -124,15 +119,35 @@
             $scope.Web = SharePoint.CurrentWeb();
         }
     })
-    .controller('CordovaCtrl', function ($scope, $stateParams, SharePoint) {
+    .controller('CordovaCtrl', function ($scope, $stateParams, $state, SharePoint) {
 
-        if (SharePoint.CurrentWeb() !== null) {
-            SharePoint.Web().then(function (web) {
-                web.Lists('Cordova').then(function (List) {
+        $scope.Opslaan = function (Item) {
+            var item = Item;
+            //var fields = $scope.Web.List.Item.Fields;
+            Item.Update().then( $state.go( $state.current, {}, {reload: true}));
+            //SharePoint.CurrentList.
+            //SharePoint.Web().then(function (Web) {
+            //    Web.Lists('Cordova').then(function (List) {
+            //    });
+            //});
+        };
+
+        //if (SharePoint.CurrentWeb() !== null) {
+            SharePoint.Web().then(function (Web) {
+                Web.Lists('Cordova').then(function (List) {
+                    List.Items(1).then(function (Item) {
+                        console.log(Item);
+
+                        //var results = Item.Fields[1].Choices.results;
+                        $scope.Web = Web.Properties;
+                        $scope.Web.List = List.Properties;
+                        $scope.Web.List.Item = Item;
+                        //Item.New();
+                })
                     //var new_item = List.NewItem();
                     //new_item.Title = "Newly created REST Item";
-                    var new_item = { '__metadata': { 'type': 'SP.Data.CordovaListItem' }, 'Title': 'Newly created REST Item'};
-                    List.AddItem(new_item);
+                    //var new_item = { '__metadata': { 'type': 'SP.Data.CordovaListItem' }, 'Title': 'Newly created REST Item'};
+                    //List.AddItem(new_item);
 
                     //List.Items.Add(1).then(function (Item) {
                     //console.log(Item.Id());
@@ -149,5 +164,5 @@
                 //$scope.Web = web.Properties;
                 //$scope.Web = SharePoint.CurrentWeb();
             });
-        }
+        //}
     });

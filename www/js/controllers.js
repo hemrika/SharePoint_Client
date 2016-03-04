@@ -36,6 +36,7 @@
                         $scope.loginData.FormDigest = SharePoint.Security.ContextInfo.FormDigestValue;
                         $scope.closeLogin();
 
+                        /*
                         var alertPopup = $ionicPopup.alert({
                             title: 'FormDigest',
                             template: SharePoint.Security.ContextInfo.FormDigestValue
@@ -44,6 +45,8 @@
                         alertPopup.then(function ( result) {
                             $state.go($state.current, {}, {reload: true});
                         });
+                        */
+                        $state.go('app.user', {}, {reload:true} );
                         //$state.go($state.current, {}, {reload: true});
                     }
                 });
@@ -104,7 +107,7 @@
             });
         });
     })
-    .controller('WebCtrl', function ($scope, $stateParams, SharePoint) {
+    .controller('WebCtrl', function ($scope, $stateParams, $state, SharePoint) {
 
         if (SharePoint.CurrentWeb() === null) {
             SharePoint.Web().then(function (web) {
@@ -116,8 +119,18 @@
             $scope.Web = SharePoint.CurrentWeb();
         }
     })
-    .controller('CordovaCtrl', function ($scope, $stateParams, SharePoint) {
+    .controller('CordovaCtrl', function ($scope, $stateParams, $state, SharePoint) {
 
+        $scope.Opslaan = function (Item) {
+            var item = Item;
+            //var fields = $scope.Web.List.Item.Fields;
+            Item.Update().then( $state.go( $state.current, {}, {reload: true}));
+            //SharePoint.CurrentList.
+            //SharePoint.Web().then(function (Web) {
+            //    Web.Lists('Cordova').then(function (List) {
+            //    });
+            //});
+        };
 
         //if (SharePoint.CurrentWeb() !== null) {
             SharePoint.Web().then(function (Web) {
@@ -125,7 +138,7 @@
                     List.Items(1).then(function (Item) {
                         console.log(Item);
 
-                        var results = Item.Fields[1].Choices.results;
+                        //var results = Item.Fields[1].Choices.results;
                         $scope.Web = Web.Properties;
                         $scope.Web.List = List.Properties;
                         $scope.Web.List.Item = Item;

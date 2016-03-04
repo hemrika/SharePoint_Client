@@ -119,6 +119,12 @@
          * @type {null}
          * @private
          */
+        var _CurrentUserProfile = null;
+        /**
+         *
+         * @type {null}
+         * @private
+         */
         var _CurrentUser = null;
         /**
          *
@@ -276,6 +282,8 @@
             return deferred.promise;
         };
 
+        var Authenticated = (_CurrentUser !== null || _CurrentUser !== undefined);
+
         /**
          *
          * @type {{}}
@@ -285,9 +293,11 @@
         Security.SetConfiguration = Configure;
         Security.UpdateContextInfo = UpdateContextInfo;
         Security.Authenticate = Authenticate;
+        Security.Authenticated = Authenticated;
         Security.SetRealm = GetBearerRealm;
         Security.Endpoint = _Endpoint;
         Security.ContextInfo = _ContextInfo;
+        Security.CurrentUserProfile = _CurrentUserProfile;
         Security.CurrentUser = _CurrentUser;
         Security.CurrentWeb = _CurrentWeb;
         Security.CurrentList = _CurrentList;

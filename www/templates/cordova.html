@@ -2,8 +2,11 @@
     <ion-content>
         <ion-list>
             <ion-item ng-repeat="Field in Web.List.Item.Fields">
-                <div data-ng-include="'lib/SharePoint/partials/controls_create.htm'"></div>
+                <div data-ng-include="'lib/SharePoint/components/Office-UI-Fabric.htm'"></div>
             </ion-item>
         </ion-list>
+        <button class="ms-Button ms-Button--primary" data-ng-click="Opslaan(Web.List.Item)">
+            <span class="ms-Button-label">Opslaan</span>
+        </button>
     </ion-content>
 </ion-view>
