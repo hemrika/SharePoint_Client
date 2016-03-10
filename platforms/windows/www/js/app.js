@@ -18,6 +18,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
                 StatusBar.styleDefault();
             }
         });
+        SharePoint.EndPoint("duwboot.sharepoint.com/sites/BLAUD");
     })
     //.config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', statesConfiguration])
     .config(['$httpProvider', function httpLoadingInterceptor($httpProvider) {
@@ -28,15 +29,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
             return {
                 request: function (config) {
                     $rootScope.$broadcast('loading:show')
-                    return config
+                    return config;
                 },
                 response: function (response) {
                     $rootScope.$broadcast('loading:hide')
-                    return response
+                    return response;
                 },
                 responseError: function (responseError) {
                     $rootScope.$broadcast('loading:hide')
-                    return responseError
+                    return responseError;
                 }
             }
         }])
@@ -157,10 +158,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngSharePoint'])
 
 function httpLoadingInterceptorActions($rootScope, $ionicLoading) {
     $rootScope.$on('loading:show', function () {
-        $ionicLoading.show({ noBackdrop: true, template: '<div class="bubbles aligntop" style="top:20%;">laden...</div>', hideOnStateChange: true, duration: 3000 })
-    })
+        $ionicLoading.show({ noBackdrop: true, template: '<div class="bubbles aligntop" style="top:20%;">laden...</div>', hideOnStateChange: true, duration: 3000 });
+    });
 
     $rootScope.$on('loading:hide', function () {
-        $ionicLoading.hide()
-    })
+        $ionicLoading.hide();
+    });
 }

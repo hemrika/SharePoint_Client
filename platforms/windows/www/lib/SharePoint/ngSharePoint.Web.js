@@ -5,7 +5,7 @@
 
     SharePoint.factory('ngWeb', ['ngSecurity', 'ngList', '$resource', '$q', function (ngSecurity, ngList, $resource, $q) {
 
-        //var Endpoint = null;
+        var ngWeb = {};
 
         var _ngWeb = {
             "AllProperties": {
@@ -142,78 +142,176 @@
                     }
                 }
             }
-        );
+            );
 
-        var ngWeb = function (value) {
+        ngWeb = function (identifier) {
 
             var deferred = $q.defer();
 
+            if (!ngSecurity.Authenticated) {
+                deferred.reject("Not Authenticated");
+            }
+
+            //region Properties
+
+            /**
+             *
+             * @param value
+             * @returns {boolean}
+             * @constructor
+             */
             this.AllowRssFeeds = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.AllowRssFeeds = value) : _ngWeb.AllowRssFeeds;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.AlternateCssUrl = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.AlternateCssUrl = value) : _ngWeb.AlternateCssUrl;
             };
+            /**
+             *
+             * @param value
+             * @returns {number}
+             * @constructor
+             */
             this.Configuration = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Configuration = value) : _ngWeb.Configuration;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.Created = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Created = value) : _ngWeb.Created;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.CustomMasterUrl = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.CustomMasterUrl = value) : _ngWeb.CustomMasterUrl;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.Description = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Description = value) : _ngWeb.Description;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.Id = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Id = value) : _ngWeb.Id;
             };
+            /**
+             *
+             * @param value
+             * @returns {boolean}
+             * @constructor
+             */
             this.IsMultilingual = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.IsMultilingual = value) : _ngWeb.IsMultilingual;
             };
+            /**
+             *
+             * @param value
+             * @returns {number}
+             * @constructor
+             */
             this.Language = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Language = value) : _ngWeb.Language;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.LastItemModifiedDate = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.LastItemModifiedDate = value) : _ngWeb.LastItemModifiedDate;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.ServerRelativeUrl = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.ServerRelativeUrl = value) : _ngWeb.ServerRelativeUrl;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.SiteLogoUrl = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.SiteLogoUrl = value) : _ngWeb.SiteLogoUrl;
             };
+            /**
+             *
+             * @param value
+             * @returns {boolean}
+             * @constructor
+             */
             this.SyndicationEnabled = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.SyndicationEnabled = value) : _ngWeb.SyndicationEnabled;
             };
             /**
-             * @return {string}
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
              */
             this.Title = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Title = value) : _ngWeb.Title;
             };
-            //UIVersion : function (value) {
-            //    return angular.isDefined(value) ? (_ngWeb.UIVersion = value) : _ngWeb.UIVersion;
-            //},
             /**
-             * @return {int}
+             *
+             * @param value
+             * @returns {number}
+             * @constructor
              */
             this.UIVersion = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.UIVersion = value) : _ngWeb.UIVersion;
             };
-            //Url : function (value) {
-            //    return angular.isDefined(value) ? (_ngWeb.Url = value) : _ngWeb.Url;
-            //},
             /**
-             * @return {string}
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
              */
             this.Url = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.Url = value) : _ngWeb.Url;
             };
+            /**
+             *
+             * @param value
+             * @returns {string}
+             * @constructor
+             */
             this.WebTemplate = function (value) {
                 return angular.isDefined(value) ? (_ngWeb.WebTemplate = value) : _ngWeb.WebTemplate;
             };
+
+            //endregion
+
+            //region Deferred
+
             this.AllProperties = function () {
                 var deferred = $q.defer();
 
@@ -231,6 +329,7 @@
                 }
                 return deferred.promise;
             };
+
             this.AvailableFields = function () {
                 var deferred = $q.defer();
 
@@ -248,6 +347,7 @@
                 }
                 return deferred.promise;
             };
+
             this.CurrentUser = function () {
                 var deferred = $q.defer();
 
@@ -309,6 +409,7 @@
                 }
                 return deferred.promise;
             };
+
             this.RegionalSettings = function () {
 
                 var deferred = $q.defer();
@@ -327,6 +428,7 @@
                 }
                 return deferred.promise;
             };
+
             this.RootFolder = function () {
                 var deferred = $q.defer();
 
@@ -344,6 +446,7 @@
                 }
                 return deferred.promise;
             };
+
             this.ThemeInfo = function () {
                 var deferred = $q.defer();
 
@@ -361,6 +464,7 @@
                 }
                 return deferred.promise;
             };
+
             this.Webs = function () {
                 var deferred = $q.defer();
 
@@ -378,6 +482,7 @@
                 }
                 return deferred.promise;
             };
+
             this.WebInfos = function () {
                 var deferred = $q.defer();
 
@@ -395,6 +500,10 @@
                 }
                 return deferred.promise;
             };
+
+            //endregion
+
+            //region Methods
             /*
             this.GetList = function (value) {
 
@@ -434,21 +543,33 @@
                 return deferred.promise;
             };
 
+            //endregion
+
+            //region Get Current Web
+
             var self = this;
 
-            if (ngSecurity.CurrentUser !== null) {
+
+            if(ngSecurity.CurrentWeb !== null) {
+                deferred.resolve(self);
+            }
+            else {
                 API.get({EndPoint: ngSecurity.Endpoint}).$promise.then(
                     function (data) {
                         _ngWeb = data;
-                        ngSecurity.CurrentWeb = self;
                         self.Properties = _ngWeb;
+                        ngSecurity.CurrentWeb = self;
                         deferred.resolve(self);
                     });
             }
 
+            //endregion
+
             return deferred.promise;
 
         };
+
+        ngWeb.List = ngList;
 
         return ngWeb;
 

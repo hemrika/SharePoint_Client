@@ -1,3 +1,5 @@
+<link href="lib/SharePoint/css/fabric.min.css" rel="stylesheet">
+<link href="lib/SharePoint/css/fabric.components.min.css" rel="stylesheet">
 <div data-ng-switch='Field.FieldTypeKind' ng-hide="Field.Hidden">
     <!-- Integer -->
     <span data-ng-switch-when='1'>
@@ -35,11 +37,15 @@
     </span>
     <!-- Choice -->
     <span data-ng-switch-when='6'>
-        <script src="lib/SharePoint/components/Jquery.Dropdown.js" type="text/javascript" async="async" ></script>
         <div class="ms-Dropdown" tabindex="0">
-            <label class="ms-Label">{{Field.Title}}</label>
             <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
-            <select class="ms-Dropdown-select" ng-options="select for result in Field.Choices.results" data-ng-model="Field.Value"></select>
+            <select class="ms-Dropdown-select" ng-model="Field.Value">
+                <option ng-selected="{{Field.Value == result}}"
+                        ng-repeat="result in Field.Choices.results"
+                        value="{{result}}">
+                    {{result}}
+                </option>
+            </select>
         </div>
     </span>
     <!-- Lookup -->
@@ -94,8 +100,12 @@
     </span>
     <!-- MultiChoice -->
     <span data-ng-switch-when='15'>
-        <div>{{Field.Title}}</div>
-        <input name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" />
+        <div class="ms-ChoiceField" ng-readonly="Field.ReadOnlyField">
+            <input name="{{Field.InternalName}}" class="ms-ChoiceField-input" type="checkbox" checked="checked" data-ng-model="Field.Value">
+            <label for="{{Field.InternalName}}" class="ms-ChoiceField-field">
+                <span class="ms-Label">{{Field.Title}}</span>
+            </label>
+        </div>
     </span>
     <!-- File -->
     <span data-ng-switch-when='18'>

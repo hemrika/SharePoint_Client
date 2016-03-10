@@ -160,6 +160,10 @@
 
         //endregion
 
+        var XMLtoJSON = function () {
+            return new X2JS();
+        };
+
         /**
          *
          * @param username
@@ -307,7 +311,7 @@
         Security.Realm = _Realm;
         Security.Branding = _Branding;
         Security.UseContextInfo = _UseContextInfo;
-
+        Security.XMLtoJSON = XMLtoJSON;
         return Security;
 
         //region XML Tokens
@@ -628,6 +632,30 @@
             return deferred.promise;
         }
 
+        function GetRemoteLogin(){
+            var deferred = $q.defer();
+            var message = RemoteSecurityToken();
+
+            $http({
+                method: 'POST',
+                url: 'https://login.microsoftonline.com/login.srf',
+                data: message,
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    'Content-Type': 'application/soap+xml; charset=utf-8'
+                }
+            }).success(function (data) {
+                //var SPOIDCRL = $cookies.get('SPOIDCRL');
+                //$cookies.put('FedAuth', SPOIDCRL);
+
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        }
+
         /*
         //https://login.windows.net/common/oauth2/authorize
         //https://login.live.com/oauth20_authorize.srf
@@ -668,7 +696,7 @@
             $http({
                 method: 'GET',
                 url: _IdCrlUrl,
-                //withCredentials: false,
+                withCredentials: false,
                 cache: false,
                 headers: {
                     "Accept": "application/json;odata=verbose",

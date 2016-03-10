@@ -5,7 +5,9 @@
 
         .factory('SharePoint', ['ngSecurity', 'ngUserProfile', 'ngSite', 'ngWeb', function (ngSecurity, ngUserProfile, ngSite, ngWeb) {
 
-            var EndPoint = function () {
+            var EndPoint = function (value) {
+
+                if (angular.isDefined(value)) { ngSecurity.Endpoint = value; }
                 return ngSecurity.EndPoint;
             };
 
@@ -47,10 +49,14 @@
             SharePoint.CurrentList = CurrentList;
             SharePoint.CurrentItem = CurrentItem;
             SharePoint.CurrentFile = CurrentFile;
-
+            //SharePoint.XMLtoJSON = XMLtoJSON;
             return SharePoint;
 
         }])
+
+        //.factory('XMLtoJSON', [ function () {
+        //    return new X2JS();
+        //}])
 
         .factory('SharePointInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
             return {
@@ -113,11 +119,11 @@
             $httpProvider.defaults.headers.put = {};
             $httpProvider.defaults.headers.patch = {};
 
-            $httpProvider.defaults.useXDomain = true;
+            $httpProvider.defaults.useXDomain = false;
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
             //delete $httpProvider.defaults.headers.common['Accept-Encoding'];
             //delete $httpProvider.defaults.headers.common['Accept-Language'];
-            $httpProvider.defaults.withCredentials = true;
+            $httpProvider.defaults.withCredentials = false;
 
             $httpProvider.defaults.headers.common = {Accept: "application/json, text/plain, */*"};
             //$httpProvider.defaults.headers.common = {Accept: "*/*"};

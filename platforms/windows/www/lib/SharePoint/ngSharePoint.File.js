@@ -5,6 +5,8 @@
 
     SharePoint.factory('ngFile', ['ngSecurity', '$resource', '$q', function (ngSecurity, $resource, $q) {
 
+        var ngFile = {};
+
         var _ngFile = {
             "Author": {
                 "__deferred": {
@@ -74,7 +76,7 @@
             }
         );
 
-        var ngFile = function () {
+        ngFile = function () {
 
             var deferred = $q.defer();
 

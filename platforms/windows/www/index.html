@@ -1,6 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *;"> -->
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
@@ -16,7 +17,16 @@
 
     <script src="lib/jQuery/jquery-2.1.4.js"></script>
     <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- <script src="lib/ionic/js/ionic.bundle.js"></script> -->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-cookies/angular-cookies.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+
+    <script src="lib/ionic/js/ionic.js"></script>
+    <script src="lib/ionic/js/ionic-angular.js"></script>
+
+    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -26,6 +36,7 @@
     <script src="lib/ionic/js/angular/angular-resource.js"></script>
     <script src="lib/SharePoint/ngSharePoint.js"></script>
     <script src="lib/SharePoint/ngSharePoint.Security.js"></script>
+    <script src="lib/SharePoint/ngSharePoint.UserProfile.js"></script>
     <script src="lib/SharePoint/ngSharePoint.Site.js"></script>
     <script src="lib/SharePoint/ngSharePoint.Web.js"></script>
     <script src="lib/SharePoint/ngSharePoint.List.js"></script>
@@ -39,7 +50,7 @@
   <body ng-app="starter">
     <ion-nav-view></ion-nav-view>
 
-    <!-- Weinre debugging 
+    <!-- Weinre debugging
     <script type="text/javascript">
       if (app.settings.debugUrl) {
         document.addEventListener("DOMContentLoaded", function(event) {

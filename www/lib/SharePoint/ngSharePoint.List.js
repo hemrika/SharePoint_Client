@@ -534,6 +534,8 @@
                         });
                 }
                 else {
+                    self.Properties = _ngList;
+                    ngSecurity.CurrentList = self;
                     deferred.resolve(self);
                 }
             }
@@ -551,6 +553,8 @@
                         });
                 }
                 else {
+                    self.Properties = _ngList;
+                    ngSecurity.CurrentList = self;
                     deferred.resolve(self);
                 }
             }
