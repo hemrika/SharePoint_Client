@@ -166,6 +166,9 @@
 
             var deferred = $q.defer();
 
+            /**
+             * Are we Authenticated ?
+             */
             if (!ngSecurity.Authenticated) {
                 deferred.reject("Not Authenticated");
             }
@@ -534,6 +537,8 @@
                         });
                 }
                 else {
+                    self.Properties = _ngList;
+                    ngSecurity.CurrentList = self;
                     deferred.resolve(self);
                 }
             }
@@ -551,6 +556,8 @@
                         });
                 }
                 else {
+                    self.Properties = _ngList;
+                    ngSecurity.CurrentList = self;
                     deferred.resolve(self);
                 }
             }

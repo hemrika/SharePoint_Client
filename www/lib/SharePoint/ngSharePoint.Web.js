@@ -551,6 +551,8 @@
 
 
             if(ngSecurity.CurrentWeb !== null) {
+                self.Properties = _ngWeb;
+                ngSecurity.CurrentWeb = self;
                 deferred.resolve(self);
             }
             else {

@@ -123,10 +123,20 @@
 
         $scope.Opslaan = function (Item) {
             var item = Item;
+            if(item.ID > 0) {
+                Item.Update().then(function (Item) {
+                    $scope.Web.List.Item = Item;
+                });
+            }
+            else {
+                Item.Save().then(function (Item) {
+                    $scope.Web.List.Item = Item;
+                });
+            }
             //var fields = $scope.Web.List.Item.Fields;
-            Item.Update().then(function (Item) {
-                $scope.Web.List.Item = Item;
-            });
+            //Item.Update().then(function (Item) {
+            //    $scope.Web.List.Item = Item;
+            //});
             //Item.Update().then( $state.go( $state.current, {}, {reload: true}));
             //SharePoint.CurrentList.
             //SharePoint.Web().then(function (Web) {
@@ -138,6 +148,15 @@
         $scope.$on('$ionicView.enter', function() {
             SharePoint.Web().then(function (Web) {
                 Web.Lists('Cordova').then(function (List) {
+
+                    /*
+                    List.Items(-1).then(function(Item){
+                    //List.Items('New').then(function(Item){
+                        $scope.Web = Web.Properties;
+                        $scope.Web.List = List.Properties;
+                        $scope.Web.List.Item = Item;
+                    });
+                    */
                     List.Items(1).then(function (Item) {
                         console.log(Item);
 

@@ -1,4 +1,3 @@
-
 <div data-ng-switch='Field.FieldTypeKind' ng-hide="Field.Hidden">
     <!-- Integer -->
     <span data-ng-switch-when='1'>
@@ -37,14 +36,9 @@
     <!-- Choice -->
     <span data-ng-switch-when='6'>
         <div class="ms-Dropdown" tabindex="0">
+            <label class="ms-Label">{{Field.Title}}</label>
             <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
-            <select class="ms-Dropdown-select" ng-model="Field.Value">
-                <option ng-selected="{{Field.Value == result}}"
-                        ng-repeat="result in Field.Choices.results"
-                        value="{{result}}">
-                    {{result}}
-                </option>
-            </select>
+            <select class="ms-Dropdown-select" ng-options="label for result in Field.Choices.results" ng-model="Field.Value"></select>
         </div>
     </span>
     <!-- Lookup -->
@@ -56,7 +50,7 @@
     <span data-ng-switch-when='8'>
         <div class="ms-Toggle">
             <span class="ms-Toggle-description">{{Field.Title}}</span>
-            <input type="checkbox" id="{{Field.InternalName}}" class="ms-Toggle-input" checked="{{Field.Value}}" data-ng-model="Field.Value" />
+            <input type="checkbox" id="{{Field.InternalName}}" class="ms-Toggle-input" />
             <label for="{{Field.InternalName}}" class="ms-Toggle-field">
                 <span class="ms-Label ms-Label--off"></span>
                 <span class="ms-Label ms-Label--on"></span>
@@ -65,27 +59,18 @@
     </span>
     <!-- Number -->
     <span data-ng-switch-when='9'>
-        <div class="ms-TextField">
-            <label class="ms-Label">{{Field.Title}}</label>
-            <input class="ms-TextField-field" name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" type="number" >
-            <span class="ms-TextField-description">{{Field.Description}}</span>
-        </div>
+        <div>{{Field.Title}}</div>
+        <input name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" />
     </span>
     <!-- Currency -->
     <span data-ng-switch-when='10'>
-        <div class="ms-TextField">
-            <label class="ms-Label">{{Field.Title}}</label>
-            <input class="ms-TextField-field" name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" type="number" >
-            <span class="ms-TextField-description">{{Field.Description}}</span>
-        </div>
+        <div>{{Field.Title}}</div>
+        <input name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" />
     </span>
     <!-- URL -->
     <span data-ng-switch-when='11'>
-        <div class="ms-TextField">
-            <label class="ms-Label">{{Field.Title}}</label>
-            <input class="ms-TextField-field" name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" type="url" >
-            <span class="ms-TextField-description">{{Field.Description}}</span>
-        </div>
+        <div>{{Field.Title}}</div>
+        <input name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" />
     </span>
     <!-- Computed -->
     <span data-ng-switch-when='12'>
@@ -99,12 +84,8 @@
     </span>
     <!-- MultiChoice -->
     <span data-ng-switch-when='15'>
-        <div class="ms-ChoiceField" ng-readonly="Field.ReadOnlyField">
-            <input name="{{Field.InternalName}}" class="ms-ChoiceField-input" type="checkbox" checked="checked" data-ng-model="Field.Value">
-            <label for="{{Field.InternalName}}" class="ms-ChoiceField-field">
-                <span class="ms-Label">{{Field.Title}}</span>
-            </label>
-        </div>
+        <div>{{Field.Title}}</div>
+        <input name="{{Field.InternalName}}" ng-readonly="Field.ReadOnlyField" data-ng-model="Field.Value" />
     </span>
     <!-- File -->
     <span data-ng-switch-when='18'>

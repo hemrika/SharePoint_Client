@@ -46,7 +46,7 @@
                             $state.go($state.current, {}, {reload: true});
                         });
                         */
-                        $state.go('app.user', {}, {reload:true} );
+                        $state.go('app.user', {}, {reload: true} );
                         //$state.go($state.current, {}, {reload: true});
                     }
                 });
@@ -123,8 +123,21 @@
 
         $scope.Opslaan = function (Item) {
             var item = Item;
+            if(item.ID > 0) {
+                Item.Update().then(function (Item) {
+                    $scope.Web.List.Item = Item;
+                });
+            }
+            else {
+                Item.Save().then(function (Item) {
+                    $scope.Web.List.Item = Item;
+                });
+            }
             //var fields = $scope.Web.List.Item.Fields;
-            Item.Update().then( $state.go( $state.current, {}, {reload: true}));
+            //Item.Update().then(function (Item) {
+            //    $scope.Web.List.Item = Item;
+            //});
+            //Item.Update().then( $state.go( $state.current, {}, {reload: true}));
             //SharePoint.CurrentList.
             //SharePoint.Web().then(function (Web) {
             //    Web.Lists('Cordova').then(function (List) {
@@ -132,9 +145,18 @@
             //});
         };
 
-        //if (SharePoint.CurrentWeb() !== null) {
+        $scope.$on('$ionicView.enter', function() {
             SharePoint.Web().then(function (Web) {
                 Web.Lists('Cordova').then(function (List) {
+
+                    /*
+                    List.Items(-1).then(function(Item){
+                    //List.Items('New').then(function(Item){
+                        $scope.Web = Web.Properties;
+                        $scope.Web.List = List.Properties;
+                        $scope.Web.List.Item = Item;
+                    });
+                    */
                     List.Items(1).then(function (Item) {
                         console.log(Item);
 
@@ -142,27 +164,10 @@
                         $scope.Web = Web.Properties;
                         $scope.Web.List = List.Properties;
                         $scope.Web.List.Item = Item;
-                        //Item.New();
-                })
-                    //var new_item = List.NewItem();
-                    //new_item.Title = "Newly created REST Item";
-                    //var new_item = { '__metadata': { 'type': 'SP.Data.CordovaListItem' }, 'Title': 'Newly created REST Item'};
-                    //List.AddItem(new_item);
+                    });
 
-                    //List.Items.Add(1).then(function (Item) {
-                    //console.log(Item.Id());
-                    //});
-                    /*
-                     List.Items().then(function (Items) {
-                     console.log(Items.length);
-                     $scope.Web = web.Properties;
-                     $scope.Web.List = List.Properties;
-                     $scope.Web.List.Items = Items;
-                     });
-                     */
                 });
-                //$scope.Web = web.Properties;
-                //$scope.Web = SharePoint.CurrentWeb();
             });
-        //}
+        });
+        //$scope.Ophalen();
     });

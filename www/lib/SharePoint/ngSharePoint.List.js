@@ -166,6 +166,9 @@
 
             var deferred = $q.defer();
 
+            /**
+             * Are we Authenticated ?
+             */
             if (!ngSecurity.Authenticated) {
                 deferred.reject("Not Authenticated");
             }
