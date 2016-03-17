@@ -3,7 +3,7 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngItem', [/*'XMLtoJSON',*/ 'ngSecurity', 'ngFile', /*'ngFolder',*/ '$timeout', '$http', '$resource', '$q', function (/*XMLtoJSON,*/ngSecurity, ngFile, /*ngFolder,*/ $timeout, $http, $resource, $q) {
+    SharePoint.factory('ngItem', ['ngSecurity', 'ngFile', /*'ngFolder',*/ '$timeout', '$http', '$resource', '$q', function (ngSecurity, ngFile, /*ngFolder,*/ $timeout, $http, $resource, $q) {
 
         var ngItem = {};
 
@@ -53,7 +53,6 @@
             },
             "FileSystemObjectType": 0,
             "Id": 1,
-            //"ID": 1,
             "ContentTypeId": "",
             "Title": "",
             "Modified": "",
@@ -90,7 +89,7 @@
                     }
                 }
             }
-            );
+        );
 
         var _item = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items(:Item)/:Deferred",
             {},
@@ -112,7 +111,7 @@
                     }
                 }
             }
-            );
+        );
 
         var _items = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items",
             {},//{ EndPoint: '', List: '', Item: '', Deferred: ''},
@@ -126,12 +125,15 @@
                     }
                 }
             }
-            );
+        );
 
         ngItem = function (identifier) {
 
             var deferred = $q.defer();
 
+            /**
+             * Are we Authenticated ?
+             */
             if (!ngSecurity.Authenticated) {
                 deferred.reject("Not Authenticated");
             }
@@ -638,52 +640,94 @@
                 return deferred.promise;
             };
 
+            //this.NewItem = NewItem;
             //endregion
 
             //region Get ListItem by GUID or by Title ( case sensitive )
 
             var self = this;
 
+            //Is there a usable Identifier and determine if it is a existing or new Item that is requested.
             var isId = false;
-            var isNew = false;
-            if (angular.isDefined(identifier)) {
+            var isExisting = false;
+            if ( angular.isDefined(identifier)) {
                 isId = /^\d+$/.test(identifier);
-                isNew = (identifier > 0);
+                isExisting = (identifier > 0);
             }
 
-                ngSecurity.CurrentList.Fields().then(function(fields) {
+            //Check if the previous requested item
+            if(ngSecurity.CurrentItem !== null) {
+                if (isId) {
+                    //Only when currentItem Id is not the requested Id, update _ngItem;
+                    if (ngSecurity.CurrentItem.Id !== identifier) {
 
-                    var FormFields = [];
+                        if(isExisting) {
+                            _item.deferred({
+                                EndPoint: ngSecurity.Endpoint,
+                                List: ngSecurity.CurrentList.Properties.Id,
+                                Item: identifier
+                            }).$promise.then(
+                                function (data) {
+                                    _ngItem = data;
+                                });
+                        }
+                        else {
+                            //Indicates a new Item
+                            _ngItem.Id = identifier;
+                        }
+                    }
+                }
+            }
+            else {
+                //Newly not previously requested Item should be requested from SharePoint
+                if (isId && isExisting) {
+                    _item.deferred({
+                        EndPoint: ngSecurity.Endpoint,
+                        List: ngSecurity.CurrentList.Properties.Id,
+                        Item: identifier
+                    }).$promise.then(
+                        function (data) {
+                            _ngItem = data;
+                        });
+                }
+                else {
+                    //Indicates a new Item
+                    _ngItem.Id = identifier;
+                }
+            }
 
-                    if (isId) {
-                        _item.deferred({
-                            EndPoint: ngSecurity.Endpoint,
-                            List: ngSecurity.CurrentList.Properties.Id,
-                            Item: identifier
-                        }).$promise.then(
-                            function (data) {
-                                _ngItem = data;
-                            });
-                    }
-                    else {
-                        _ngItem.Id = identifier;
-                        self.Properties = _ngItem;
-                    }
+            //All properties should be loaded now.
+            self.Properties = _ngItem;
+
+            //region Fields
+
+            var FormFields = [];
+
+            try {
+                ngSecurity.CurrentList.Fields().then(function (fields) {
 
                     fields.forEach(function (field) {
                         if (!(field.Hidden && !field.ReadOnlyField) || field.Required) {
-                            field.Value = _ngItem[field.EntityPropertyName];
+                            if (isExisting) {
+                                field.Value = _ngItem[field.EntityPropertyName];
+                            }
                             FormFields.push(field);
                         }
-                        //console.log(field);
+                        ///console.log(field);
                     });
 
-                    self.Properties = _ngItem;
-                    self.Fields = FormFields;
-                    ngSecurity.CurrentItem = self;
-                    deferred.resolve(self);
                 });
+            }
+            catch(ex) {
+                console.log(ex);
+            }
 
+            self.Fields = FormFields;
+
+            //endregion
+
+            ngSecurity.CurrentItem = self;
+            deferred.resolve(self);
             //endregion
 
             return deferred.promise;

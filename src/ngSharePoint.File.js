@@ -3,7 +3,7 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngFile', ['ngSecurity', '$resource', '$q', function (ngSecurity, $resource, $q) {
+    SharePoint.factory('ngFile', ['ngSecurity', '$timeout', '$http', '$resource', '$q', function (ngSecurity, $timeout, $http, $resource, $q) {
 
         var ngFile = {};
 
@@ -55,7 +55,7 @@
         };
 
         var API = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items(:Item)/File/:Deferred",
-            {},//{ EndPoint: '', List: '', Item: '', Deferred: ''},
+            {},
             {
                 get: {
                     method: 'GET',
@@ -104,12 +104,15 @@
                     }
                 }
             }
-        );
+            );
 
         ngFile = function () {
 
             var deferred = $q.defer();
 
+            /**
+             * Are we Authenticated ?
+             */
             if (!ngSecurity.Authenticated) {
                 deferred.reject("Not Authenticated");
             }
@@ -162,10 +165,9 @@
             this.UniqueId = function (value) {
                 return angular.isDefined(value) ? (_ngFile.UniqueId = value) : _ngFile.UniqueId;
             };
-
             //endregion
 
-            //region Methods
+            //region Deferred
 
             this.Author = function () {
                 var Operator = _ngFile.Author.__deferred.uri.split('/').pop();
@@ -316,7 +318,7 @@
 
             //region Methods
 
-            this.Delete = function () {
+            this.Delete = function() {
 
                 var deferred = $q.defer();
 
@@ -332,7 +334,7 @@
                 Envelope.push('</soap:Body>');
                 Envelope.push('</soap:Envelope>');
 
-                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
+                var url = "https://"+ngSecurity.Endpoint+"/_vti_bin/Lists.asmx";
 
                 var req = {
                     method: 'POST',
@@ -344,31 +346,30 @@
                     data: Envelope.join("").toString()
                 };
 
-                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ ngSecurity.SecurityToken;
 
-                $http(req).then(function (result) {
+                $http(req).then(function(result){
                     //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
                     //console.log(result.toString());
                     //var jsonObj = XMLtoJSON.xml_str2json(result.data);
                     var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
                     var ErrorCode = jsonObj2.Envelope.Body.DeleteAttachmentResponse.DeleteAttachmentResult.Results.Result.ErrorCode.valueOf();
 
-                    if (ErrorCode.indexOf("0x00000000") === -1) {
+                    if(ErrorCode.indexOf("0x00000000") === -1) {
                         var ErrorText = jsonObj2.Envelope.Body.DeleteAttachmentResponse.DeleteAttachmentResult.Results.Result.ErrorText.valueOf();
-                        deferred.reject(ErrorText);
-                    }
+                        deferred.reject(ErrorText);}
                     else {
                         var ows_row = jsonObj2.Envelope.Body.DeleteAttachmentResponse.DeleteAttachmentResult.Results.Result.row;
 
                         /*
-                         self.Fields.forEach(function(field) {
-                         console.log(field.EntityPropertyName);
-                         if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
-                         self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
-                         }
+                        self.Fields.forEach(function(field) {
+                            console.log(field.EntityPropertyName);
+                            if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
+                                self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
+                            }
 
-                         });
-                         */
+                        });
+                        */
                         deferred.resolve(self);
                     }
 
@@ -379,7 +380,8 @@
                 return deferred.promise;
             };
 
-            this.Add = function (value) {
+            this.Add = function(value) {
+
                 var deferred = $q.defer();
 
                 var Envelope = new Array("");
@@ -395,7 +397,7 @@
                 Envelope.push('</soap:Body>');
                 Envelope.push('</soap:Envelope>');
 
-                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
+                var url = "https://"+ngSecurity.Endpoint+"/_vti_bin/Lists.asmx";
 
                 var req = {
                     method: 'POST',
@@ -407,31 +409,30 @@
                     data: Envelope.join("").toString()
                 };
 
-                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ ngSecurity.SecurityToken;
 
-                $http(req).then(function (result) {
+                $http(req).then(function(result){
                     //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
                     //console.log(result.toString());
                     //var jsonObj = XMLtoJSON.xml_str2json(result.data);
                     var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
                     var ErrorCode = jsonObj2.Envelope.Body.AddAttachmentResponse.AddAttachmentResult.Results.Result.ErrorCode.valueOf();
 
-                    if (ErrorCode.indexOf("0x00000000") === -1) {
+                    if(ErrorCode.indexOf("0x00000000") === -1) {
                         var ErrorText = jsonObj2.Envelope.Body.AddAttachmentResponse.AddAttachmentResult.Results.Result.ErrorText.valueOf();
-                        deferred.reject(ErrorText);
-                    }
+                        deferred.reject(ErrorText);}
                     else {
                         var ows_row = jsonObj2.Envelope.Body.AddAttachmentResponse.AddAttachmentResult.Results.Result.row;
 
                         /*
-                         self.Fields.forEach(function(field) {
-                         console.log(field.EntityPropertyName);
-                         if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
-                         self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
-                         }
+                        self.Fields.forEach(function(field) {
+                            console.log(field.EntityPropertyName);
+                            if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
+                                self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
+                            }
 
-                         });
-                         */
+                        });
+                        */
                         deferred.resolve(self);
                     }
 
@@ -446,17 +447,19 @@
 
             var self = this;
 
-            API.get({
-                EndPoint: ngSecurity.Endpoint,
-                List: ngSecurity.CurrentList.Id,
-                Item: ngSecurity.CurrentItem.Id
-            }).$promise.then(
-                function (data) {
-                    _ngFile = data;
-                    ngSecurity.CurrentFile = self;
-                    self.Properties = _ngFile;
-                    deferred.resolve(self);
-                });
+            //if (ngSecurity.CurrentUser !== null) {
+                API.get({
+                    EndPoint: ngSecurity.Endpoint,
+                    List: ngSecurity.CurrentList.Id,
+                    Item: ngSecurity.CurrentItem.Id
+                }).$promise.then(
+                    function (data) {
+                        _ngFile = data;
+                        ngSecurity.CurrentFile = self;
+                        self.Properties = _ngFile;
+                        deferred.resolve(self);
+                    });
+            //}
 
             return deferred.promise;
 

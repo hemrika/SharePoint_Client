@@ -5,54 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4fa2f33-eee7-48fd-8ead-4b3a0f6646e8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/Jquery.Dropdown.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/Office-UI-Fabric.htm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.components.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.components.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.components.rtl.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.components.rtl.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.rtl.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/css/fabric.rtl.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ngSharePoint.UserProfile.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/partials/controls_create.htm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/partials/controls_update.htm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/www/lib/SharePoint/Fields.json" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Requestor.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Requestor.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.SP.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.SP.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Fields.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/BLAUD SharePoint.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/platforms/ios/BLAUD SharePoint.xcodeproj/project.pbxproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/BLAUD SharePoint/BLAUD SharePoint-Info.plist" afterPath="$PROJECT_DIR$/platforms/ios/BLAUD SharePoint/BLAUD SharePoint-Info.plist" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/BLAUD SharePoint/config.xml" afterPath="$PROJECT_DIR$/platforms/ios/BLAUD SharePoint/config.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/cordova_plugins.js" afterPath="$PROJECT_DIR$/platforms/ios/www/cordova_plugins.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/index.html" afterPath="$PROJECT_DIR$/platforms/ios/www/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/js/app.js" afterPath="$PROJECT_DIR$/platforms/ios/www/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/js/controllers.js" afterPath="$PROJECT_DIR$/platforms/ios/www/js/controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Security.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Security.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Site.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.js" afterPath="$PROJECT_DIR$/platforms/ios/www/lib/SharePoint/ngSharePoint.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/templates/cordova.html" afterPath="$PROJECT_DIR$/platforms/ios/www/templates/cordova.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platforms/ios/www/templates/menu.html" afterPath="$PROJECT_DIR$/platforms/ios/www/templates/menu.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Office-UI-Fabric.htm" afterPath="$PROJECT_DIR$/src/components/Office-UI-Fabric.htm" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.File.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Item.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Security.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Security.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Site.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/controllers.js" afterPath="$PROJECT_DIR$/www/js/controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/components/Office-UI-Fabric.htm" afterPath="$PROJECT_DIR$/www/lib/SharePoint/components/Office-UI-Fabric.htm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Site.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/cordova.html" afterPath="$PROJECT_DIR$/www/templates/cordova.html" />
     </list>
     <ignored path="cordova-plugin-blaud-sharepoint.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -206,92 +166,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SharePoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cordova-plugin-blaud-sharepoint" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -617,7 +491,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457624747821</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;TODO Attachments">
+      <created>1458228259766</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1458228259766</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView">
@@ -635,16 +515,16 @@
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15850447" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284091" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284091" sideWeight="0.5018431" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3257143" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3265306" sideWeight="0.49815693" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3272727" sideWeight="0.49815693" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37188208" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284091" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -706,7 +586,8 @@
     <MESSAGE value="Windows Mobile build Succes&#10;Apple Xcode build Succes&#10;Apple Xcode build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes&#10;&#10;Form ElementsOffice-UI-Fabric" />
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD" />
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes&#10;SOAP RESULT PARSE Partial&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes&#10;SOAP RESULT PARSE Partial&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD" />
+    <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;TODO Attachments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;TODO Attachments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -981,14 +862,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Jquery.Dropdown.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.UserProfile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1131,47 +1004,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ngSharePoint.File.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="462" column="9" selection-start-line="462" selection-start-column="9" selection-end-line="462" selection-end-column="9" />
-          <folding>
-            <element signature="e#243#1771#0" expanded="false" />
-            <element signature="e#1959#2676#0" expanded="false" />
-            <element signature="e#2788#3846#0" expanded="false" />
-            <element signature="e#4057#4076#0" expanded="false" />
-            <element signature="e#6598#6614#0" expanded="false" />
-            <element signature="e#6654#7499#0" expanded="false" />
-            <element signature="e#7550#8405#0" expanded="false" />
-            <element signature="e#8457#9313#0" expanded="false" />
-            <element signature="e#9358#10207#0" expanded="false" />
-            <element signature="e#10252#11101#0" expanded="false" />
-            <element signature="e#11144#11950#0" expanded="false" />
-            <element signature="e#11990#12756#0" expanded="false" />
-            <element signature="e#12796#12812#0" expanded="false" />
-            <element signature="e#12852#16139#0" expanded="false" />
-            <element signature="e#16182#19511#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ngSharePoint.Item.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="655" column="40" selection-start-line="655" selection-start-column="40" selection-end-line="655" selection-end-column="40" />
-          <folding>
-            <element signature="e#360#1827#0" expanded="false" />
-            <element signature="e#1929#2984#0" expanded="false" />
-            <element signature="e#3131#3848#0" expanded="false" />
-            <element signature="e#4031#4370#0" expanded="false" />
-            <element signature="e#4595#4614#0" expanded="false" />
-            <element signature="e#7026#7043#0" expanded="false" />
-            <element signature="e#14290#14306#0" expanded="false" />
-            <element signature="e#24084#28015#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.8745583">
@@ -1197,6 +1029,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.2385159">
           <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Jquery.Dropdown.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ngSharePoint.Item.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.095745">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
