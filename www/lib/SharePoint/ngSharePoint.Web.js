@@ -543,6 +543,24 @@
                 return deferred.promise;
             };
 
+            this.GetFileByServerRelativeUrl = function(url) {
+                var deferred = $q.defer();
+
+                var Operator = "GetFileByServerRelativeUrl('" + url + "')";///$value";
+                if (ngSecurity.CurrentUser !== null) {
+                    API.deferred({EndPoint: ngSecurity.Endpoint, Deferred: Operator}).$promise.then(
+                        function (data) {
+                            if (angular.isDefined(data.results)) {
+                                deferred.resolve(data.results);
+                            }
+                            else {
+                                deferred.resolve(data);
+                            }
+                        });
+                }
+                return deferred.promise;
+            };
+
             //endregion
 
             //region Get Current Web

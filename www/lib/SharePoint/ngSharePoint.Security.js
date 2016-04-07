@@ -59,7 +59,7 @@
         /**
          * WWW-Authenticate
          * Bearer realm : fbb85d4b-b9cc-445f-8b90-a2ea555b2841
-         * client_id : 00000003-0000-0ff1-ce00-000000000000
+         * client_id : 00000003-0000-0ff1-ce00-000000000000 0000000c-0000-0000-c000-000000000000
          * trusted_issuers : 00000003-0000-0ff1-ce00-000000000000 00000001-0000-0000-c000-000000000000
          * authorization_uri : https://login.windows.net/common/oauth2/authorize
          */
@@ -206,6 +206,9 @@
         var Authenticate = function () {
 
             var deferred = $q.defer();
+            GetBearerRealm().then(function(bearer){
+                console.log(bearer);
+            });
 
             GetUserRealm().then(function (realm) {
                 //console.log(realm);
@@ -484,10 +487,11 @@
                 method: 'GET',
                 //async: true,
                 url: "https://"+_Hostname+"/_vti_bin/client.svc/",
-                //withCredentials: false,
+                withCredentials: false,
                 headers: {
                     "Authorization": "Bearer",
-                    "Accept": "application/json;odata=verbose"
+                    "Accept": "application/json;odata=verbose",
+                    "Access-Control-Allow-Headers": "WWW-Authenticate"
                 }
             }).then(function (response) {
                 var bearer = response.headers()['WWW-Authenticate'];
@@ -495,8 +499,8 @@
             }, function(response) {
                 var bearer = response.headers()['WWW-Authenticate'];
                 deferred.resolve(bearer);
-                $scope.data = response.data || "Request failed";
-                $scope.status = response.status;
+                //$scope.data = response.data || "Request failed";
+                //$scope.status = response.status;
             });
 
             return deferred.promise;
@@ -513,7 +517,7 @@
 
             $http({
                 method: 'GET',
-                //withCredentials: false,
+                withCredentials: false,
                 url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -696,10 +700,10 @@
             $http({
                 method: 'GET',
                 url: _IdCrlUrl,
-                withCredentials: false,
-                cache: false,
+                //withCredentials: false,
+                //cache: false,
                 headers: {
-                    "Accept": "application/json;odata=verbose",
+                    //"Accept": "application/json;odata=verbose",
                     //'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
                     //'Authorization' : 'BPOSIDCRL '+ _SecurityToken
                 }

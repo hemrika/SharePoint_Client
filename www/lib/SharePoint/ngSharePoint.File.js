@@ -106,7 +106,7 @@
             }
             );
 
-        ngFile = function () {
+        ngFile = function (identifier) {
 
             var deferred = $q.defer();
 
@@ -447,6 +447,8 @@
 
             var self = this;
 
+            if ( angular.isDefined(identifier)) {
+            }
             //if (ngSecurity.CurrentUser !== null) {
                 API.get({
                     EndPoint: ngSecurity.Endpoint,

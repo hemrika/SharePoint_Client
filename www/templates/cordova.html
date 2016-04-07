@@ -2,13 +2,19 @@
 <link href="lib/SharePoint/css/fabric.components.min.css" rel="stylesheet">
 <ion-view view-title="{{ Web.List.Title}}">
     <ion-content>
+        <!--
         <ion-list>
             <ion-item ng-repeat="Field in Web.List.Item.Fields">
                 <div data-ng-include="'lib/SharePoint/components/Office-UI-Fabric.htm'"></div>
             </ion-item>
         </ion-list>
+        -->
+        <button class="ms-Button ms-Button--primary" data-ng-click="Bestanden(Web.List.Item)">
+            <span class="ms-Button-label">Bestanden</span>
+        </button>
         <button class="ms-Button ms-Button--primary" data-ng-click="Opslaan(Web.List.Item)">
             <span class="ms-Button-label">Opslaan</span>
         </button>
+        <image height="100%" width="100%" src="{{bsixfour}}" ></image>
     </ion-content>
 </ion-view>

@@ -310,9 +310,15 @@
                 return deferred.promise;
             };
 
-            this.File = function () {
+            this.Files = function (value) {
 
-                return new ngFile();
+                if (angular.isDefined(value)) {
+                    return new ngFile(value);
+                }
+                else {
+
+                }
+                //return new ngFile();
                 /*
                  var Operator = _ngList.File.__deferred.uri.split('/').pop();
                  if (ngSecurity.CurrentUser !== null) {
@@ -640,7 +646,68 @@
                 return deferred.promise;
             };
 
-            //this.NewItem = NewItem;
+            this.AddFile = function (name, value) {
+
+                var deferred = $q.defer();
+
+                var Envelope = new Array("");
+                Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
+                Envelope.push('<soap:Body>');
+                Envelope.push('<AddAttachment xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
+                Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
+                Envelope.push('<listItemID>' + ngSecurity.CurrentItem.Properties.Id + '</listItemID>');
+                var self = this;
+                Envelope.push('<fileName>' + name + '</fileName>');
+                Envelope.push('<attachment>' + value + '</attachment>');
+                Envelope.push('</AddAttachment>');
+                Envelope.push('</soap:Body>');
+                Envelope.push('</soap:Envelope>');
+
+                var url = "https://"+ngSecurity.Endpoint+"/_vti_bin/Lists.asmx";
+
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    headers: {
+                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/AddAttachment',
+                        'Content-Type': 'text/xml; charset="UTF-8"'
+                    },
+                    data: Envelope.join("").toString()
+                };
+
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ ngSecurity.SecurityToken;
+
+                $http(req).then(function(result){
+                    //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
+                    //console.log(result.toString());
+                    //var jsonObj = XMLtoJSON.xml_str2json(result.data);
+                    var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
+                    var ErrorCode = jsonObj2.Envelope.Body.AddAttachmentResponse.AddAttachmentResult.Results.Result.ErrorCode.valueOf();
+
+                    if(ErrorCode.indexOf("0x00000000") === -1) {
+                        var ErrorText = jsonObj2.Envelope.Body.AddAttachmentResponse.AddAttachmentResult.Results.Result.ErrorText.valueOf();
+                        deferred.reject(ErrorText);}
+                    else {
+                        var ows_row = jsonObj2.Envelope.Body.AddAttachmentResponse.AddAttachmentResult.Results.Result.row;
+
+                        /*
+                         self.Fields.forEach(function(field) {
+                         console.log(field.EntityPropertyName);
+                         if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
+                         self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
+                         }
+
+                         });
+                         */
+                        deferred.resolve(self);
+                    }
+
+                    //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
+                    //deferred.resolve(result.data);
+                });
+
+                return deferred.promise;
+            };
             //endregion
 
             //region Get ListItem by GUID or by Title ( case sensitive )
@@ -703,69 +770,31 @@
 
             var FormFields = [];
 
-            ngSecurity.CurrentList.Fields().then(function (fields) {
+            try {
+                ngSecurity.CurrentList.Fields().then(function (fields) {
 
-                fields.forEach(function (field) {
-                    if (!(field.Hidden && !field.ReadOnlyField) || field.Required) {
-                        if(isExisting) { field.Value = _ngItem[field.EntityPropertyName]; }
-                        FormFields.push(field);
-                    }
-                    ///console.log(field);
+                    fields.forEach(function (field) {
+                        if ((!field.Hidden && !field.ReadOnlyField) || (!field.Hidden && field.ReadOnlyField)) { //|| field.Required) {
+                            if (isExisting) {
+                                field.Value = _ngItem[field.EntityPropertyName];
+                            }
+                            FormFields.push(field);
+                        }
+                        ///console.log(field);
+                    });
+
                 });
-                self.Fields = FormFields;
             }
+            catch(ex) {
+                console.log(ex);
+            }
+
+            self.Fields = FormFields;
 
             //endregion
 
             ngSecurity.CurrentItem = self;
             deferred.resolve(self);
-
-            /*
-            ngSecurity.CurrentList.Fields().then(function (fields) {
-
-                var FormFields = [];
-
-                if (isId) {
-                    _item.deferred({
-                        EndPoint: ngSecurity.Endpoint,
-                        List: ngSecurity.CurrentList.Properties.Id,
-                        Item: identifier
-                    }).$promise.then(
-                        function (data) {
-
-                            fields.forEach(function (field) {
-                                if (!(field.Hidden && !field.ReadOnlyField) || field.Required) {
-                                    field.Value = data[field.EntityPropertyName];
-                                    FormFields.push(field);
-                                }
-                                ///console.log(field);
-                            });
-                            self.Fields = FormFields;
-
-                            _ngItem = data;
-                            self.Properties = _ngItem;
-                            ngSecurity.CurrentItem = self;
-                            deferred.resolve(self);
-                        });
-                }
-                else {
-                    ///var listId = ngSecurity.CurrentList.Properties.Id;
-                    _ngItem.Id = identifier;
-                    self.Properties = _ngItem;
-
-                    fields.forEach(function (field) {
-                        if (!(field.Hidden && !field.ReadOnlyField) || field.Required) {
-                            //field.Value = data[field.EntityPropertyName];
-                            FormFields.push(field);
-                        }
-                        ///console.log(field);
-                    });
-                    self.Fields = FormFields;
-                    ngSecurity.CurrentItem = self;
-                    deferred.resolve(self);
-                }
-            });
-            */
             //endregion
 
             return deferred.promise;

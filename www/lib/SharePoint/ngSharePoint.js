@@ -72,11 +72,12 @@
                 request: function (request) {
 
                     //request.headers.Origin = '*';
-
+                    delete request.headers['X-Requested-With'];
                     //request.headers['Access-Control-Allow-Origin'] = 'file://*';
                     //request.headers['Origin'] = 'file://*';
                     if (request.method.toLowerCase() === "post" && angular.isDefined($rootScope.FormDigestValue)) {
                         request.headers['X-RequestDigest'] = $rootScope.FormDigestValue;
+
                         request.url = decodeURIComponent(request.url);
                     }
                     if (request.headers.Accept === "application/json;odata=verbose") {
@@ -97,10 +98,12 @@
                 }
             };
         }])
+
         .config(['$sceDelegateProvider', function ($sceDelegateProvider) {
             $sceDelegateProvider.resourceUrlWhitelist(['self'], 'https://*.sharepoint.com/**');
             $sceDelegateProvider.resourceUrlWhitelist(['self'], 'file://*');
         }])
+
         .config(['$compileProvider', function ($compileProvider) {
 
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|callto|tel|file|ghttps?|ms-appx|ms-appx-web|x-wmapp0|ms-drive-to|ms-windows-store|bingmaps|google.navigation):/);
@@ -108,18 +111,20 @@
             $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|ms-appx|ms-appx-web|x-wmapp0):|data:image\//);
         }
         ])
+
 /*       .config(function($templateRequestProvider){
             $templateRequestProvider.httpOptions({
                 headers:{Origin:'*'}
             });
         })*/
+
         .config(['$httpProvider', '$sceProvider', function ( $httpProvider, $sceProvider){
             $httpProvider.defaults.headers.common = {};
             $httpProvider.defaults.headers.post = {};
             $httpProvider.defaults.headers.put = {};
             $httpProvider.defaults.headers.patch = {};
 
-            $httpProvider.defaults.useXDomain = false;
+            $httpProvider.defaults.useXDomain = true;
             delete $httpProvider.defaults.headers.common['X-Requested-With'];
             //delete $httpProvider.defaults.headers.common['Accept-Encoding'];
             //delete $httpProvider.defaults.headers.common['Accept-Language'];
