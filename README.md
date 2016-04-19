@@ -1,5 +1,55 @@
 READ ME
 
+Huidige implementatie
+
+- Configuratie
+○ Server omgeving
+
+- Authenticatie
+○ Login
+○ Interceptor Token
+○ Over alle requests heen
+
+- User
+○ Account Info
+○ UserProfile
+§ N: UserProfile Image
+○ UserProfile READ
+- Web
+○ Web Properties READ
+○ Web Lists READ
+- List
+○ By Name /GUID
+○ List Properties Read
+○ List Items
+- Items
+○ By Id
+○ Item Properties Read
+○ Item Fields
+○ Item Create / Update / Delete
+○ Item Attachments
+- Attachments
+○ By Name
+○ Attachment properties
+○ N :Attachment  SOAP ( Android IOS )
+○ Y: Attachment REST ( Windows )
+- UI
+○ Test Field 
+○ Note Field
+○ Currency Field
+○ Number Field
+○ Date Field 
+○ DateTime Field
+○ Choice Field
+○ N: Open Choice Field
+○ N: Choice DropDown Field
+○ CheckBox
+○ N :CheckBox Group 
+○ N: Attachment Field
+○ N: Created Field ReadOnly
+○ N: Creator Field ReadOnly
+○ N: Modified Field ReadOnly
+
 Item.Field Properties
 
 Common Field Properties
