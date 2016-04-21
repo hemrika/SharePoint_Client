@@ -353,6 +353,8 @@
 
 
       if(ngSecurity.CurrentUserProfile !== null) {
+        self.Properties = _ngUserProfile;
+        ngSecurity.CurrentUserProfile = self;
         deferred.resolve(self);
       }
       else {

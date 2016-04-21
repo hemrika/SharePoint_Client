@@ -59,7 +59,7 @@
         /**
          * WWW-Authenticate
          * Bearer realm : fbb85d4b-b9cc-445f-8b90-a2ea555b2841
-         * client_id : 00000003-0000-0ff1-ce00-000000000000
+         * client_id : 00000003-0000-0ff1-ce00-000000000000 0000000c-0000-0000-c000-000000000000
          * trusted_issuers : 00000003-0000-0ff1-ce00-000000000000 00000001-0000-0000-c000-000000000000
          * authorization_uri : https://login.windows.net/common/oauth2/authorize
          */
@@ -206,6 +206,9 @@
         var Authenticate = function () {
 
             var deferred = $q.defer();
+            GetBearerRealm().then(function(bearer){
+                //console.log(bearer);
+            });
 
             GetUserRealm().then(function (realm) {
                 //console.log(realm);
@@ -255,7 +258,14 @@
                                 //console.log(user);
                                 _CurrentUser = user;
                                 Security.CurrentUser = _CurrentUser;
-                                GetContextInfo().then(function(contextinfo){
+                              _UseContextInfo = false;
+                              Security.UseContextInfo = false;
+                              GetContextInfoService().then(function(contextinfo){
+                                _ContextInfo = contextinfo;
+                                Security.ContextInfo = _ContextInfo;
+                                deferred.resolve();
+                              });
+/*                                GetContextInfo().then(function(contextinfo){
                                     //console.log(contextinfo);
                                     if(contextinfo === ""){
                                         _UseContextInfo = false;
@@ -274,7 +284,7 @@
                                     //UpdateContextInfo().then(function () {
 
                                     //}); //UpdateContextInfo
-                                }); //GetContextInfo
+                                });*/ //GetContextInfo
                             }); //GetCurrentUser
                         }); //GetSecurityCookie
                     }); //GetRemoteSecurityToken
@@ -286,9 +296,13 @@
             return deferred.promise;
         };
 
-        var Authenticated = (_CurrentUser !== null || _CurrentUser !== undefined);
-
         /**
+         * TODO runtime var validation based on CurrentUser and/or ContecxtInfo
+         * @type {boolean}
+         */
+        var Authenticated = true;//(_CurrentUser !== null) ? true : false;
+
+      /**
          *
          * @type {{}}
          */
@@ -484,10 +498,11 @@
                 method: 'GET',
                 //async: true,
                 url: "https://"+_Hostname+"/_vti_bin/client.svc/",
-                //withCredentials: false,
+                withCredentials: false,
                 headers: {
                     "Authorization": "Bearer",
-                    "Accept": "application/json;odata=verbose"
+                    "Accept": "application/json;odata=verbose",
+                    "Access-Control-Allow-Headers": "WWW-Authenticate"
                 }
             }).then(function (response) {
                 var bearer = response.headers()['WWW-Authenticate'];
@@ -495,8 +510,8 @@
             }, function(response) {
                 var bearer = response.headers()['WWW-Authenticate'];
                 deferred.resolve(bearer);
-                $scope.data = response.data || "Request failed";
-                $scope.status = response.status;
+                //$scope.data = response.data || "Request failed";
+                //$scope.status = response.status;
             });
 
             return deferred.promise;
@@ -513,7 +528,7 @@
 
             $http({
                 method: 'GET',
-                //withCredentials: false,
+                withCredentials: false,
                 url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
                 headers: {
                     "Accept": "application/json;odata=verbose"
@@ -696,10 +711,10 @@
             $http({
                 method: 'GET',
                 url: _IdCrlUrl,
-                withCredentials: false,
-                cache: false,
+                //withCredentials: false,
+                //cache: false,
                 headers: {
-                    "Accept": "application/json;odata=verbose",
+                    //"Accept": "application/json;odata=verbose",
                     //'Content-Type' : 'text/plain',//'application/x-www-form-urlencoded',
                     //'Authorization' : 'BPOSIDCRL '+ _SecurityToken
                 }
@@ -707,10 +722,10 @@
 
                 //var SPOIDCRL = $cookies.get('SPOIDCRL');
                 //$cookies.put('FedAuth', SPOIDCRL);
-                delete $http.defaults.headers.common.Authorization;// = undefined;
+                //delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.resolve(data);
             }).error(function () {
-                delete $http.defaults.headers.common.Authorization;// = undefined;
+                //delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.reject();
             });
             //$http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ _SecurityToken;
@@ -812,7 +827,7 @@
                     _ContextInfo = ContextInfo;
                     Security.ContextInfo = _ContextInfo;
                     $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
-                    delete $http.defaults.headers.common.Authorization;// = undefined;
+                    //delete $http.defaults.headers.common.Authorization;// = undefined;
                     deferred.resolve(ContextInfo);
                 }
                 else {
@@ -820,11 +835,12 @@
                 }
             }, function (response) {
                 //console.log("Cannot get digestValue.");
-                delete $http.defaults.headers.common.Authorization;// = undefined;
+                //delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.reject();
             });
             return deferred.promise;
         }
+
 
         function GetContextInfoService()
         {
@@ -862,15 +878,16 @@
                 _ContextInfo = ContextInfo;
                 Security.ContextInfo = _ContextInfo;
                 $rootScope.FormDigestValue = ContextInfo.FormDigestValue;
-                delete $http.defaults.headers.common.Authorization;// = undefined;
+                //delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.resolve(ContextInfo);
             }, function (response) {
                 //console.log("Cannot get digestValue.");
-                delete $http.defaults.headers.common.Authorization;// = undefined;
+                //delete $http.defaults.headers.common.Authorization;// = undefined;
                 deferred.reject();
             });
             return deferred.promise;
         }
+
         function UpdateContextInfo() {
 
             var deferred = $q.defer();
@@ -985,62 +1002,3 @@
     }]);
 
 })();
-
-//region Old Code / Tests
-
-/*
- var deferred = $q.defer();
-
- $http.post(ContextInfoUrl, {
- data: FormDigestInformationToken(),
- headers: {
- //"Accept": "application/json;odata=verbose",
- "Content-Type": 'text/xml; charset="utf-8'
- },
- }).success(function (data) {
- //Resolve the FormDigestValue from the success callback.
- deferred.resolve(data);//.d.GetContextWebInformation.FormDigestValue);
- }).error(function () {
- deferred.reject("error finding form digest");
- });
- */
-/*
- angular.element.support.cors = true;
- angular.element.ajax({
- type: 'POST',
- data: FormDigestInformationToken(),
- crossDomain: true, // had no effect, see support.cors above
- contentType: 'text/xml; charset="utf-8"',
- url: url,//siteFullUrl + '/_api/contextinfo',
- dataType: 'xml',
- success: function (data, textStatus, result) {
- var digest = angular.element(result.responseText).find("d\\:FormDigestValue").text();
- //sendRESTReq();
- },
- error: function (result, textStatus, errorThrown) {
- var response = JSON.parse(result.responseText);
- if ((response.error !== undefined) && (response.error.message !== undefined)) {
- alert(response.error.message.value);
- }
- }
- });
- */
-/*
- $http({
- method: 'POST',
- //data: FormDigestInformationToken(),
- url: url,
- headers: {
- 'Content-Type' : 'text/xml; charset="utf-8"',
- 'Connection' : 'keep-alive'
- //'Accept' : 'application/json;odata=verbose'//,
- //'Content-Length' : 0
- }
- }).success(function (data) {
- deferred.resolve(data);
- }).error(function () {
- deferred.reject();
- });
- */
-//return deferred.promise;
-//endregion

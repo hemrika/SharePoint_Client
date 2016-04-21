@@ -38,13 +38,7 @@
     <span data-ng-switch-when='6'>
         <div class="ms-Dropdown" tabindex="0">
             <i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
-            <select class="ms-Dropdown-select" ng-model="Field.Value">
-                <option ng-selected="{{Field.Value == result}}"
-                        ng-repeat="result in Field.Choices.results"
-                        value="{{result}}">
-                    {{result}}
-                </option>
-            </select>
+            <select class="ms-Dropdown-select" ng-options="result for value in Field.Choices.results" ng-model="Field.Value"></select>
         </div>
     </span>
     <!-- Lookup -->
