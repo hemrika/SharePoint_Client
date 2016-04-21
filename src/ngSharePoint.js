@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('ngSharePoint', ['ngResource', 'ngCookies'])
+    angular.module('ngSharePoint', ['ngResource'])
 
         .factory('SharePoint', ['ngSecurity', 'ngUserProfile', 'ngSite', 'ngWeb', function (ngSecurity, ngUserProfile, ngSite, ngWeb) {
 
