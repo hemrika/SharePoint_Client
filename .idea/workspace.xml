@@ -4,24 +4,8 @@
     <bookmark url="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" line="165" mnemonic="8" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4fa2f33-eee7-48fd-8ead-4b3a0f6646e8" name="Default" comment="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;">
+    <list default="true" id="e4fa2f33-eee7-48fd-8ead-4b3a0f6646e8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Office-UI-Fabric.htm" afterPath="$PROJECT_DIR$/src/components/Office-UI-Fabric.htm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Security.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Security.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Site.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.UserProfile.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.UserProfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Security.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Security.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Site.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.js" />
     </list>
     <ignored path="cordova-plugin-blaud-sharepoint.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -65,7 +49,7 @@
       <file leaf-file-name="ngSharePoint.List.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.06908665">
+            <state vertical-scroll-proportion="0.069248825">
               <caret line="227" column="69" selection-start-line="227" selection-start-column="69" selection-end-line="227" selection-end-column="69" />
               <folding />
             </state>
@@ -641,7 +625,13 @@
       <option name="project" value="LOCAL" />
       <updated>1461096484045</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;">
+      <created>1461224472514</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1461224472514</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TodoView">
@@ -659,6 +649,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31595576" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32768363" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284091" sideWeight="0.5018431" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3257143" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3197183" sideWeight="0.49815693" order="2" side_tool="false" content_ui="tabs" />
@@ -667,7 +658,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3707483" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32768363" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -732,7 +722,8 @@
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes&#10;SOAP RESULT PARSE Partial&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD" />
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;TODO Attachments" />
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;" />
+    <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1173,7 +1164,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06908665">
+        <state vertical-scroll-proportion="0.069248825">
           <caret line="227" column="69" selection-start-line="227" selection-start-column="69" selection-end-line="227" selection-end-column="69" />
           <folding />
         </state>
