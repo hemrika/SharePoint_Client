@@ -7,6 +7,8 @@
 
         var ngItem = {};
 
+        //region JSON default
+
         var _ngItem = {
             "__metadata": {
                 "type": "type':SP.listnameListItem"
@@ -52,7 +54,7 @@
                 }
             },
             "FileSystemObjectType": 0,
-            "Id": 1,
+            "Id": 0,
             "ContentTypeId": "",
             "Title": "",
             "Modified": "",
@@ -60,6 +62,10 @@
             "Attachments": false,
             "GUID": ""
         };
+
+        //endregion
+
+        //region $resource
 
         var _SOAP = $resource("https://:EndPoint/_vti_bin/Lists.asmx",
             {},
@@ -126,6 +132,8 @@
                 }
             }
         );
+
+        //endregion
 
         ngItem = function (identifier) {
 
@@ -438,6 +446,11 @@
                     var self = this;
                     self.Fields.forEach(function (field) {
                         if (field.Value !== self.Properties[field.EntityPropertyName]) {
+                            if(field.FieldTypeKind === 4){
+                                var date = new Date(field.Value);
+                                field.Value = date.toISOString();
+                            }
+
                             Envelope.push('<Field Name="' + field.EntityPropertyName + '">' + field.Value + '</Field>');
                         }
                         //console.log(field);
@@ -481,7 +494,7 @@
                             var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
 
                             self.Fields.forEach(function (field) {
-                                console.log(field.EntityPropertyName);
+                                //console.log(field.EntityPropertyName);
                                 if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
                                     self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
                                 }
@@ -561,7 +574,7 @@
                         var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
 
                         self.Fields.forEach(function (field) {
-                            console.log(field.EntityPropertyName);
+                            //console.log(field.EntityPropertyName);
                             if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
                                 self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
                             }
@@ -599,6 +612,11 @@
                     var self = this;
                     self.Fields.forEach(function (field) {
                         if (field.Value !== self.Properties[field.EntityPropertyName]) {
+                            if(field.FieldTypeKind === 4){
+                                var date = new Date(field.Value);
+                                field.Value = date.toISOString();
+                            }
+
                             Envelope.push('<Field Name="' + field.EntityPropertyName + '">' + field.Value + '</Field>');
                         }
                         //console.log(field);
@@ -642,7 +660,7 @@
                             var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
 
                             self.Fields.forEach(function (field) {
-                                console.log(field.EntityPropertyName);
+                                //console.log(field.EntityPropertyName);
                                 if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
                                     self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
                                 }
@@ -728,127 +746,158 @@
 
                 return deferred.promise;
             };
+
+            var Fields = function() {
+
+                //var deferred = $q.defer();
+
+                var FormFields = [];
+
+                //var ViewFields = [];
+
+                try {
+                    ngSecurity.CurrentList.DefaultView().then(function (View) {
+
+                        ngSecurity.CurrentList.ViewFields(View.Id).then(function (viewfields) {
+
+                            ngSecurity.CurrentList.Fields().then(function (fields) {
+
+                                fields.forEach(function (field) {
+                                    if (field.EntityPropertyName === "LinkTitle" || field.EntityPropertyName === "Title") {
+                                        var title_idx = viewfields.indexOf("LinkTitle");
+                                        if (title_idx !== -1 && field.EntityPropertyName === "Title") {
+                                            FormFields.splice(title_idx, 0, field);
+                                            //FormFields.push(field);
+                                        }
+                                    }
+                                    else {
+                                        var idx = viewfields.indexOf(field.EntityPropertyName);
+                                        if (idx !== -1) {
+                                            FormFields.splice(idx, 0, field);
+                                            //FormFields.push(field);
+                                        }
+                                    }
+                                });
+
+                                self.Properties = _ngItem;
+                                self.Fields = FormFields;
+
+                                ngSecurity.CurrentItem = self;
+
+                                deferred.resolve(self);
+                            });
+
+                        });
+                    });
+
+                    //return deferred.promise;
+
+                    /*
+                     ngSecurity.CurrentList.Fields().then(function (fields) {
+
+                     fields.forEach(function (field) {
+
+
+                     //if ((!field.Hidden && !field.ReadOnlyField) || (!field.Hidden && field.ReadOnlyField)) { //|| field.Required) {
+                     if (isExisting) {
+                     field.Value = _ngItem[field.EntityPropertyName];
+                     }
+                     FormFields.push(field);
+                     //}
+                     ///console.log(field);
+                     });
+
+                     });
+                     */
+                }
+                catch (ex) {
+                    console.log(ex);
+                }
+            };
             //endregion
 
+            var self = this;
+            
             //region Get ListItem by GUID or by Title ( case sensitive )
 
-            var self = this;
+            //var loadItem = function(identifier) {
 
-            //Is there a usable Identifier and determine if it is a existing or new Item that is requested.
-            var isId = false;
-            var isExisting = false;
-            if ( angular.isDefined(identifier)) {
-                isId = /^\d+$/.test(identifier);
-                isExisting = (identifier > 0);
-            }
+                //var deferred = $q.defer();
 
-            //Check if the previous requested item
-            if(ngSecurity.CurrentItem !== null) {
-                if (isId) {
-                    //Only when currentItem Id is not the requested Id, update _ngItem;
-                    if (ngSecurity.CurrentItem.Id !== identifier) {
 
-                        if(isExisting) {
-                            _item.deferred({
-                                EndPoint: ngSecurity.Endpoint,
-                                List: ngSecurity.CurrentList.Properties.Id,
-                                Item: identifier
-                            }).$promise.then(
-                                function (data) {
-                                    _ngItem = data;
-                                });
-                        }
-                        else {
-                            //Indicates a new Item
-                            _ngItem.Id = identifier;
+                //Is there a usable Identifier and determine if it is a existing or new Item that is requested.
+                var isId = false;
+                var isExisting = false;
+
+                if (angular.isDefined(identifier)) {
+                    isId = /^\d+$/.test(identifier);
+                    isExisting = (identifier > 0);
+                }
+
+                //Check if the previous requested item
+                if (ngSecurity.CurrentItem !== null) {
+                    if (isId && isExisting) {
+                        //Only when currentItem Id is not the requested Id, update _ngItem;
+                        if (ngSecurity.CurrentItem.Id !== identifier) {
+
+                            if (isExisting) {
+                                _item.deferred({
+                                    EndPoint: ngSecurity.Endpoint,
+                                    List: ngSecurity.CurrentList.Properties.Id,
+                                    Item: identifier
+                                }).$promise.then(
+                                    function (data) {
+                                        _ngItem = data;
+                                        Fields();
+                                    });
+                            }
+                            else {
+                                //Indicates a new Item
+                                _ngItem.Id = identifier;
+                                Fields();
+                            }
                         }
                     }
-                }
-            }
-            else {
-                //Newly not previously requested Item should be requested from SharePoint
-                if (isId && isExisting) {
-                    _item.deferred({
-                        EndPoint: ngSecurity.Endpoint,
-                        List: ngSecurity.CurrentList.Properties.Id,
-                        Item: identifier
-                    }).$promise.then(
-                        function (data) {
-                            _ngItem = data;
-                        });
+                    else {
+                        //Indicates a new Item
+                        _ngItem.Id = identifier;
+                        Fields();
+                    }
                 }
                 else {
-                    //Indicates a new Item
-                    _ngItem.Id = identifier;
+                    //Newly not previously requested Item should be requested from SharePoint
+                    if (isId && isExisting) {
+                        _item.deferred({
+                            EndPoint: ngSecurity.Endpoint,
+                            List: ngSecurity.CurrentList.Properties.Id,
+                            Item: identifier
+                        }).$promise.then(
+                            function (data) {
+                                _ngItem = data;
+                                Fields();
+                            });
+                    }
+                    else {
+                        //Indicates a new Item
+                        _ngItem.Id = identifier;
+                        Fields();
+                    }
                 }
-            }
+
+                //return deferred.promise;
+            //};
 
             //All properties should be loaded now.
-            self.Properties = _ngItem;
+            //self.Properties = _ngItem;
+
+            //endregion
 
             //region Fields
 
-            var FormFields = [];
-
-            //var ViewFields = [];
-
-            try {
-                ngSecurity.CurrentList.DefaultView().then(function(View){
-
-                    ngSecurity.CurrentList.ViewFields(View.Id).then(function(viewfields){
-
-                        ngSecurity.CurrentList.Fields().then(function (fields) {
-
-                            fields.forEach(function (field) {
-                                if(field.EntityPropertyName === "LinkTitle" || field.EntityPropertyName === "Title"){
-                                    var title_idx = viewfields.indexOf("LinkTitle");
-                                    if(title_idx !== -1 && field.EntityPropertyName === "Title") {
-                                        FormFields.splice(title_idx, 0, field);
-                                        //FormFields.push(field);
-                                    }
-                                }
-                                else {
-                                    var idx = viewfields.indexOf(field.EntityPropertyName);
-                                    if (idx !== -1) {
-                                        FormFields.splice(idx, 0, field);
-                                        //FormFields.push(field);
-                                    }
-                                }
-                            });
-                        });
-
-                    });
-                });
-
-                /*
-                ngSecurity.CurrentList.Fields().then(function (fields) {
-
-                    fields.forEach(function (field) {
-
-
-                        //if ((!field.Hidden && !field.ReadOnlyField) || (!field.Hidden && field.ReadOnlyField)) { //|| field.Required) {
-                            if (isExisting) {
-                                field.Value = _ngItem[field.EntityPropertyName];
-                            }
-                            FormFields.push(field);
-                        //}
-                        ///console.log(field);
-                    });
-
-                });
-                */
-            }
-            catch(ex) {
-                console.log(ex);
-            }
-
-            self.Fields = FormFields;
 
             //endregion
 
-            ngSecurity.CurrentItem = self;
-            deferred.resolve(self);
-            //endregion
+            //loadItem(identifier);//.then(loadFields());
 
             return deferred.promise;
         };

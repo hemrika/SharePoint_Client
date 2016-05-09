@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('ngSharePoint', ['ngResource', 'ngCookies'])
+    angular.module('ngSharePoint', ['ngResource'])
 
         .factory('SharePoint', ['ngSecurity', 'ngUserProfile', 'ngSite', 'ngWeb', function (ngSecurity, ngUserProfile, ngSite, ngWeb) {
 
@@ -9,6 +9,10 @@
 
                 if (angular.isDefined(value)) { ngSecurity.Endpoint = value; }
                 return ngSecurity.EndPoint;
+            };
+
+            var Hostname = function () {
+                return ngSecurity.Hostname;
             };
 
             var CurrentUser = function () {
@@ -43,6 +47,7 @@
             SharePoint.Web = ngWeb;
             SharePoint.UserProfile = ngUserProfile;
             SharePoint.EndPoint = EndPoint;
+            SharePoint.Hostname = Hostname;
             SharePoint.CurrentUserProfile = CurrentUserProfile;
             SharePoint.CurrentUser = CurrentUser;
             SharePoint.CurrentWeb = CurrentWeb;
@@ -62,8 +67,12 @@
             return {
                 response: function (response) {
                     var deferred = $q.defer();
-                    if (response.headers()['content-type'] === "application/json;odata=verbose;charset=utf-8" && response.data) {
+                    if (response.headers()['content-type'] === 'application/json;odata=verbose;charset=utf-8' && response.data) {
                         response.data = response.data.d ? response.data.d : response.data;
+                    }
+
+                    if (response.headers()['content-type'] === 'text/xml; charset="UTF-8"' ) {
+                            //response.header()
                     }
 
                     deferred.resolve(response);
