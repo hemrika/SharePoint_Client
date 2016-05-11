@@ -5,7 +5,9 @@
 
   SharePoint.factory('ngUserProfile', ['ngSecurity', '$resource', '$q', '$http', function (ngSecurity, $resource, $q, $http) {
 
-    var ngUserProfile;
+    var ngUserProfile = {};
+
+    //region Default properties
 
     var _ngUserProfile = {
 
@@ -41,7 +43,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "AccountName",
-              "Value": "i:0#.f|membership|rutger.hemrika@blaud.com",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -49,7 +51,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "FirstName",
-              "Value": "Rutger",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -57,7 +59,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "LastName",
-              "Value": "Hemrika",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -65,7 +67,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "PreferredName",
-              "Value": "Rutger Hemrika",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -73,7 +75,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "WorkPhone",
-              "Value": "+31 645696209",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -129,7 +131,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "PictureURL",
-              "Value": "https://duwboot-my.sharepoint.com:443/User%20Photos/Profielafbeeldingen/rutger_hemrika_blaud_com_MThumb.jpg",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -137,7 +139,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "UserName",
-              "Value": "rutger.hemrika@blaud.com",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -161,7 +163,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-ClaimID",
-              "Value": "rutger.hemrika@blaud.com",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -169,7 +171,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-ClaimProviderID",
-              "Value": "membership",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -177,7 +179,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-ClaimProviderType",
-              "Value": "Forms",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -185,7 +187,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-UserPrincipalName",
-              "Value": "rutger.hemrika@blaud.com",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -193,7 +195,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "WorkEmail",
-              "Value": "rutger.hemrika@blaud.com",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -201,7 +203,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "CellPhone",
-              "Value": "+31645696209",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -225,7 +227,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-Location",
-              "Value": "Houten",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -233,7 +235,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-Skills",
-              "Value": "SharePoint|Cordova|HTML5|JavaScript",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -241,7 +243,7 @@
                 "type": "SP.KeyValue"
               },
               "Key": "SPS-Birthday",
-              "Value": "11-12-2000 00:00:00",
+              "Value": "",
               "ValueType": "Edm.String"
             },
             {
@@ -256,6 +258,10 @@
         },
         "UserUrl": ""
     };
+
+    //endregion
+
+    //region REST resource
 
     var _UserProfile = $resource("https://:EndPoint/_api/sp.userprofiles.peoplemanager/:Deferred",
         {},
@@ -279,10 +285,17 @@
         }
     );
 
+    //endregion
+
+    //region UserProfile
+
     ngUserProfile = function (identifier) {
 
       var deferred = $q.defer();
 
+      /**
+       * Are we Authenticated ?
+       */
       if (!ngSecurity.Authenticated) {
         deferred.reject("Not Authenticated");
       }
@@ -347,7 +360,7 @@
 
       //endregion
 
-      //region Get Current Web
+      //region Get UserProfile
 
       var self = this;
 
@@ -375,7 +388,8 @@
       return deferred.promise;
     };
 
+    //endregion
+
     return ngUserProfile;
   }]);
-
 })();

@@ -7,6 +7,8 @@
 
         var ngList = {};
 
+        //region Default Properties
+
         var _ngList = {
             "DefaultView": {
                 "__deferred": {
@@ -56,6 +58,10 @@
             "Title": ""
         };
 
+        //endregion
+
+        //region REST resource
+
         var _listSOAP = $resource("https://:EndPoint/_vti_bin/Lists.asmx",
             {},
             {
@@ -83,39 +89,7 @@
                         'Content-Type': 'text/xml; charset="UTF-8"'
                     }
                 }
-            }
-            );
-
-        /*
-        var SOAPEnvelope = function (listId) {
-
-            var Envelope = document.implementation.createDocument("", "soap:Envelope", null);
-            Envelope.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-            Envelope.setAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
-            Envelope.setAttribute('xmlns:soap', 'http://schemas.xmlsoap.org/soap/envelope/');
-
-            var Body = Envelope.createElement('soap:Body');
-            var UpdateListItems = Body.createElement('UpdateListItems');
-            UpdateListItems.setAttribute('xmlns', 'http://schemas.microsoft.com/sharepoint/soap/');
-
-            var listName = Body.createElement('listName');
-            listName.value = listId;
-            var updates = List.createElement('updates');
-            listName.appendChild(updates);
-            UpdateListItems.appendChild(listName);
-            Body.appendChild(UpdateListItems);
-            Envelope.appendChild(Body);
-
-            return Envelope;
-
-            //<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " _
-            //& "xmlns:xsd='http://www.w3.org/2001/XMLSchema' " _
-            //& "xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'><soap:Body><UpdateListItems " _
-            //& "xmlns='http://schemas.microsoft.com/sharepoint/soap/'><listName>" & strListNameOrGuid _
-            //& "</listName><updates>" & strBatchXml & "</updates></UpdateListItems></soap:Body></soap:Envelope>"
-
-        };
-        */
+            });
 
         var _list = $resource("https://:EndPoint/_api/Web/Lists(':List')/:Deferred",
             {},
@@ -145,8 +119,7 @@
                         'Content-Type': 'application/json;odata=verbose'
                     }
                 }
-            }
-            );
+            });
 
         var Methods = $resource("https://:EndPoint/_api/Web/Lists/:Deferred",
             {},//{   EndPoint: '', List: '', Deferred: ''},
@@ -159,8 +132,11 @@
                         'content-type': 'application/json;odata=verbose'
                     }
                 }
-            }
-            );
+            });
+
+        //endregion
+
+        //region List
 
         ngList = function (identifier) {
 
@@ -600,6 +576,8 @@
 
             return deferred.promise;
         };
+
+        //endregion
 
         return ngList;
     }]);

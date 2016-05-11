@@ -1,11 +1,13 @@
 ﻿(function () {
     'use strict';
-    //test
+
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngWeb', ['ngSecurity', 'ngList', '$resource', '$q', function (ngSecurity, ngList, $resource, $q) {
+    SharePoint.factory('ngWeb', ['ngSecurity', 'ngList', '$resource', '$q', '$http', function (ngSecurity, ngList, $resource, $q, $http) {
 
         var ngWeb = {};
+
+        //region Default Properties
 
         var _ngWeb = {
             "AllProperties": {
@@ -114,8 +116,12 @@
             "WebTemplate": ""
         };
 
+        //endregion
+
+        //region REST resource
+
         var API = $resource('https://:EndPoint/_api/web/:Deferred',
-            {},//{   EndPoint: '', Deferred: ''},
+            {},
             {
                 get: {
                     method: 'GET',
@@ -127,7 +133,7 @@
                 },
                 deferred: {
                     method: 'GET',
-                  params: {EndPoint: '@EndPoint', Deferred: '@Deferred'},
+                    params: {EndPoint: '@EndPoint', Deferred: '@Deferred'},
                     headers: {
                         'Accept': 'application/json;odata=verbose',
                         'content-type': 'application/json;odata=verbose'
@@ -135,19 +141,25 @@
                 },
                 save: {
                     method: 'POST',
-                  params: {EndPoint: '@EndPoint', Deferred: '@Deferred'},
+                    params: {EndPoint: '@EndPoint', Deferred: '@Deferred'},
                     headers: {
                         'Accept': 'application/json;odata=verbose',
                         'content-type': 'application/json;odata=verbose'
                     }
                 }
-            }
-            );
+            });
+
+        //endregion
+
+        //region Web
 
         ngWeb = function (identifier) {
 
             var deferred = $q.defer();
 
+            /**
+             * Are we Authenticated ?
+             */
             if (!ngSecurity.Authenticated) {
                 deferred.reject("Not Authenticated");
             }
@@ -524,26 +536,7 @@
             //endregion
 
             //region Methods
-            /*
-            this.GetList = function (value) {
 
-                var deferred = $q.defer();
-
-                var Operator = "getlist('" + value + "')";
-                if (ngSecurity.CurrentUser !== null) {
-                    API.deferred({EndPoint: ngSecurity.Endpoint, Deferred: Operator}).$promise.then(
-                        function (data) {
-                            if (angular.isDefined(data.results)) {
-                                deferred.resolve(data.results);
-                            }
-                            else {
-                                deferred.resolve(data);
-                            }
-                        });
-                }
-                return deferred.promise;
-            };
-            */
             this.GetUserById = function (int) {
 
                 var deferred = $q.defer();
@@ -583,7 +576,7 @@
 
             //endregion
 
-            //region Get Current Web
+            //region Get Web
 
             var self = this;
 
@@ -606,12 +599,13 @@
             //endregion
 
             return deferred.promise;
-
         };
 
+        //Attach List Object
         ngWeb.List = ngList;
 
-        return ngWeb;
+        //endregion;
 
+        return ngWeb;
     }]);
 })();

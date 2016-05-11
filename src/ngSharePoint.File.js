@@ -3,9 +3,11 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngFile', ['ngSecurity', '$timeout', '$http', '$resource', '$q', function (ngSecurity, $timeout, $http, $resource, $q) {
+    SharePoint.factory('ngFile', ['ngSecurity', '$resource', '$q', '$http', function (ngSecurity, $resource, $q, $http) {
 
         var ngFile = {};
+
+        //region Default properties
 
         var _ngFile = {
             "Author": {
@@ -41,18 +43,22 @@
             "CheckInComment": "",
             "CheckOutType": 2,
             "Exists": true,
-            "Length": "", //"20705",
+            "Length": "",
             "Level": 1,
-            "LinkingUrl": "", //https://duwboot.sharepoint.com/sites/BLAUD/Gedeelde  documenten/1. Algemeen/Inventarisatie klantgegevens.docx?d=w73c80a9758f14ed79f6df7099046940a",
+            "LinkingUrl": "",
             "MajorVersion": 7,
             "MinorVersion": 0,
-            "Name": "",//"Inventarisatie klantgegevens.docx",
-            "ServerRelativeUrl": "",// "/sites/BLAUD/Gedeelde  documenten/1. Algemeen/Inventarisatie klantgegevens.docx",
+            "Name": "",
+            "ServerRelativeUrl": "",
             "TimeCreated": "",
             "TimeLastModified": "",
             "Title": "",
             "UniqueId": ""
         };
+
+        //endregion
+
+        //region REST resource
 
         var API = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items(:Item)/File/:Deferred",
             {},
@@ -87,14 +93,6 @@
                         'Content-Type': 'text/xml; charset="UTF-8"'
                     }
                 },
-                /*Update: {
-                    method: 'POST',
-                    params: {EndPoint: ''},
-                    headers: {
-                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/UpdateListItems',
-                        'Content-Type': 'text/xml; charset="UTF-8"'
-                    }
-                },*/
                 Delete: {
                     method: 'POST',
                     params: {EndPoint: ''},
@@ -105,6 +103,10 @@
                 }
             }
             );
+
+        //endregion
+
+        //region File
 
         ngFile = function (identifier) {
 
@@ -457,6 +459,8 @@
 
             //endregion
 
+            //region get File
+
             var self = this;
 
             if ( angular.isDefined(identifier)) {
@@ -475,9 +479,12 @@
                     });
             //}
 
+            //endregion
             return deferred.promise;
 
         };
+
+        //endregion
 
         return ngFile;
     }]);

@@ -7,6 +7,8 @@
 
         var ngSite = {};
 
+        //region Default Properties
+
         var _ngSite = {
             "CompatibilityLevel": 15,
             "Id": "",
@@ -26,6 +28,10 @@
                 }
             }
         };
+
+        //endregion
+
+        //region REST resource
 
         var API = $resource('https://:EndPoint/_api/Site/:Deferred',
             {},
@@ -49,13 +55,22 @@
             }
         );
 
+        //endregion
+
+        //region Site
+
         ngSite = function (value) {
 
             var deferred = $q.defer();
 
+            /**
+             * Are we Authenticated ?
+             */
             if (!ngSecurity.Authenticated) {
                 deferred.reject("Not Authenticated");
             }
+
+            //region Properties
 
             this.CompatibilityLevel = function (value) {
                 return angular.isDefined(value) ? (_ngSite.CompatibilityLevel = value) : _ngSite.CompatibilityLevel;
@@ -72,6 +87,11 @@
             this.Url = function (value) {
                 return angular.isDefined(value) ? (_ngSite.Url = value) : _ngSite.Url;
             };
+
+            //endregion
+
+            //region Deferred
+
             this.Features = function () {
                 var deferred = $q.defer();
 
@@ -91,27 +111,18 @@
                 }
                 return deferred.promise;
             };
+
+            //endregion
+
+            //region Methods
             this.RootWeb = function () {
 
                 return new ngWeb();
-                /*
-                 var deferred = $q.defer();
-
-                 var Operator = _ngSite.RootWeb.__deferred.uri.split('/').pop();
-                 if (ngSecurity.CurrentUser !== null) {
-                 API.deferred({EndPoint: ngSecurity.Endpoint, Deferred: Operator}).$promise.then(
-                 function (data) {
-                 if (angular.isDefined(data.results)) {
-                 deferred.resolve(data.results);
-                 }
-                 else {
-                 deferred.resolve(data);
-                 }
-                 });
-                 }
-                 return deferred.promise;
-                 */
             };
+
+            //endregion
+
+            //region Get Site
 
             var self = this;
 
@@ -130,10 +141,15 @@
                     });
             }
 
+            //endregion
+
             return deferred.promise;
         };
 
+        //Attach Web Object
         ngSite.Web = ngWeb;
+
+        //endregion
 
         return ngSite;
     }]);

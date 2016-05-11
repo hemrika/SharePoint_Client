@@ -3,9 +3,11 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngFolder', ['ngSecurity', 'ngFile', '$resource', '$q', function (ngSecurity, ngFile, $resource, $q) {
+    SharePoint.factory('ngFolder', ['ngSecurity', 'ngFile', '$resource', '$q', '$http', function (ngSecurity, ngFile, $resource, $q, $http) {
 
         var _ngFolder = {Folder: []};
+
+        //region REST resource
 
         var API = $resource("https://:EndPoint/_api/Web/Lists(guid':List')/Items(:Item)/Folder/:Deferred",
             {},//{ EndPoint: '', List: '', Item: '', Deferred: ''},
@@ -29,29 +31,37 @@
             }
         );
 
+        //endregion
+
+        //region Folder
+
         var ngFolder = function () {
-                var deferred = $q.defer();
+            var deferred = $q.defer();
 
-                var self = this;
+            //region Get Folder
+            var self = this;
 
-                if (ngSecurity.CurrentUser !== null) {
-                    API.get({
-                        EndPoint: ngSecurity.Endpoint,
-                        List: ngSecurity.CurrentList.Id,
-                        Item: ngSecurity.CurrentItem.Id
-                    }).$promise.then(
-                        function (data) {
-                            _ngFolder = data;
-                            ngSecurity.CurrentFile = self;
-                            self.Properties = _ngFolder;
-                            deferred.resolve(self);
-                        });
-                }
+            if (ngSecurity.CurrentUser !== null) {
+                API.get({
+                    EndPoint: ngSecurity.Endpoint,
+                    List: ngSecurity.CurrentList.Id,
+                    Item: ngSecurity.CurrentItem.Id
+                }).$promise.then(
+                    function (data) {
+                        _ngFolder = data;
+                        ngSecurity.CurrentFile = self;
+                        self.Properties = _ngFolder;
+                        deferred.resolve(self);
+                    });
+            }
 
-                return deferred.promise;
-            };
+            //endregion
+
+            return deferred.promise;
+        };
+
+        //endregion
 
         return ngFolder;
     }]);
-
 })();

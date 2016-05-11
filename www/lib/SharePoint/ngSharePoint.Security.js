@@ -3,7 +3,85 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngSecurity', ['$timeout', '$http', '$resource', '$q', '$rootScope', function ($timeout, $http, $resource, $q, $rootScope) {
+    SharePoint.factory('ngSecurity', ['$rootScope', '$resource', '$q', '$http',  function ($rootScope, $resource, $q, $http) {
+
+        var Security = {};
+
+        //region Watcher
+
+
+        Security.watch = function watch(prop, handler) {
+            if (this.__lookupGetter__(prop) != null) {
+                return true;
+            }
+            var oldval = this[prop],
+                newval = oldval,
+                self = this,
+                getter = function () {
+                    return newval;
+                },
+                setter = function (val) {
+                    if (Object.prototype.toString.call(val) === '[object Array]') {
+                        val = _extendArray(val, handler, self);
+                    }
+                    oldval = newval;
+                    newval = val;
+                    handler.call(this, prop, oldval, val);
+                };
+            if (delete this[prop]) { // can't watch constants
+                if (Object.defineProperty) { // ECMAScript 5
+                    Object.defineProperty(this, prop, {
+                        get: getter,
+                        set: setter,
+                        enumerable: false,
+                        configurable: true
+                    });
+                } else if (Object.prototype.__defineGetter__ && Object.prototype.__defineSetter__) { // legacy
+                    Object.prototype.__defineGetter__.call(this, prop, getter);
+                    Object.prototype.__defineSetter__.call(this, prop, setter);
+                }
+            }
+            return this;
+        };
+
+        Security.unwatch = function unwatch(prop) {
+            var val = this[prop];
+            delete this[prop]; // remove accessors
+            this[prop] = val;
+            return this;
+        };
+
+        // Allows operations performed on an array instance to trigger bindings
+        Security._extendArray = function _extendArray(arr, callback, framework) {
+            if (arr.__wasExtended === true) return;
+
+            function generateOverloadedFunction(target, methodName, self) {
+                return function () {
+                    var oldValue = Array.prototype.concat.apply(target);
+                    var newValue = Array.prototype[methodName].apply(target, arguments);
+                    target.updated(oldValue, motive);
+                    return newValue;
+                };
+            }
+
+            arr.updated = function (oldValue, self) {
+                callback.call(this, 'items', oldValue, this, motive);
+            };
+            arr.concat = generateOverloadedFunction(arr, 'concat', motive);
+            arr.join = generateOverloadedFunction(arr, 'join', motive);
+            arr.pop = generateOverloadedFunction(arr, 'pop', motive);
+            arr.push = generateOverloadedFunction(arr, 'push', motive);
+            arr.reverse = generateOverloadedFunction(arr, 'reverse', motive);
+            arr.shift = generateOverloadedFunction(arr, 'shift', motive);
+            arr.slice = generateOverloadedFunction(arr, 'slice', motive);
+            arr.sort = generateOverloadedFunction(arr, 'sort', motive);
+            arr.splice = generateOverloadedFunction(arr, 'splice', motive);
+            arr.unshift = generateOverloadedFunction(arr, 'unshift', motive);
+            arr.__wasExtended = true;
+
+            return arr;
+        }
+        //endregion
 
         //region Properties
 
@@ -13,48 +91,79 @@
          * @private
          */
         var _Username = null;
+
+        Security.watch('_Username', function (propertyName, oldValue, newValue) {
+            if(oldValue !== newValue){
+                Security.Authenticated = false;
+            }
+        });
+
+
         /**
          *
          * @type {null}
          * @private
          */
         var _Password = null;
+
+        Security.watch('_Password', function (propertyName, oldValue, newValue) {
+            if(oldValue !== newValue){
+                Security.Authenticated = false;
+            }
+        });
+
         /**
          *
          * @type {null}
          * @private
          */
         var _Endpoint = null;
+
+        Security.Endpoint = _Endpoint;
+
+        Security.watch('Endpoint', function (propertyName, oldValue, newValue) {
+            if(oldValue !== newValue){
+                Security.Authenticated = false;
+            }
+        });
+
         /**
          *
          * @type {null}
          * @private
          */
         var _Hostname = null;
+
+        Security.Hostname = _Hostname;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _SignInUrl = null;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _ContextInfoUrl = null;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _CurrentUserUrl = null;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _IdCrlUrl = null;
+
 
         /**
          * WWW-Authenticate
@@ -71,19 +180,23 @@
          */
         var _SitesAsmx = null;
 
-        var _GetContextWebThemeData = null;
         /**
          *
          * @type {boolean}
          * @private
          */
         var _UseContextInfo = true;
+
+        Security.UseContextInfo = _UseContextInfo;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _SecurityToken = null;
+
+        Security.SecurityToken = _SecurityToken;
 
         /**
          *
@@ -99,6 +212,13 @@
             "WebFullUrl": ""
         };
 
+        Security.ContextInfo = _ContextInfo;
+
+        /**
+         *
+         * @type {{State: number, UserState: number, Login: string, NameSpaceType: string, FederationBrandName: string, TenantBrandingURL: string}}
+         * @private
+         */
         var _Realm = {
             "State": 0,
             "UserState": 0,
@@ -108,42 +228,80 @@
             "TenantBrandingURL": ""
         };
 
+        Security.Realm = _Realm;
+
+        /**
+         *
+         * @type {{Locale: string, BannerLogo: string, Illustration: string, TileLogo: string}}
+         * @private
+         */
         var _Branding = {
             "Locale": "",
             "BannerLogo": "",
             "Illustration": "",
             "TileLogo": ""
         };
+
+        Security.Branding = _Branding;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _CurrentUserProfile = null;
+
+        Security.CurrentUserProfile = _CurrentUserProfile;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _CurrentUser = null;
+
+        Security.CurrentUser = _CurrentUser;
+
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _CurrentSite = null;
+
+        /**
+         *
+         * @type {null}
+         */
+        Security.CurrentSite = _CurrentSite;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _CurrentWeb = null;
+
+        Security.CurrentWeb = _CurrentWeb;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _CurrentList = null;
+
+        Security.CurrentList = _CurrentList;
+
         /**
          *
          * @type {null}
          * @private
          */
         var _CurrentItem = null;
+
+        Security.CurrentItem = _CurrentItem;
+
         /**
          *
          * @type {null}
@@ -151,18 +309,38 @@
          */
         var _CurrentFile = null;
 
+        Security.CurrentFile = _CurrentFile;
+
         /**
          *
          * @type {null}
          * @private
          */
-        var _PostQueryUrl = null;
+        var _CurrentFolder = null;
+
+        Security.CurrentFolder = _CurrentFolder;
+
+        /**
+         *
+         * @type {null}
+         * @private
+         */
+        var _CurrentGroup = null;
+
+        Security.CurrentGroup = _CurrentGroup;
 
         //endregion
 
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
         var XMLtoJSON = function () {
             return new X2JS();
         };
+
+        Security.XMLtoJSON = XMLtoJSON;
 
         /**
          *
@@ -180,23 +358,26 @@
             _Password = password;
             _Endpoint = endpoint;
 
-            Security.Endpoint = endpoint;
+            if(angular.isDefined(endpoint)) {
+                Security.Endpoint = endpoint;
 
-            var location = document.createElement("a");
-            location.href = "https://" + endpoint;
-            _Hostname = location.hostname;
+                var location = document.createElement("a");
+                location.href = "https://" + endpoint;
+                _Hostname = location.hostname;
 
-            _SignInUrl = 'https://' + _Hostname + '/_forms/default.aspx?wa=wsignin1.0';
-            _ContextInfoUrl = 'https://' + endpoint + '/_api/ContextInfo';
-            _CurrentUserUrl = 'https://' + endpoint + '/_api/web/CurrentUser';
-            _IdCrlUrl = 'https://' + endpoint + '/_vti_bin/idcrl.svc/';
-            _PostQueryUrl = 'https://' + endpoint + '/_api/search/postquery';
-            _SitesAsmx = 'https://' + endpoint + '/_vti_bin/sites.asmx';
-            _GetContextWebThemeData = 'https://' + endpoint + '_api/SP.Web.GetContextWebThemeData';
+                _SignInUrl = 'https://' + _Hostname + '/_forms/default.aspx?wa=wsignin1.0';
+                _ContextInfoUrl = 'https://' + endpoint + '/_api/ContextInfo';
+                _CurrentUserUrl = 'https://' + endpoint + '/_api/web/CurrentUser';
+                _IdCrlUrl = 'https://' + endpoint + '/_vti_bin/idcrl.svc/';
+                _SitesAsmx = 'https://' + endpoint + '/_vti_bin/sites.asmx';
+            }
+
             deferred.resolve();
 
             return deferred.promise;
         }
+
+        Security.SetConfiguration = Configure;
 
         /**
          *
@@ -253,38 +434,159 @@
             return deferred.promise;
         };
 
+        Security.Authenticate = Authenticate;
+
         /**
          * TODO runtime var validation based on CurrentUser and/or ContecxtInfo
          * @type {boolean}
          */
         var Authenticated = true;//(_CurrentUser !== null) ? true : false;
 
-      /**
-         *
-         * @type {{}}
-         */
-        var Security = {};
-
-        Security.SetConfiguration = Configure;
-        Security.UpdateContextInfo = UpdateContextInfo;
-        Security.Authenticate = Authenticate;
         Security.Authenticated = Authenticated;
+
+        //region MetaData
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetBearerRealm() {
+
+            var deferred = $q.defer();
+
+            if(_Hostname === null)
+            {
+                deferred.reject('No Hostname defined');
+            }
+
+            $http({
+                method: 'GET',
+                //async: true,
+                url: "https://"+_Hostname+"/_vti_bin/client.svc/",
+                withCredentials: false,
+                headers: {
+                    "Authorization": "Bearer",
+                    "Accept": "application/json;odata=verbose",
+                    "Access-Control-Allow-Headers": "WWW-Authenticate"
+                }
+            }).then(function (response) {
+                var bearer = response.headers()['WWW-Authenticate'];
+                deferred.resolve(bearer);
+            }, function(response) {
+                var bearer = response.headers()['WWW-Authenticate'];
+                deferred.resolve(bearer);
+                //$scope.data = response.data || "Request failed";
+                //$scope.status = response.status;
+            });
+
+            return deferred.promise;
+        }
+
         Security.GetBearerRealm = GetBearerRealm;
-        Security.Endpoint = _Endpoint;
-        Security.Hostname = _Hostname;
-        Security.ContextInfo = _ContextInfo;
-        Security.CurrentUserProfile = _CurrentUserProfile;
-        Security.CurrentUser = _CurrentUser;
-        Security.CurrentWeb = _CurrentWeb;
-        Security.CurrentList = _CurrentList;
-        Security.CurrentItem = _CurrentItem;
-        Security.CurrentFile = _CurrentFile;
-        Security.SecurityToken = _SecurityToken;
-        Security.Realm = _Realm;
-        Security.Branding = _Branding;
-        Security.UseContextInfo = _UseContextInfo;
-        Security.XMLtoJSON = XMLtoJSON;
-        return Security;
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetUserRealm() {
+
+            var deferred = $q.defer();
+
+            if(_Username === null)
+            {
+                deferred.reject('No Username defined');
+            }
+
+            $http({
+                method: 'GET',
+                withCredentials: false,
+                url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
+                headers: {
+                    "Accept": "application/json;odata=verbose"
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        }
+
+        Security.GetUserRealm = GetUserRealm;
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetBranding() {
+            var deferred = $q.defer();
+
+            if (_Realm === null || _Realm.TenantBrandingURL === null) {
+                deferred.reject('No Realm and/or TenantBrandingURL defined');
+            }
+
+            $http({
+                method: 'GET',
+                withCredentials: false,
+                url: _Realm.TenantBrandingURL.valueOf(),
+                headers: {
+                    "Accept": "application/json;odata=verbose"
+                    //"Content-Type": "application/json;odata=verbose"
+                }
+            }).success(function (data) {
+                var branding = data;
+                //var branding = JSON.parse(data)[0];
+                deferred.resolve(branding);
+            }).error(function () {
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        }
+
+        Security.GetBranding = GetBranding;
+
+        /**
+         *
+         * @returns {*}
+         * @constructor
+         */
+        function GetContextWebThemeData() {
+
+            var deferred = $q.defer();
+
+            if(_Endpoint === null)
+            {
+                deferred.reject('No Endpoint defined');
+            }
+
+            $http({
+                method: 'GET',
+                //withCredentials: false,
+                url: 'https://' + _Endpoint + '_api/SP.Web.GetContextWebThemeData',
+                headers: {
+                    "Accept": "application/json;odata=verbose"
+                }
+            }).success(function (data) {
+                deferred.resolve(data);
+            }).error(function () {
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        }
+
+        Security.GetContextWebThemeData = GetContextWebThemeData;
+
+        //endregion
+
+        Security.UpdateContextInfo = UpdateContextInfo;
+
+
 
         //region XML Tokens
 
@@ -444,118 +746,7 @@
 
         //endregion
 
-        //region MetaData
-
-        /**
-         *
-         * @returns {*}
-         * @constructor
-         */
-        function GetBearerRealm() {
-
-            var deferred = $q.defer();
-
-            $http({
-                method: 'GET',
-                //async: true,
-                url: "https://"+_Hostname+"/_vti_bin/client.svc/",
-                withCredentials: false,
-                headers: {
-                    "Authorization": "Bearer",
-                    "Accept": "application/json;odata=verbose",
-                    "Access-Control-Allow-Headers": "WWW-Authenticate"
-                }
-            }).then(function (response) {
-                var bearer = response.headers()['WWW-Authenticate'];
-                deferred.resolve(bearer);
-            }, function(response) {
-                var bearer = response.headers()['WWW-Authenticate'];
-                deferred.resolve(bearer);
-                //$scope.data = response.data || "Request failed";
-                //$scope.status = response.status;
-            });
-
-            return deferred.promise;
-        }
-
-        /**
-         *
-         * @returns {*}
-         * @constructor
-         */
-        function GetUserRealm() {
-
-            var deferred = $q.defer();
-
-            $http({
-                method: 'GET',
-                withCredentials: false,
-                url: "https://login.microsoftonline.com/GetUserRealm.srf?xml=0&login=" + _Username,
-                headers: {
-                    "Accept": "application/json;odata=verbose"
-                }
-            }).success(function (data) {
-                deferred.resolve(data);
-            }).error(function () {
-                deferred.reject();
-            });
-
-            return deferred.promise;
-        }
-
-        /**
-         *
-         * @returns {*}
-         * @constructor
-         */
-        function GetBranding() {
-            var deferred = $q.defer();
-
-            if (_Realm === null || _Realm.TenantBrandingURL === null) {
-                deferred.reject();
-            }
-
-            $http({
-                method: 'GET',
-                withCredentials: false,
-                url: _Realm.TenantBrandingURL.valueOf(),
-                headers: {
-                    "Accept": "application/json;odata=verbose"
-                    //"Content-Type": "application/json;odata=verbose"
-                }
-            }).success(function (data) {
-                var branding = data;
-                //var branding = JSON.parse(data)[0];
-                deferred.resolve(branding);
-            }).error(function () {
-                deferred.reject();
-            });
-
-            return deferred.promise;
-        }
-
-        function GetContextWebThemeData() {
-
-            var deferred = $q.defer();
-
-            $http({
-                method: 'GET',
-                //withCredentials: false,
-                url: _GetContextWebThemeData,
-                headers: {
-                    "Accept": "application/json;odata=verbose"
-                }
-            }).success(function (data) {
-                deferred.resolve(data);
-            }).error(function () {
-                deferred.reject();
-            });
-
-            return deferred.promise;
-        }
-
-        //endregion
-
+        //region Tokens
 
         /**
          *
@@ -732,6 +923,10 @@
             }
             return deferred.promise;
         }
+
+        //endregion
+
+        //region Principal
 
         /**
          *
@@ -940,38 +1135,9 @@
             return deferred.promise;
         }
 
-        /**
-         *
-         * @returns {*}
-         * @constructor
-         */
-        function GetPostQuery() {
+        //endregion
 
-            var deferred = $q.defer();
+        return Security;
 
-            $http({
-
-                url: _PostQueryUrl,
-                method: "POST",
-                //withCredentials: false,
-                data: null,
-                headers: {
-                    //'X-FORMS_BASED_AUTH_ACCEPTED' : 'f',
-                    //'Accept': 'application/json;odata=verbose',
-                    'Content-Type': 'application/json;odata=verbose'
-                }
-            }).success(function (response) {
-                //Security.ContextInfo = response.data;
-                deferred.resolve(response);
-                //validated(Security.ContextInfo.FormDigestValue);
-            }, function (response) {
-                //console.log("Cannot get digestValue.");
-                deferred.reject();
-            });
-            return deferred.promise;
-
-
-        }
     }]);
-
 })();

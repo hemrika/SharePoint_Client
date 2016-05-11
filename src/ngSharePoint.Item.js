@@ -3,11 +3,11 @@
 
     var SharePoint = angular.module('ngSharePoint');
 
-    SharePoint.factory('ngItem', ['ngSecurity', 'ngFile', /*'ngFolder',*/ '$timeout', '$http', '$resource', '$q', function (ngSecurity, ngFile, /*ngFolder,*/ $timeout, $http, $resource, $q) {
+    SharePoint.factory('ngItem', ['ngSecurity', 'ngFile', /*'ngFolder',*/ '$timeout', '$resource', '$q', '$http', function (ngSecurity, ngFile, /*ngFolder,*/ $timeout, $resource, $q, $http) {
 
         var ngItem = {};
 
-        //region JSON default
+        //region Default properties
 
         var _ngItem = {
             "__metadata": {
@@ -54,7 +54,7 @@
                 }
             },
             "FileSystemObjectType": 0,
-            "Id": 0,
+            "Id": -1,
             "ContentTypeId": "",
             "Title": "",
             "Modified": "",
@@ -65,7 +65,7 @@
 
         //endregion
 
-        //region $resource
+        //region REST resource
 
         var _SOAP = $resource("https://:EndPoint/_vti_bin/Lists.asmx",
             {},
@@ -134,6 +134,8 @@
         );
 
         //endregion
+
+        //region Item
 
         ngItem = function (identifier) {
 
@@ -395,123 +397,98 @@
 
             this.Update = function () {
 
-                if (this.Properties.Id < 0) {
-                    this.Save();
-                }
-                else {
-                    var deferred = $q.defer();
+                //if (this.Properties.Id < 0) {
+                //    this.Save();
+                //}
+                //else {
+                var deferred = $q.defer();
 
-                    /*
-                     var url = "https://"+ngSecurity.Endpoint+"/_api/Web/Lists(guid'"+ngSecurity.CurrentList.Properties.Id+"')/Items";
-
-                     var item = {
-                     '__metadata': {
-                     'type': 'SP.Data.CordovaListItem'
-                     },
-                     'Title' : 'IDentity Client Runtime Library service'
-                     };
-
-                     //angular.element.cors = true;
-
-                     var settings = {
-                     "async": true,
-                     //"crossDomain": true,
-                     "url": url,
-                     "method": "POST",
-                     "headers": {
-                     "authorization": "BPOSIDCRL "+ ngSecurity.SecurityToken,
-                     //"origin": "file//*",
-                     "content-type": "application/json;odata=verbose",
-                     "accept": "application/json;odata=verbose",
-                     "x-requestdigest": ngSecurity.ContextInfo.FormDigestValue
-                     },
-                     "data": JSON.stringify(item)
-                     }
-
-                     angular.element.ajax(settings).done(function (response) {
-                     console.log(response);
-                     deferred.resolve(response);
-                     });
-                     */
-
-                    var Envelope = new Array("");
-                    Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
-                    Envelope.push('<soap:Body>');
-                    Envelope.push('<UpdateListItems xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
-                    Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
-                    Envelope.push('<updates>');
-                    Envelope.push('<Batch OnError="Continue">');
+                var Envelope = new Array("");
+                Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
+                Envelope.push('<soap:Body>');
+                Envelope.push('<UpdateListItems xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
+                Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
+                Envelope.push('<updates>');
+                Envelope.push('<Batch OnError="Continue">');
+                if (this.Properties.Id > 0) {
                     Envelope.push('<Method ID="1" Cmd="Update">');
                     Envelope.push('<Field Name="ID">' + this.Properties.Id + '</Field>');
-                    var self = this;
-                    self.Fields.forEach(function (field) {
-                        if (field.Value !== self.Properties[field.EntityPropertyName]) {
-                            if(field.FieldTypeKind === 4){
-                                var date = new Date(field.Value);
-                                field.Value = date.toISOString();
-                            }
+                }
+                else {
+                    Envelope.push('<Method ID="1" Cmd="New">');
+                    Envelope.push('<Field Name="ID">New</Field>');
+                }
+                var self = this;
+                self.Fields.forEach(function (field) {
+                    if (field.Value !== self.Properties[field.EntityPropertyName]) {
+                        if (field.FieldTypeKind === 4 && angular.isDefined(field.Value)) {
+                            var date = new Date(field.Value);
+                            field.Value = date.toISOString();
+                        }
 
+                        if (angular.isDefined(field.Value)) {
                             Envelope.push('<Field Name="' + field.EntityPropertyName + '">' + field.Value + '</Field>');
                         }
-                        //console.log(field);
-                    });
+                    }
+                    //console.log(field);
+                });
 
-                    //Envelope.push('<Field Name="ID">New</Field>');
-                    //Envelope.push('<Field Name="Title">IDentity Client Runtime Library service</Field>');
-                    Envelope.push('</Method>');
-                    Envelope.push('</Batch>');
-                    Envelope.push('</updates>');
-                    Envelope.push('</UpdateListItems>');
-                    Envelope.push('</soap:Body>');
-                    Envelope.push('</soap:Envelope>');
+                //Envelope.push('<Field Name="ID">New</Field>');
+                //Envelope.push('<Field Name="Title">IDentity Client Runtime Library service</Field>');
+                Envelope.push('</Method>');
+                Envelope.push('</Batch>');
+                Envelope.push('</updates>');
+                Envelope.push('</UpdateListItems>');
+                Envelope.push('</soap:Body>');
+                Envelope.push('</soap:Envelope>');
 
-                    var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
+                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
 
-                    var req = {
-                        method: 'POST',
-                        url: url,
-                        headers: {
-                            'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/UpdateListItems',
-                            'Content-Type': 'text/xml; charset="UTF-8"'
-                        },
-                        data: Envelope.join("").toString()
-                    };
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    headers: {
+                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/UpdateListItems',
+                        'Content-Type': 'text/xml; charset="UTF-8"'
+                    },
+                    data: Envelope.join("").toString()
+                };
 
-                    $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
 
-                    $http(req).then(function (result) {
-                        //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
-                        //console.log(result.toString());
-                        //var jsonObj = XMLtoJSON.xml_str2json(result.data);
-                        var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
-                        var ErrorCode = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorCode.valueOf();
+                $http(req).then(function (result) {
+                    //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
+                    //console.log(result.toString());
+                    //var jsonObj = XMLtoJSON.xml_str2json(result.data);
+                    var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
+                    var ErrorCode = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorCode.valueOf();
 
-                        if (ErrorCode.indexOf("0x00000000") === -1) {
-                            var ErrorText = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorText.valueOf();
-                            deferred.reject(ErrorText);
-                        }
-                        else {
-                            var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
+                    if (ErrorCode.indexOf("0x00000000") === -1) {
+                        var ErrorText = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorText.valueOf();
+                        deferred.reject(ErrorText);
+                    }
+                    else {
+                        var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
 
-                            self.Fields.forEach(function (field) {
-                                //console.log(field.EntityPropertyName);
-                                if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
-                                    self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
-                                }
+                        self.Fields.forEach(function (field) {
+                            //console.log(field.EntityPropertyName);
+                            if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
+                                self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
+                            }
 
-                            });
+                        });
 
-                            self.Id(ows_row["_ows_ID"]);
+                        self.Id(ows_row["_ows_ID"]);
 
-                            deferred.resolve(self);
-                        }
+                        deferred.resolve(self);
+                    }
 
-                        //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
-                        //deferred.resolve(result.data);
-                    });
+                    //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
+                    //deferred.resolve(result.data);
+                });
 
-                    return deferred.promise;
-                }
+                return deferred.promise;
+                //}
             };
 
             this.Delete = function () {
@@ -594,94 +571,106 @@
 
             this.Save = function () {
 
+                //if (this.Properties.Id > 0) {
+                //    this.Update();
+                //}
+                //else {
+                var deferred = $q.defer();
+
+                var Envelope = new Array("");
+                Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
+                Envelope.push('<soap:Body>');
+                Envelope.push('<UpdateListItems xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
+                Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
+                Envelope.push('<updates>');
+                Envelope.push('<Batch OnError="Continue">');
                 if (this.Properties.Id > 0) {
-                    this.Update();
+                    Envelope.push('<Method ID="1" Cmd="Update">');
+                    Envelope.push('<Field Name="ID">' + this.Properties.Id + '</Field>');
                 }
                 else {
-                    var deferred = $q.defer();
-
-                    var Envelope = new Array("");
-                    Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
-                    Envelope.push('<soap:Body>');
-                    Envelope.push('<UpdateListItems xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
-                    Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
-                    Envelope.push('<updates>');
-                    Envelope.push('<Batch OnError="Continue">');
                     Envelope.push('<Method ID="1" Cmd="New">');
                     Envelope.push('<Field Name="ID">New</Field>');
-                    var self = this;
-                    self.Fields.forEach(function (field) {
-                        if (field.Value !== self.Properties[field.EntityPropertyName]) {
-                            if(field.FieldTypeKind === 4){
-                                var date = new Date(field.Value);
-                                field.Value = date.toISOString();
-                            }
+                }
+                var self = this;
+                self.Fields.forEach(function (field) {
+                    if (field.Value !== self.Properties[field.EntityPropertyName]) {
+                        if (field.FieldTypeKind === 4 && angular.isDefined(field.Value)) {
+                            var date = new Date(field.Value);
+                            field.Value = date.toISOString();
+                        }
 
+                        if (angular.isDefined(field.Value)) {
                             Envelope.push('<Field Name="' + field.EntityPropertyName + '">' + field.Value + '</Field>');
                         }
-                        //console.log(field);
-                    });
+                    }
+                    //console.log(field);
+                });
 
-                    //Envelope.push('<Field Name="ID">New</Field>');
-                    //Envelope.push('<Field Name="Title">IDentity Client Runtime Library service</Field>');
-                    Envelope.push('</Method>');
-                    Envelope.push('</Batch>');
-                    Envelope.push('</updates>');
-                    Envelope.push('</UpdateListItems>');
-                    Envelope.push('</soap:Body>');
-                    Envelope.push('</soap:Envelope>');
+                //Envelope.push('<Field Name="ID">New</Field>');
+                //Envelope.push('<Field Name="Title">IDentity Client Runtime Library service</Field>');
+                Envelope.push('</Method>');
+                Envelope.push('</Batch>');
+                Envelope.push('</updates>');
+                Envelope.push('</UpdateListItems>');
+                Envelope.push('</soap:Body>');
+                Envelope.push('</soap:Envelope>');
 
-                    var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
+                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
 
-                    var req = {
-                        method: 'POST',
-                        url: url,
-                        headers: {
-                            'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/UpdateListItems',
-                            'Content-Type': 'text/xml; charset="UTF-8"'
-                        },
-                        data: Envelope.join("").toString()
-                    };
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    headers: {
+                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/UpdateListItems',
+                        'Content-Type': 'text/xml; charset="UTF-8"'
+                    },
+                    data: Envelope.join("").toString()
+                };
 
-                    $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
 
-                    $http(req).then(function (result) {
-                        //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
-                        //console.log(result.toString());
-                        //var jsonObj = XMLtoJSON.xml_str2json(result.data);
-                        var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
-                        var ErrorCode = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorCode.valueOf();
+                $http(req).then(function (result) {
+                    //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
+                    //console.log(result.toString());
+                    //var jsonObj = XMLtoJSON.xml_str2json(result.data);
+                    var jsonObj2 = ngSecurity.XMLtoJSON().xml_str2json(result.data);
+                    var ErrorCode = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorCode.valueOf();
 
-                        if (ErrorCode.indexOf("0x00000000") === -1) {
-                            var ErrorText = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorText.valueOf();
-                            deferred.reject(ErrorText);
-                        }
-                        else {
-                            var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
+                    if (ErrorCode.indexOf("0x00000000") === -1) {
+                        var ErrorText = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.ErrorText.valueOf();
+                        deferred.reject(ErrorText);
+                    }
+                    else {
+                        var ows_row = jsonObj2.Envelope.Body.UpdateListItemsResponse.UpdateListItemsResult.Results.Result.row;
 
-                            self.Fields.forEach(function (field) {
-                                //console.log(field.EntityPropertyName);
-                                if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
-                                    self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
-                                }
+                        self.Fields.forEach(function (field) {
+                            //console.log(field.EntityPropertyName);
+                            if ((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_" + field.EntityPropertyName]))) {
+                                self[field.EntityPropertyName] = ows_row["_ows_" + field.EntityPropertyName];
+                            }
 
-                            });
+                        });
 
-                            self.Id(ows_row["_ows_ID"]);
-                            deferred.resolve(self);
-                        }
+                        self.Id(ows_row["_ows_ID"]);
+                        deferred.resolve(self);
+                    }
 
-                        //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
-                        //deferred.resolve(result.data);
-                    });
+                    //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
+                    //deferred.resolve(result.data);
+                });
 
-                    return deferred.promise;
-                }
+                return deferred.promise;
+                //}
             };
 
             this.AddFile = function (name, value) {
 
                 var deferred = $q.defer();
+
+                if (ngSecurity.CurrentItem.Properties.Id < 0) {
+                    deferred.reject();
+                }
 
                 var Envelope = new Array("");
                 Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
@@ -696,7 +685,7 @@
                 Envelope.push('</soap:Body>');
                 Envelope.push('</soap:Envelope>');
 
-                var url = "https://"+ngSecurity.Endpoint+"/_vti_bin/Lists.asmx";
+                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
 
                 var req = {
                     method: 'POST',
@@ -709,22 +698,23 @@
                     data: Envelope.join("").toString()
                 };
 
-                $http.defaults.headers.common.Authorization = 'BPOSIDCRL '+ ngSecurity.SecurityToken;
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
 
-                $http(req).then(function(result){
+                $http(req).then(function (result) {
                     //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
                     //console.log(result.toString());
                     var jsonObj = ngSecurity.XMLtoJSON().xml_str2json(result.data);
                     var ErrorCode = "0x00000000";
                     var ErrorText = "";
 
-                    if(angular.isDefined(jsonObj.Envelope.Body.Fault)){
+                    if (angular.isDefined(jsonObj.Envelope.Body.Fault)) {
                         ErrorCode = jsonObj.Envelope.Body.Fault.detail.errorcode.toString();
                     }
 
-                    if(ErrorCode.indexOf("0x00000000") === -1) {
+                    if (ErrorCode.indexOf("0x00000000") === -1) {
                         ErrorText = jsonObj.Envelope.Body.Fault.detail.errorstring.toString()
-                        deferred.reject(ErrorText);}
+                        deferred.reject(ErrorText);
+                    }
                     else {
                         var attachment = jsonObj.Envelope.Body.AddAttachmentResponse.AddAttachmentResult;
 
@@ -747,7 +737,150 @@
                 return deferred.promise;
             };
 
-            var Fields = function() {
+            this.DeleteFile = function (file_url) {
+
+                var deferred = $q.defer();
+
+                if (ngSecurity.CurrentItem.Properties.Id < 0) {
+                    deferred.reject();
+                }
+
+                var Envelope = new Array("");
+                Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
+                Envelope.push('<soap:Body>');
+                Envelope.push('<DeleteAttachment xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
+                Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
+                Envelope.push('<listItemID>' + ngSecurity.CurrentItem.Properties.Id + '</listItemID>');
+                var self = this;
+                Envelope.push('<url>' + file_url + '</url>');
+                Envelope.push('</DeleteAttachment>');
+                Envelope.push('</soap:Body>');
+                Envelope.push('</soap:Envelope>');
+
+                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
+
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    headers: {
+                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/DeleteAttachment',
+                        'Content-Type': 'text/xml; charset="UTF-8"'
+                        //'Content-Type' : "application/soap+xml; charset=utf-8"
+                    },
+                    data: Envelope.join("").toString()
+                };
+
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
+
+                $http(req).then(function (result) {
+                    //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
+                    //console.log(result.toString());
+                    var jsonObj = ngSecurity.XMLtoJSON().xml_str2json(result.data);
+                    var ErrorCode = "0x00000000";
+                    var ErrorText = "";
+
+                    if (angular.isDefined(jsonObj.Envelope.Body.Fault)) {
+                        ErrorCode = jsonObj.Envelope.Body.Fault.detail.errorcode.toString();
+                    }
+
+                    if (ErrorCode.indexOf("0x00000000") === -1) {
+                        ErrorText = jsonObj.Envelope.Body.Fault.detail.errorstring.toString()
+                        deferred.reject(ErrorText);
+                    }
+                    else {
+                        var attachment = jsonObj.Envelope.Body.DeleteAttachmentResponse.DeleteAttachmentResult;
+
+                        /*
+                         self.Fields.forEach(function(field) {
+                         console.log(field.EntityPropertyName);
+                         if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
+                         self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
+                         }
+
+                         });
+                         */
+                        deferred.resolve(attachment);
+                    }
+
+                    //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
+                    //deferred.resolve(result.data);
+                });
+
+                return deferred.promise;
+            };
+
+            this.GetAttachmentCollection = function () {
+
+                var deferred = $q.defer();
+
+                if (ngSecurity.CurrentItem.Properties.Id < 0) {
+                    deferred.reject();
+                }
+
+                var Envelope = new Array("");
+                Envelope.push('<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">');
+                Envelope.push('<soap:Body>');
+                Envelope.push('<GetAttachmentCollection xmlns="http://schemas.microsoft.com/sharepoint/soap/">');
+                Envelope.push('<listName>{' + ngSecurity.CurrentList.Properties.Id + '}</listName>');
+                Envelope.push('<listItemID>' + ngSecurity.CurrentItem.Properties.Id + '</listItemID>');
+                var self = this;
+                Envelope.push('</GetAttachmentCollection>');
+                Envelope.push('</soap:Body>');
+                Envelope.push('</soap:Envelope>');
+
+                var url = "https://" + ngSecurity.Endpoint + "/_vti_bin/Lists.asmx";
+
+                var req = {
+                    method: 'POST',
+                    url: url,
+                    headers: {
+                        'SOAPAction': 'http://schemas.microsoft.com/sharepoint/soap/GetAttachmentCollection',
+                        'Content-Type': 'text/xml; charset="UTF-8"'
+                        //'Content-Type' : "application/soap+xml; charset=utf-8"
+                    },
+                    data: Envelope.join("").toString()
+                };
+
+                $http.defaults.headers.common.Authorization = 'BPOSIDCRL ' + ngSecurity.SecurityToken;
+
+                $http(req).then(function (result) {
+                    //_SOAP.Update({ EndPoint: ngSecurity.Endpoint}, Envelope.join("").toString()).$promise.then(function (result) {
+                    //console.log(result.toString());
+                    var jsonObj = ngSecurity.XMLtoJSON().xml_str2json(result.data);
+                    var ErrorCode = "0x00000000";
+                    var ErrorText = "";
+
+                    if (angular.isDefined(jsonObj.Envelope.Body.Fault)) {
+                        ErrorCode = jsonObj.Envelope.Body.Fault.detail.errorcode.toString();
+                    }
+
+                    if (ErrorCode.indexOf("0x00000000") === -1) {
+                        ErrorText = jsonObj.Envelope.Body.Fault.detail.errorstring.toString()
+                        deferred.reject(ErrorText);
+                    }
+                    else {
+                        var attachments = jsonObj.Envelope.Body.GetAttachmentCollectionResponse.GetAttachmentCollectionResult.Attachments;
+
+                        /*
+                         self.Fields.forEach(function(field) {
+                         console.log(field.EntityPropertyName);
+                         if((angular.isDefined(self[field.EntityPropertyName])) && (angular.isDefined(ows_row["_ows_"+field.EntityPropertyName])) ){
+                         self[field.EntityPropertyName] = ows_row["_ows_"+field.EntityPropertyName];
+                         }
+
+                         });
+                         */
+                        deferred.resolve(attachments);
+                    }
+
+                    //var results = angular.element(angular.element.parseXML(result)).find("Results").text();
+                    //deferred.resolve(result.data);
+                });
+
+                return deferred.promise;
+            }
+
+            var Fields = function () {
 
                 //var deferred = $q.defer();
 
@@ -766,6 +899,9 @@
                                     if (field.EntityPropertyName === "LinkTitle" || field.EntityPropertyName === "Title") {
                                         var title_idx = viewfields.indexOf("LinkTitle");
                                         if (title_idx !== -1 && field.EntityPropertyName === "Title") {
+                                            if (_ngItem.Id > 0) {
+                                                field.Value = _ngItem[field.EntityPropertyName];
+                                            }
                                             FormFields.splice(title_idx, 0, field);
                                             //FormFields.push(field);
                                         }
@@ -773,6 +909,9 @@
                                     else {
                                         var idx = viewfields.indexOf(field.EntityPropertyName);
                                         if (idx !== -1) {
+                                            if (_ngItem.Id > 0) {
+                                                field.Value = _ngItem[field.EntityPropertyName];
+                                            }
                                             FormFields.splice(idx, 0, field);
                                             //FormFields.push(field);
                                         }
@@ -814,93 +953,77 @@
                     console.log(ex);
                 }
             };
+
             //endregion
 
+            //region Get Item by GUID or by Title ( case sensitive )
+
             var self = this;
-            
-            //region Get ListItem by GUID or by Title ( case sensitive )
 
-            //var loadItem = function(identifier) {
+            //Is there a usable Identifier and determine if it is a existing or new Item that is requested.
+            var isId = false;
+            var isExisting = false;
 
-                //var deferred = $q.defer();
+            if (angular.isDefined(identifier)) {
+                isId = /^\d+$/.test(identifier);
+                isExisting = (identifier > 0);
+            }
 
+            //Check if the previous requested item
+            if (ngSecurity.CurrentItem !== null) {
+                if (isId && isExisting) {
+                    //Only when currentItem Id is not the requested Id, update _ngItem;
+                    if (ngSecurity.CurrentItem.Id !== identifier) {
 
-                //Is there a usable Identifier and determine if it is a existing or new Item that is requested.
-                var isId = false;
-                var isExisting = false;
-
-                if (angular.isDefined(identifier)) {
-                    isId = /^\d+$/.test(identifier);
-                    isExisting = (identifier > 0);
-                }
-
-                //Check if the previous requested item
-                if (ngSecurity.CurrentItem !== null) {
-                    if (isId && isExisting) {
-                        //Only when currentItem Id is not the requested Id, update _ngItem;
-                        if (ngSecurity.CurrentItem.Id !== identifier) {
-
-                            if (isExisting) {
-                                _item.deferred({
-                                    EndPoint: ngSecurity.Endpoint,
-                                    List: ngSecurity.CurrentList.Properties.Id,
-                                    Item: identifier
-                                }).$promise.then(
-                                    function (data) {
-                                        _ngItem = data;
-                                        Fields();
-                                    });
-                            }
-                            else {
-                                //Indicates a new Item
-                                _ngItem.Id = identifier;
-                                Fields();
-                            }
+                        if (isExisting) {
+                            _item.deferred({
+                                EndPoint: ngSecurity.Endpoint,
+                                List: ngSecurity.CurrentList.Properties.Id,
+                                Item: identifier
+                            }).$promise.then(
+                                function (data) {
+                                    _ngItem = data;
+                                    Fields();
+                                });
                         }
-                    }
-                    else {
-                        //Indicates a new Item
-                        _ngItem.Id = identifier;
-                        Fields();
+                        else {
+                            //Indicates a new Item
+                            _ngItem.Id = identifier;
+                            Fields();
+                        }
                     }
                 }
                 else {
-                    //Newly not previously requested Item should be requested from SharePoint
-                    if (isId && isExisting) {
-                        _item.deferred({
-                            EndPoint: ngSecurity.Endpoint,
-                            List: ngSecurity.CurrentList.Properties.Id,
-                            Item: identifier
-                        }).$promise.then(
-                            function (data) {
-                                _ngItem = data;
-                                Fields();
-                            });
-                    }
-                    else {
-                        //Indicates a new Item
-                        _ngItem.Id = identifier;
-                        Fields();
-                    }
+                    //Indicates a new Item
+                    _ngItem.Id = identifier;
+                    Fields();
                 }
-
-                //return deferred.promise;
-            //};
-
-            //All properties should be loaded now.
-            //self.Properties = _ngItem;
-
+            }
+            else {
+                //Newly not previously requested Item should be requested from SharePoint
+                if (isId && isExisting) {
+                    _item.deferred({
+                        EndPoint: ngSecurity.Endpoint,
+                        List: ngSecurity.CurrentList.Properties.Id,
+                        Item: identifier
+                    }).$promise.then(
+                        function (data) {
+                            _ngItem = data;
+                            Fields();
+                        });
+                }
+                else {
+                    //Indicates a new Item
+                    _ngItem.Id = identifier;
+                    Fields();
+                }
+            }
             //endregion
-
-            //region Fields
-
-
-            //endregion
-
-            //loadItem(identifier);//.then(loadFields());
 
             return deferred.promise;
         };
+
+        //endregion
 
         return ngItem;
     }]);
