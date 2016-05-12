@@ -6,26 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e4fa2f33-eee7-48fd-8ead-4b3a0f6646e8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Folder.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Folder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Group.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Group.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Security.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Security.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Site.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.UserProfile.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.UserProfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngSharePoint.js" afterPath="$PROJECT_DIR$/src/ngSharePoint.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.File.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.File.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Folder.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Folder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Group.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Group.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Item.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Security.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Security.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Site.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Site.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.UserProfile.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.UserProfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Web.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.js" afterPath="$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.js" />
     </list>
     <ignored path="cordova-plugin-blaud-sharepoint.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,7 +25,7 @@
     <favorites_list name="cordova-plugin-blaud-sharepoint" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -61,7 +41,7 @@
       <file leaf-file-name="ngSharePoint.Security.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Security.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6902655">
+            <state vertical-scroll-proportion="0.73067915">
               <caret line="123" column="23" selection-start-line="123" selection-start-column="23" selection-end-line="123" selection-end-column="23" />
               <folding>
                 <element signature="e#252#268#0" expanded="false" />
@@ -187,6 +167,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -293,7 +274,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
@@ -681,7 +661,13 @@
       <option name="project" value="LOCAL" />
       <updated>1462775056138</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Security watch polyfill">
+      <created>1462977906124</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1462977906124</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TodoView">
@@ -700,13 +686,10 @@
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1716693" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284091" sideWeight="0.5018431" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32539684" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3197183" sideWeight="0.49815693" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276644" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3707483" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32768363" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -716,10 +699,13 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3197183" sideWeight="0.49815693" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3284091" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3707483" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32857144" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -774,7 +760,8 @@
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;" />
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;" />
     <MESSAGE value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;&#10;Minor bug fixes on Item functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Windows Mobile build Succes&#10;iOS build Succes&#10;Android  build Succes&#10;&#10;REST GET Succes&#10;SOAP POST Succes CRU&#10;SOAP POST Untested D&#10;SOAP RESULT PARSE Succes&#10;SOAP Attachements Succes&#10;&#10;Form Elements Office-UI-Fabric&#10;&#10;Change Ionic Account to BLAUD&#10;&#10;Emit __deferred properties on object functions for recall purposes&#10;&#10;Minor bug fixes on Item functions" />
+    <MESSAGE value="Security watch polyfill" />
+    <option name="LAST_COMMIT_MESSAGE" value="Security watch polyfill" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1095,15 +1082,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.035128806">
           <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
-          <folding>
-            <element signature="e#261#288#0" expanded="false" />
-            <element signature="e#3265#3287#0" expanded="false" />
-            <element signature="e#4480#4492#0" expanded="false" />
-            <element signature="e#4771#4790#0" expanded="false" />
-            <element signature="e#9982#9999#0" expanded="false" />
-            <element signature="e#19474#19490#0" expanded="false" />
-            <element signature="e#21038#21054#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1111,11 +1089,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
-          <folding>
-            <element signature="e#278#300#0" expanded="false" />
-            <element signature="e#1248#1263#0" expanded="false" />
-            <element signature="e#1354#1373#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1123,7 +1096,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1131,22 +1103,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="137" column="8" selection-start-line="137" selection-start-column="8" selection-end-line="137" selection-end-column="8" />
-          <folding>
-            <element signature="e#315#342#0" expanded="false" />
-            <element signature="e#1843#1865#0" expanded="false" />
-            <element signature="e#4441#4454#0" expanded="false" />
-            <element signature="e#4734#4753#0" expanded="false" />
-            <element signature="e#6079#6096#0" expanded="false" />
-            <element signature="e#15017#15033#0" expanded="false" />
-            <element signature="e#15073#19814#0" expanded="false" />
-            <element signature="e#19855#23892#0" expanded="false" />
-            <element signature="e#23931#28673#0" expanded="false" />
-            <element signature="e#28726#32263#0" expanded="false" />
-            <element signature="e#32316#35789#0" expanded="false" />
-            <element signature="e#35847#39307#0" expanded="false" />
-            <element signature="e#39346#42358#0" expanded="false" />
-            <element signature="e#42398#42454#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1154,9 +1110,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding>
-            <element signature="e#269#307#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1164,15 +1117,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="138" column="8" selection-start-line="138" selection-start-column="8" selection-end-line="138" selection-end-column="8" />
-          <folding>
-            <element signature="e#263#290#0" expanded="false" />
-            <element signature="e#1598#1620#0" expanded="false" />
-            <element signature="e#4528#4541#0" expanded="false" />
-            <element signature="e#4821#4840#0" expanded="false" />
-            <element signature="e#6713#6730#0" expanded="false" />
-            <element signature="e#13495#13511#0" expanded="false" />
-            <element signature="e#20871#20927#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1180,7 +1124,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1188,13 +1131,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="138" column="39" selection-start-line="138" selection-start-column="35" selection-end-line="138" selection-end-column="46" />
-          <folding>
-            <element signature="e#245#272#0" expanded="false" />
-            <element signature="e#829#851#0" expanded="false" />
-            <element signature="e#1957#1976#0" expanded="false" />
-            <element signature="e#2859#2876#0" expanded="false" />
-            <element signature="e#3831#3847#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1202,13 +1138,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.44609666">
           <caret line="393" column="6" selection-start-line="393" selection-start-column="6" selection-end-line="393" selection-end-column="6" />
-          <folding>
-            <element signature="e#245#272#0" expanded="false" />
-            <element signature="e#6848#6870#0" expanded="false" />
-            <element signature="e#7566#7586#0" expanded="false" />
-            <element signature="e#7819#7838#0" expanded="false" />
-            <element signature="e#10135#10159#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1216,17 +1145,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7876106">
           <caret line="56" column="14" selection-start-line="56" selection-start-column="14" selection-end-line="56" selection-end-column="14" />
-          <folding>
-            <element signature="e#7346#9341#0" expanded="false" />
-            <element signature="e#9655#9672#0" expanded="false" />
-            <element signature="e#13692#13711#0" expanded="false" />
-            <element signature="e#13805#16117#0" expanded="false" />
-            <element signature="e#16211#18894#0" expanded="false" />
-            <element signature="e#18989#22448#0" expanded="false" />
-            <element signature="e#22548#23139#0" expanded="false" />
-            <element signature="e#23170#23185#0" expanded="false" />
-            <element signature="e#28678#28696#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1234,7 +1152,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.04621072">
           <caret line="37" column="3" selection-start-line="37" selection-start-column="3" selection-end-line="37" selection-end-column="68" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1250,13 +1167,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.76637167">
           <caret line="124" column="47" selection-start-line="124" selection-start-column="23" selection-end-line="124" selection-end-column="47" />
-          <folding>
-            <element signature="e#245#272#0" expanded="false" />
-            <element signature="e#1572#1594#0" expanded="false" />
-            <element signature="e#6143#6160#0" expanded="false" />
-            <element signature="e#13376#13392#0" expanded="false" />
-            <element signature="e#20098#20115#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1274,13 +1184,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5221239">
           <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/lib/SharePoint/ngSharePoint.Security.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6902655">
+        <state vertical-scroll-proportion="0.73067915">
           <caret line="123" column="23" selection-start-line="123" selection-start-column="23" selection-end-line="123" selection-end-column="23" />
           <folding>
             <element signature="e#252#268#0" expanded="false" />
